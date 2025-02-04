@@ -4,36 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getRandomTime } from './notifications';
 
-// returns Date object with a random minute and hour value
-// use to determine a random time to deliver notification to user
-// accepts two parameters of type Date
-function getRandomTime(startTime, endTime) { 
-
-  // get the total amount of minutes elapsed (since midnight) of the selected start and end times
-  let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();
-  let totalEndDateMinutes = endTime.getHours() * 60 + endTime.getMinutes();
-
-  let randomMinutes;
-
-  // the ELSE clause in this logic handles the case where the user may enter a start time
-  // to allow notifications that is later than the end time. This means the time has to wrap
-  // around the clock, passing through midnight
-  if (totalstartTimeMinutes < totalEndDateMinutes) {
-    randomMinutes = Math.random() * (totalEndDateMinutes - totalstartTimeMinutes) + totalstartTimeMinutes;
-  } else {
-    randomMinutes = Math.random() * (1440 - (totalstartTimeMinutes - totalEndDateMinutes)) + totalstartTimeMinutes;
-  }
-  
-  // this result is the random time to deliver a notification
-  let randomTime = new Date();
-  randomTime.setHours(0);
-  randomTime.setMinutes(randomMinutes);
-
-  return randomTime;
-}
-
-//fetch time values stored on phone
+//fetch start time value stored on phone
 async function fetchStartTime() {
   let startTime;
 
@@ -54,6 +27,7 @@ async function fetchStartTime() {
   return new Date(startTime);
 }
 
+//fetch end time stored on phone
 async function fetchEndTime() {
   let endTime;
 
@@ -108,11 +82,12 @@ export default function Settings({navigation}) {
     loadTimes();
   }, []); // Runs only when the component mounts
 
+  //if the times have yet to be fetched, display a loading view
   if (!startTime || !endTime) {
     return <Text>Loading settings...</Text>;
-}
+  }
 
-  const randomTime = getRandomTime(startTime, endTime);
+  const randomTime = getRandomTime(startTime, endTime); //calculate random time to be notified
   
   return(
     <SafeAreaView>
@@ -122,13 +97,14 @@ export default function Settings({navigation}) {
         saveTime(endTime, persistentKeys.endTimeKey);
         navigation.goBack();
         }} />
+        
       <Text>From</Text>
       <DateTimePicker display='default' mode='time' value={startTime} onChange={(event, time) => {setStartTime(time)}}/> 
       <Text>Until</Text>
       <DateTimePicker display='default' mode='time' value={endTime} onChange={(event, time) => {setEndTime(time)}}/>
 
-      <Text>{randomTime.getHours()} : {randomTime.getMinutes()}</Text>
-      <Text>{startTime.getHours()}, {endTime.getHours()}</Text>
+      <Text>Random notification time: {randomTime.getHours()} : {randomTime.getMinutes()}</Text>
+      <Text>start time hours: {startTime.getHours()}, end time hours: {endTime.getHours()}</Text>
     </SafeAreaView>
   ) //the final two text elements should be deleted, only displayed on screen for development purposes
 }

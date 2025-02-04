@@ -44,3 +44,31 @@ export async function scheduleDailyNotification() {
 
     //console.log("Daily notification scheduled!");
 }
+
+// returns Date object with a random minute and hour value
+// use to determine a random time to deliver notification to user
+// accepts two parameters of type Date
+function getRandomTime(startTime, endTime) { 
+
+    // get the total amount of minutes elapsed (since midnight) of the selected start and end times
+    let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();
+    let totalEndDateMinutes = endTime.getHours() * 60 + endTime.getMinutes();
+  
+    let randomMinutes;
+  
+    // the ELSE clause in this logic handles the case where the user may enter a start time
+    // to allow notifications that is later than the end time. This means the time has to wrap
+    // around the clock, passing through midnight
+    if (totalstartTimeMinutes < totalEndDateMinutes) {
+      randomMinutes = Math.random() * (totalEndDateMinutes - totalstartTimeMinutes) + totalstartTimeMinutes;
+    } else {
+      randomMinutes = Math.random() * (1440 - (totalstartTimeMinutes - totalEndDateMinutes)) + totalstartTimeMinutes;
+    }
+    
+    // this result is the random time to deliver a notification
+    let randomTime = new Date();
+    randomTime.setHours(0);
+    randomTime.setMinutes(randomMinutes);
+  
+    return randomTime;
+  }
