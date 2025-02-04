@@ -2,7 +2,7 @@ import { Text, Button } from 'react-native'
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { persistentKeys } from '../constants/persistanceKeys';
+import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // returns Date object with a random minute and hour value
