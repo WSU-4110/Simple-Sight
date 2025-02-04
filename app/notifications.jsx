@@ -48,7 +48,7 @@ export async function scheduleDailyNotification() {
 // returns Date object with a random minute and hour value
 // use to determine a random time to deliver notification to user
 // accepts two parameters of type Date
-function getRandomTime(startTime, endTime) { 
+export function getRandomTime(startTime, endTime) { 
 
     // get the total amount of minutes elapsed (since midnight) of the selected start and end times
     let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();
