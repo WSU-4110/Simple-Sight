@@ -1,4 +1,6 @@
 export const colors = {
-    primary: '#BD7FFF',
-    primaryDark: '#685181', //for settings bg and anywhere else
-}
+    primary: '#1E90FF',     
+    secondary: '#FFA07A',   
+    background: '#F5F5F5',  
+  };
+  

@@ -1,15 +1,59 @@
-import { Text, Button } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function Welcome({navigation}) {
+export default function Welcome({ navigation }) {
   return (
-    <SafeAreaView
-    
-    >
-      <Text>This is the welcome screen where users can log in or create accounts</Text>
-
-      <Button title='Log In' onPress={() => {navigation.navigate('Home')}} />
-    </SafeAreaView>
-  )
+    <LinearGradient colors={['#fbc2eb', '#a6c1ee']} style={styles.container}>
+      <Text style={styles.title}>Welcome to Simple‑Sight</Text>
+      <Text style={styles.subtitle}>
+        Capture and share the beauty around you.
+      </Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          console.log('Login button pressed');
+          navigation.replace('Home');
+        }}
+      >
+        <Text style={styles.buttonText}>Log In</Text>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  button: {
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#a6c1ee',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});
