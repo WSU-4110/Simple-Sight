@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+# Simple Sight #
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Encouraging Mindfulness Through Daily Moments
+Simple Sight is a mobile app designed to promote mindfulness by encouraging users to capture and appreciate real-life moments. Unlike traditional social media, Simple Sight focuses on authentic experiences rather than curated content.
 
-## Get started
+## Features ##
 
-1. Install dependencies
+**Daily Prompts**
+Receive a daily notification reminding you to take a photo of your present moment.
 
-   ```bash
-   npm install
-   ```
+**Capture & Share**
+Take a photo of what you’re doing or experiencing right now.
+Share your moment with others on the app.
 
-2. Start the app
+**View Past Moments**
+Revisit your previous photos to reflect on times you embraced mindfulness.
 
-   ```bash
-    npx expo start
-   ```
+**Cross-Platform Compatibility**
+Available for both iOS and Android using React Native.
 
-In the output, you'll find options to open the app in a
+### Important: Enable Notifications ###
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+To get the full experience of Simple Sight, make sure to enable notifications on your device. This allows the app to send daily reminders to capture and appreciate a mindful moment.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+#### How to Enable Notifications ####
+**iOS:** Go to Settings → Notifications → Simple Sight and enable alerts.
 
-## Get a fresh project
+**Android:** Go to Settings → Apps & notifications → Simple Sight and turn on notifications.
 
-When you're ready, run:
+## Installation ##
+Clone the repository and install dependencies:
 
-```bash
-npm run reset-project
+```bash 
+git clone https://github.com/WSU-4110/Simple-Sight
+cd SimpleSight
+npm install
+npm install -g expo-cli
 ```
+**For iOS (requires Mac):** ```bash npx expo run:ios ```
+**For Android:** ```Bash npx expo run:android ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Technologies Used ##
+React Native – Cross-platform development
 
-## Learn more
+Expo – Simplifies setup and development
 
-To learn more about developing your project with Expo, look at the following resources:
+AsyncStorage – Stores user preferences and moments
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+React Navigation – Handles app navigation
 
-## Join the community
+Push Notifications – Sends daily prompts
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## License ##
+This project is open-source under the MIT License.
