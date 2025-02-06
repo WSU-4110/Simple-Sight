@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import Feed from './feed';
 import Gallery from './gallery';
+import { requestPermissions } from './notifications';
 
 const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
+  useEffect(() => {
+    //get notification permissions
+    requestPermissions();
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

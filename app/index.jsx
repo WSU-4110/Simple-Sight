@@ -1,9 +1,6 @@
 // index.jsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// Import your screens
 import Welcome from './welcome';
 import Home from './home';
 import Settings from './settings';

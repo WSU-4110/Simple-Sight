@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
+import { fetchStartTime, fetchEndTime } from './settings';
 
 export async function requestPermissions() {
     const { status } = await Notifications.requestPermissionsAsync();
@@ -14,11 +15,10 @@ export async function requestPermissions() {
         handleNotification: async () => ({
             shouldShowAlert: true,
             shouldPlaySound: true,
-            shouldSetBadge: false,
+            shouldSetBadge: true,
         }),
     });
     
-    //schedule notifications
     scheduleDailyNotification();
 }
 
@@ -26,6 +26,7 @@ export async function scheduleDailyNotification() {
     //this function needs to be set differently
     //TODO: allow users to choose a notification time range and
     //each day, randomly set the notification time somewhere in that range
+    const randTime = getRandomTime();
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
 
@@ -36,19 +37,24 @@ export async function scheduleDailyNotification() {
             sound: true, //plays sound and vibrates device (if device isnt silent)
         },
         trigger: {
-            hour: 11,  // Change this to desired hour (24-hour format)
-            minute: 51, // Change this to desired minute
-            repeats: false, // Ensures it repeats daily
+            hour: randTime.getHours(), 
+            minute: randTime.getMinutes(), 
+            repeats: false, 
         },
     });
 
-    //console.log("Daily notification scheduled!");
+    //wait until randtime hours and minutes + the time remaining until the end time to schedule the next one
+    Notifications.addNotificationReceivedListener(notification => {
+        
+    })
 }
 
 // returns Date object with a random minute and hour value
 // use to determine a random time to deliver notification to user
 // accepts two parameters of type Date
-export function getRandomTime(startTime, endTime) { 
+export async function getRandomTime() { 
+    let startTime = await fetchStartTime();
+    let endTime = await fetchEndTime();
 
     // get the total amount of minutes elapsed (since midnight) of the selected start and end times
     let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();
