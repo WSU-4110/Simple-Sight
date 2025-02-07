@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 export default function Welcome({ navigation }) {
   return (
     <LinearGradient colors={['#fbc2eb', '#a6c1ee']} style={styles.container}>
@@ -12,11 +13,11 @@ export default function Welcome({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log('Login button pressed');
-          navigation.replace('Home');
+          console.log('Signup button pressed');
+          navigation.replace('signup');
         }}
       >
-        <Text style={styles.buttonText}>Log In</Text>
+        <Text style={styles.buttonText}>Signup</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
