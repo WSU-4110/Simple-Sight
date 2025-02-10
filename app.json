@@ -10,9 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.simplesight"
+      "bundleIdentifier": "com.example.simplesight",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "googleServicesFile":"./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,6 +27,17 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "@react-native-firebase/app"
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks":"static"
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
