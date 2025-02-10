@@ -12,7 +12,6 @@ export default function Welcome({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log('Login button pressed');
           navigation.replace('Home');
         }}
       >

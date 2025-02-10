@@ -1,15 +1,24 @@
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
 import { fetchStartTime, fetchEndTime } from './settings';
+import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
 
 export async function requestPermissions() {
-    const { status } = await Notifications.requestPermissionsAsync();
+    const { status } = await Notifications.getPermissionsAsync(); //retunrs current status of notification permissions
+    console.log(status)
     if (status !== 'granted') {
-        Alert.alert('Permission Required', 'Please enable notifications in settings.');
-        return;
+        status = await Notifications.requestPermissionsAsync();
+
+        if (status === 'granted') {
+            
+            
+            scheduleDailyNotification();
+        } else {
+            Alert.alert('Permission Required', 'Please enable notifications in settings.');
+            return;
+        }
     }
-    //console.log('Notification permissions granted.');
-    
+
     //define settings for notification handler
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
@@ -18,18 +27,17 @@ export async function requestPermissions() {
             shouldSetBadge: true,
         }),
     });
-    
-    scheduleDailyNotification();
 }
 
 export async function scheduleDailyNotification() { 
-    //this function needs to be set differently
-    //TODO: allow users to choose a notification time range and
-    //each day, randomly set the notification time somewhere in that range
-    const randTime = getRandomTime();
+    const randTime = await getRandomTime(); //get random time to be used in the notification
+
+    // console.log(randTime.getHours())
+    // console.log(randTime.getMinutes())
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
 
+    //schedule notificaiton
     await Notifications.scheduleNotificationAsync({
         content: {
             title: "It's Time ⏰",
@@ -37,16 +45,34 @@ export async function scheduleDailyNotification() {
             sound: true, //plays sound and vibrates device (if device isnt silent)
         },
         trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
             hour: randTime.getHours(), 
             minute: randTime.getMinutes(), 
-            repeats: false, 
+            repeats: true, 
         },
     });
 
-    //wait until randtime hours and minutes + the time remaining until the end time to schedule the next one
-    Notifications.addNotificationReceivedListener(notification => {
-        
-    })
+    // add background event to wait until after the notification has delivered to schedule the next one
+    await registerBackgroundNotificationScheduler();
+}
+
+export async function scheduleNotificationNow() {
+    await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
+
+    //schedule notificaiton
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Simple Sight",
+            body: "Simple Sight says hello!",
+            sound: true, //plays sound and vibrates device (if device isnt silent)
+        },
+        trigger: {
+            seconds: 2,
+            repeats: false,
+        }
+    });
+
+    await registerBackgroundNotificationScheduler();
 }
 
 // returns Date object with a random minute and hour value

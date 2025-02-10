@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getRandomTime, scheduleDailyNotification } from './notifications';
+import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -146,13 +146,11 @@ export default function Settings() {
         }}/> 
         <Text>Until</Text>
         <DateTimePicker display='default' mode='time' value={endTime} onChange={(event, time) => {
+          console.log("changed")
           setEndTime(time);
           saveTime(endTime, persistentKeys.endTimeKey);
           scheduleDailyNotification();
         }}/>
-
-        <Text>Random notification time: {randomTime.getHours()} : {randomTime.getMinutes()}</Text>
-        <Text>start time hours: {startTime.getHours()}, end time hours: {endTime.getHours()}</Text>
       </View>
 
       <View style={styles.switchField}>
@@ -162,6 +160,8 @@ export default function Settings() {
           onValueChange={setNotificationsEnabled} 
         />
       </View>
+
+      <Button title='schedule notification' onPress={ () => {scheduleNotificationNow()} } />
 
       <TouchableOpacity style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save Settings</Text>
