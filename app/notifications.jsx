@@ -1,34 +1,43 @@
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
+import { fetchStartTime, fetchEndTime } from './settings';
+import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
 
 export async function requestPermissions() {
-    const { status } = await Notifications.requestPermissionsAsync();
+    const { status } = await Notifications.getPermissionsAsync(); //retunrs current status of notification permissions
+    console.log(status)
     if (status !== 'granted') {
-        Alert.alert('Permission Required', 'Please enable notifications in settings.');
-        return;
+        status = await Notifications.requestPermissionsAsync();
+
+        if (status === 'granted') {
+            
+            
+            scheduleDailyNotification();
+        } else {
+            Alert.alert('Permission Required', 'Please enable notifications in settings.');
+            return;
+        }
     }
-    //console.log('Notification permissions granted.');
-    
+
     //define settings for notification handler
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
             shouldPlaySound: true,
-            shouldSetBadge: false,
+            shouldSetBadge: true,
         }),
     });
-    
-    //schedule notifications
-    scheduleDailyNotification();
 }
 
 export async function scheduleDailyNotification() { 
-    //this function needs to be set differently
-    //TODO: allow users to choose a notification time range and
-    //each day, randomly set the notification time somewhere in that range
+    const randTime = await getRandomTime(); //get random time to be used in the notification
+
+    // console.log(randTime.getHours())
+    // console.log(randTime.getMinutes())
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
 
+    //schedule notificaiton
     await Notifications.scheduleNotificationAsync({
         content: {
             title: "It's Time ⏰",
@@ -36,19 +45,42 @@ export async function scheduleDailyNotification() {
             sound: true, //plays sound and vibrates device (if device isnt silent)
         },
         trigger: {
-            hour: 11,  // Change this to desired hour (24-hour format)
-            minute: 51, // Change this to desired minute
-            repeats: false, // Ensures it repeats daily
+            type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
+            hour: randTime.getHours(), 
+            minute: randTime.getMinutes(), 
+            repeats: true, 
         },
     });
 
-    //console.log("Daily notification scheduled!");
+    // add background event to wait until after the notification has delivered to schedule the next one
+    await registerBackgroundNotificationScheduler();
+}
+
+export async function scheduleNotificationNow() {
+    await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
+
+    //schedule notificaiton
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Simple Sight",
+            body: "Simple Sight says hello!",
+            sound: true, //plays sound and vibrates device (if device isnt silent)
+        },
+        trigger: {
+            seconds: 2,
+            repeats: false,
+        }
+    });
+
+    await registerBackgroundNotificationScheduler();
 }
 
 // returns Date object with a random minute and hour value
 // use to determine a random time to deliver notification to user
 // accepts two parameters of type Date
-export function getRandomTime(startTime, endTime) { 
+export async function getRandomTime() { 
+    let startTime = await fetchStartTime();
+    let endTime = await fetchEndTime();
 
     // get the total amount of minutes elapsed (since midnight) of the selected start and end times
     let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();

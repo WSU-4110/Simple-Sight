@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "874616789085",
+    "firebase_url": "https://simple-sight-default-rtdb.firebaseio.com",
+    "project_id": "simple-sight",
+    "storage_bucket": "simple-sight.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874616789085:android:f1122b24a0248969f995b4",
+        "android_client_info": {
+          "package_name": "com.anonymous.simplesight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874616789085-jk6q931f4a8pcna5e5u7volsvg8o4q74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.simplesight",
+            "certificate_hash": "c44d283e2a69bb11a54b89f27a4dad326668a2a9"
+          }
+        },
+        {
+          "client_id": "874616789085-p0p2kcklr1ppk3l5k7ktejhbm6uusnhk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxg_RmYV9_6WQvHR_tidQMF2XVBlBbJ0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874616789085-p0p2kcklr1ppk3l5k7ktejhbm6uusnhk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874616789085-4g35p2sint81in9038udj9trgmjd97qj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.simplesight"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874616789085:android:886cdc1d0c346808f995b4",
+        "android_client_info": {
+          "package_name": "com.example.simplesight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874616789085-p0p2kcklr1ppk3l5k7ktejhbm6uusnhk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxg_RmYV9_6WQvHR_tidQMF2XVBlBbJ0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874616789085-p0p2kcklr1ppk3l5k7ktejhbm6uusnhk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874616789085-4g35p2sint81in9038udj9trgmjd97qj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.simplesight"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

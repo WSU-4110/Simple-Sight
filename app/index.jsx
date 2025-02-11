@@ -1,10 +1,13 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 830deb6761211d16e1b2cda95360deb33c87b0d2
 import Welcome from './welcome';
 import Home from './home';
 import Settings from './settings';
+import Signup from './signup';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +26,11 @@ export default function App() {
           name="Welcome"
           component={Welcome}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+         name = "Signup"
+         component={Signup}
+         options = {{headerShown: false}}
         />
         <Stack.Screen
           name="Home"

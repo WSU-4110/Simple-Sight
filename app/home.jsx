@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
+=======
+import React, { useEffect } from 'react';
+>>>>>>> 830deb6761211d16e1b2cda95360deb33c87b0d2
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
+import { requestPermissions } from './notifications';
 
 // CUTESY FUN PROMPTS
 const prompts = [
@@ -59,12 +64,19 @@ const generateDailyPrompt = async (setDailyPrompt) => {
 const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
+<<<<<<< HEAD
   const [dailyPrompt, setDailyPrompt] = useState("");
 
   useEffect(() => {
     console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
   }, []); 
+=======
+  useEffect(() => {
+    //get notification permissions
+    requestPermissions();
+  }, []);
+>>>>>>> 830deb6761211d16e1b2cda95360deb33c87b0d2
 
   return (
     <View style={{ flex: 1 }}>
