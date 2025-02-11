@@ -9,26 +9,26 @@ import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } fro
 export async function fetchStartTime() {
   let startTime;
 
-  try {
-    startTime = await AsyncStorage.getItem(persistentKeys.startTimeKey);
-    if (startTime === null) {
-      //create a new time at 8 AM
-      startTime = new Date();
-      startTime.setHours(8, 0, 0, 0);
-    } else {
-      startTime = new Date(startTime);
+    try {
+      startTime = await AsyncStorage.getItem(persistentKeys.startTimeKey);
+      if (startTime === null) {
+        //create a new time at 8 AM
+        startTime = new Date();
+        startTime.setHours(8, 0, 0, 0);
+      } else {
+        startTime = new Date(startTime);
+      }
+    } catch {
+      console.log("error retrieving start date", error);
+      return new Date(); // Fallback: Return current time
     }
-  } catch {
-    console.log("error retrieving start date", error);
-    return new Date(); // Fallback: Return current time
-  }
 
   return new Date(startTime);
 }
 
-//fetch end time stored on phone
-export async function fetchEndTime() {
-  let endTime;
+  //fetch end time stored on phone
+  async function fetchEndTime() {
+    let endTime;
 
   try {
     endTime = await AsyncStorage.getItem(persistentKeys.endTimeKey);
@@ -63,59 +63,6 @@ export default function Settings() {
   const [securityAnswer, setSecurityAnswer] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
-<<<<<<< HEAD
-    //fetch start time value stored on phone
-  async function fetchStartTime() {
-    let startTime;
-
-    try {
-      startTime = await AsyncStorage.getItem(persistentKeys.startTimeKey);
-      if (startTime === null) {
-        //create a new time at 8 AM
-        startTime = new Date();
-        startTime.setHours(8, 0, 0, 0);
-      } else {
-        startTime = new Date(startTime);
-      }
-    } catch {
-      console.log("error retrieving start date", error);
-      return new Date();
-    }
-
-    return new Date(startTime);
-  }
-
-  async function fetchEndTime() {
-    let endTime;
-
-    try {
-      endTime = await AsyncStorage.getItem(persistentKeys.endTimeKey);
-      if (!endTime) {
-        //create a new time at 8 PM
-        endTime = new Date();
-        endTime.setHours(20, 0, 0, 0);
-      } else {
-        endTime = new Date(endTime);
-      }
-    } catch {
-      console.log("error retrieving end date", error);
-      return new Date(); // Fallback: Return current time
-    }
-
-    return new Date(endTime);
-  }
-
-  //save time values locally (to phone)
-  async function saveTime(time, key) {
-    try {
-      await AsyncStorage.setItem(key, time.toISOString())
-    } catch(error) {
-      console.log("Error saving data", error)
-    }
-  }
-
-=======
->>>>>>> 830deb6761211d16e1b2cda95360deb33c87b0d2
   //fetch dates
   const [startTime, setStartTime] = useState(null); // State for start time
   const [endTime, setEndTime] = useState(null); // State for end time
