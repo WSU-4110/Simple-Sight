@@ -13,11 +13,11 @@ export default function Welcome({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log('Signup button pressed');
+          console.log('Get Started button pressed');
           navigation.replace('signup');
         }}
       >
-        <Text style={styles.buttonText}>Signup</Text>
+        <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
