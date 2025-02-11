@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from 'expo-router';
 
-
-export default function Welcome({ navigation }) {
+export default function Welcome() {
+  const navigation = useNavigation();
   return (
     <LinearGradient colors={['#fbc2eb', '#a6c1ee']} style={styles.container}>
       <Text style={styles.title}>Welcome to Simple‑Sight</Text>

@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
+import { useNavigation } from 'expo-router';
+import Settings from './settings';
 
 // CUTESY FUN PROMPTS
 const prompts = [
@@ -56,6 +60,8 @@ const generateDailyPrompt = async (setDailyPrompt) => {
     }
 };
 
+
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
@@ -65,6 +71,17 @@ export default function Home({ navigation }) {
     console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
   }, []); 
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Tabs} options={{ headerShown: false }}/>
+      <Stack.Screen name='Settings' component={Settings}/>
+    </Stack.Navigator>
+  );
+}
+
+function Tabs() {
+  const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1 }}>
