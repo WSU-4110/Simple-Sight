@@ -28,13 +28,12 @@ export default function Settings() {
       }
     } catch {
       console.log("error retrieving start date", error);
-      return new Date(); // Fallback: Return current time
+      return new Date();
     }
 
     return new Date(startTime);
   }
 
-  //fetch end time stored on phone
   async function fetchEndTime() {
     let endTime;
 
