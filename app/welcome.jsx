@@ -14,11 +14,11 @@ export default function Welcome() {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log('Signup button pressed');
+          console.log('Register button pressed');
           navigation.replace('signup');
         }}
       >
-        <Text style={styles.buttonText}>Signup</Text>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </LinearGradient>
   );

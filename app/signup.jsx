@@ -11,8 +11,6 @@ export default function Signup(){
   const [message,setMessage] = useState('');
   const navigation = useNavigation()
 
-  console.log(navigation)
-
   const handlesignup = () => {
     auth()
       .createUserWithEmailAndPassword(email,password)

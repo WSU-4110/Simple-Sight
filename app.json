@@ -14,7 +14,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "googleServicesFile":"./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -34,7 +34,7 @@
         "expo-build-properties",
         {
           "ios": {
-            "useFrameworks":"static"
+            "useFrameworks": "static"
           }
         }
       ],
@@ -50,6 +50,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2849ff94-66ad-4ee2-b80c-5dfbb8480ba9"
+      }
     }
   }
 }

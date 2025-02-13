@@ -9,9 +9,7 @@ export async function requestPermissions() {
     if (status !== 'granted') {
         status = await Notifications.requestPermissionsAsync();
 
-        if (status === 'granted') {
-            
-            
+        if (status === 'granted') {    
             scheduleDailyNotification();
         } else {
             Alert.alert('Permission Required', 'Please enable notifications in settings.');
@@ -53,7 +51,7 @@ export async function scheduleDailyNotification() {
     });
 
     // add background event to wait until after the notification has delivered to schedule the next one
-    await registerBackgroundNotificationScheduler();
+    // await registerBackgroundNotificationScheduler();
 }
 
 export async function scheduleNotificationNow() {
@@ -103,4 +101,9 @@ export async function getRandomTime() {
     randomTime.setMinutes(randomMinutes);
   
     return randomTime;
+  }
+
+  export default function func() {
+    //this function to silence warning about this file having no default export
+    //do not add anything here
   }

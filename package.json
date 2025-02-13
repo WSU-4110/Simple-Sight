@@ -26,7 +26,7 @@
     "@react-navigation/native-stack": "^7.2.0",
     "expo": "~52.0.27",
     "expo-background-fetch": "^13.0.5",
-    "expo-blur": "~14.0.2",
+    "expo-blur": "~14.0.3",
     "expo-build-properties": "0.13.2",
     "expo-constants": "~17.0.4",
     "expo-dev-client": "~5.0.12",
