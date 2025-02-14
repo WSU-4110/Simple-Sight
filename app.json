@@ -28,7 +28,11 @@
     },
     "plugins": [
       [
-        "@react-native-firebase/app"
+        "@react-native-firebase/app",
+        "react-native-vision-camera",
+      {
+        "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+      }
       ],
       [
         "expo-build-properties",

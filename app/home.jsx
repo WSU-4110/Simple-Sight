@@ -9,6 +9,7 @@ import Feed from './feed';
 import Gallery from './gallery';
 import { useNavigation } from 'expo-router';
 import Settings from './settings';
+import CameraView from './camera';
 
 // CUTESY FUN PROMPTS
 const prompts = [
@@ -119,6 +120,7 @@ function Tabs() {
         })}
       >
         <Tab.Screen name="Feed" component={Feed} />
+        <Tab.Screen name="Camera" component={CameraView} />
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
     </View>
