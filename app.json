@@ -28,11 +28,15 @@
     },
     "plugins": [
       [
-        "@react-native-firebase/app",
-        "react-native-vision-camera",
-      {
-        "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
-      }
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "@react-native-firebase/app"
       ],
       [
         "expo-build-properties",
@@ -50,8 +54,7 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ],
-      "react-native-vision-camera"
+      ]
     ],
     "experiments": {
       "typedRoutes": true

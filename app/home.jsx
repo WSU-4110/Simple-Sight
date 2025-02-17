@@ -3,13 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
 import { useNavigation } from 'expo-router';
 import Settings from './settings';
-import CameraView from './camera';
+import Camera from './camera';
 
 // CUTESY FUN PROMPTS
 const prompts = [
@@ -67,7 +66,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
   const [dailyPrompt, setDailyPrompt] = useState("");
-
+  
   useEffect(() => {
     console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
@@ -83,13 +82,14 @@ export default function Home({ navigation }) {
 
 function Tabs() {
   const navigation = useNavigation();
+  // const dailyPrompt = await AsyncStorage.getItem("dailyPrompt");
 
   return (
     <View style={{ flex: 1 }}>
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
         <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> {/* Default message if it's empty */}
+        {/* <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> */}
       </View>
 
       {/* Bottom Tab Navigator */}
@@ -114,13 +114,15 @@ function Tabs() {
               iconName = 'grid-outline';
             } else if (route.name === 'Gallery') {
               iconName = 'images-outline';
+            } else if (route.name === 'Camera') {
+              iconName = 'camera-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
       >
         <Tab.Screen name="Feed" component={Feed} />
-        <Tab.Screen name="Camera" component={CameraView} />
+        <Tab.Screen name="Camera" component={Camera} options={{headerShown: false}}/>
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
     </View>
