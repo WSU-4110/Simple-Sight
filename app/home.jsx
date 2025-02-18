@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity } from 'react-native';
+//import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
@@ -64,32 +64,36 @@ const generateDailyPrompt = async (setDailyPrompt) => {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function Home({ navigation }) {
+export default function Home() {
   const [dailyPrompt, setDailyPrompt] = useState("");
 
   useEffect(() => {
-    console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
-  }, []); 
+  }, []);
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Tabs} options={{ headerShown: false }}/>
-      <Stack.Screen name='Settings' component={Settings}/>
+      <Stack.Screen 
+        name="Home" 
+        // THIS IS THE KEY CHANGE: pass dailyPrompt as a prop to Tabs
+        component={() => <Tabs dailyPrompt={dailyPrompt} />} // <-- Pass dailyPrompt here
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen name='Settings' component={Settings} />
     </Stack.Navigator>
   );
 }
 
-function Tabs() {
+function Tabs({ dailyPrompt }) {  // <-- Add this: receive dailyPrompt as a prop
   const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1 }}>
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
-        <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> {/* Default message if it's empty */}
-      </View>
+      <Text style={styles.promptText}>📸 Daily Prompt:</Text> {/* Wrapped in <Text> */}
+      <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> {/* Wrapped in <Text> */}
+</View>
 
       {/* Bottom Tab Navigator */}
       <Tab.Navigator

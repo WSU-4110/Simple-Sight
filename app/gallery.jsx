@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity  } from 'react-native'; // TouchableOpacity removed
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Gallery() {

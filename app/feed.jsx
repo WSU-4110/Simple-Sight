@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { 
   View, 
   Text, 
@@ -80,9 +81,9 @@ export default function Feed() {
           colors={['transparent', 'rgba(0,0,0,0.7)']} 
           style={styles.gradientOverlay} 
         />
-        <View style={styles.cardText}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-        </View>
+<View style={styles.cardText}>
+    <Text style={styles.cardTitle}>{item.title.toString()}</Text> {/* Convert to string */}
+</View>
       </View>
     </TouchableOpacity>
   );
