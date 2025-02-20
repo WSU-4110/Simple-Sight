@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
@@ -71,16 +70,25 @@ export default function Home({ navigation }) {
     console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
   }, []); 
-
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home">
+        {() => <Tabs dailyPrompt={dailyPrompt} />}
+      </Stack.Screen>
+      <Stack.Screen name='Settings' component={Settings}/>
+    </Stack.Navigator>
+  );
+  /*
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Tabs} options={{ headerShown: false }}/>
       <Stack.Screen name='Settings' component={Settings}/>
     </Stack.Navigator>
   );
+  */
 }
 
-function Tabs() {
+function Tabs({dailyPrompt}) {
   const navigation = useNavigation();
 
   return (
@@ -88,7 +96,7 @@ function Tabs() {
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
         <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> {/* Default message if it's empty */}
+        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text> {/* Default message if it's empty */}
       </View>
 
       {/* Bottom Tab Navigator */}

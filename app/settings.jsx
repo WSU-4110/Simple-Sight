@@ -27,7 +27,7 @@ export async function fetchStartTime() {
 }
 
   //fetch end time stored on phone
-  async function fetchEndTime() {
+ export async function fetchEndTime() {
     let endTime;
 
   try {
