@@ -59,6 +59,10 @@
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to use the camera</string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+    </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

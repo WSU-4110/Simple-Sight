@@ -71,16 +71,25 @@ export default function Home({ navigation }) {
     console.log("🔄 Running useEffect to generate daily prompt...");
     generateDailyPrompt(setDailyPrompt);
   }, []); 
-
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home">
+        {() => <Tabs dailyPrompt={dailyPrompt} />}
+      </Stack.Screen>
+      <Stack.Screen name='Settings' component={Settings}/>
+    </Stack.Navigator>
+  );
+  /*
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Tabs} options={{ headerShown: false }}/>
       <Stack.Screen name='Settings' component={Settings}/>
     </Stack.Navigator>
   );
+  */
 }
 
-function Tabs() {
+function Tabs({dailyPrompt}) {
   const navigation = useNavigation();
   // const dailyPrompt = await AsyncStorage.getItem("dailyPrompt");
 
@@ -89,7 +98,7 @@ function Tabs() {
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
         <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        {/* <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> */}
+        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text> {/* Default message if it's empty */}
       </View>
 
       {/* Bottom Tab Navigator */}

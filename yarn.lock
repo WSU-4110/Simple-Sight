@@ -1246,6 +1246,17 @@
     "@firebase/util" "1.10.3"
     tslib "^2.1.0"
 
+"@firebase/app-compat@0.2.50":
+  version "0.2.50"
+  resolved "https://registry.yarnpkg.com/@firebase/app-compat/-/app-compat-0.2.50.tgz#665b6db432414229b96763e6b1cf5e38463c58d0"
+  integrity sha512-7yD362icKgjoNvFxwth420TNZgqCfuTJ28yQCdpyjC2fXyaZHhAbxVKnHEXGTAaUKSHWxsIy46lBKGi/x/Mflw==
+  dependencies:
+    "@firebase/app" "0.11.1"
+    "@firebase/component" "0.6.12"
+    "@firebase/logger" "0.4.4"
+    "@firebase/util" "1.10.3"
+    tslib "^2.1.0"
+
 "@firebase/app-types@0.9.3":
   version "0.9.3"
   resolved "https://registry.npmjs.org/@firebase/app-types/-/app-types-0.9.3.tgz"
@@ -1255,6 +1266,17 @@
   version "0.11.0"
   resolved "https://registry.npmjs.org/@firebase/app/-/app-0.11.0.tgz"
   integrity sha512-FaPl2RB2iClQK4IIAN4ruhzyGNRcvAwXk0Ltqdt55RiTmQ4aM2EAJicgI8QNQd2JIkeCT1K8JKsEba3T1/J7FA==
+  dependencies:
+    "@firebase/component" "0.6.12"
+    "@firebase/logger" "0.4.4"
+    "@firebase/util" "1.10.3"
+    idb "7.1.1"
+    tslib "^2.1.0"
+
+"@firebase/app@0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.11.1.tgz#20663522be71307c8e5c74828bb621cdcdd3f5b4"
+  integrity sha512-Vz4DrNLPfDx3RwQf+4klXtu7OUYDO6xz2hlRyFawWskS7YqdtNzkDDxrqH20KDfjCF1lib46/NgchIj1+8h4wQ==
   dependencies:
     "@firebase/component" "0.6.12"
     "@firebase/logger" "0.4.4"
@@ -1356,6 +1378,17 @@
     "@firebase/util" "1.10.3"
     tslib "^2.1.0"
 
+"@firebase/firestore-compat@0.3.43":
+  version "0.3.43"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore-compat/-/firestore-compat-0.3.43.tgz#c62994b9b26d011a96265d6aa524a0d6b45a2c1b"
+  integrity sha512-zxg7YS07XQnTetGs3GADM/eA6HB4vWUp+Av4iugmTbft0fQxuTSnGm7ifctaYuR7VMTPckU9CW+oFC9QUNSYvg==
+  dependencies:
+    "@firebase/component" "0.6.12"
+    "@firebase/firestore" "4.7.8"
+    "@firebase/firestore-types" "3.0.3"
+    "@firebase/util" "1.10.3"
+    tslib "^2.1.0"
+
 "@firebase/firestore-types@3.0.3":
   version "3.0.3"
   resolved "https://registry.npmjs.org/@firebase/firestore-types/-/firestore-types-3.0.3.tgz"
@@ -1365,6 +1398,19 @@
   version "4.7.7"
   resolved "https://registry.npmjs.org/@firebase/firestore/-/firestore-4.7.7.tgz"
   integrity sha512-DDYBjqSyd2vD3SjfRqI2Q9Ua1N0URP+1P0/SnNdVSp0/S5mkbaklIX/eU+199ze0XXnC61RYLqi6KYTYtGoz2A==
+  dependencies:
+    "@firebase/component" "0.6.12"
+    "@firebase/logger" "0.4.4"
+    "@firebase/util" "1.10.3"
+    "@firebase/webchannel-wrapper" "1.0.3"
+    "@grpc/grpc-js" "~1.9.0"
+    "@grpc/proto-loader" "^0.7.8"
+    tslib "^2.1.0"
+
+"@firebase/firestore@4.7.8":
+  version "4.7.8"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-4.7.8.tgz#38b124a4d50a390934f70d916a84546376abdf4e"
+  integrity sha512-eDvVJ/I5vSmIdGmLHJAK1OcviigIxjjia6i5/AkMFq6vZMt7CBXA0B5Xz9pGRCZ7WewFcsCbK1ZUQoYJ91+Cew==
   dependencies:
     "@firebase/component" "0.6.12"
     "@firebase/logger" "0.4.4"
@@ -1977,24 +2023,29 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/app@^21.10.0":
-  version "21.10.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-21.10.0.tgz"
-  integrity sha512-FFZ5B1wsRRFRLoxLZ4247RyNC85262OHl5ENqcXmNzNqGq9iNXVOUSNhFZZOwhJauKZjSDzr/7nMPJjK3LkGjQ==
+"@react-native-firebase/app@^21.10.1":
+  version "21.10.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-21.10.1.tgz#51a315b4165ffe8d7667683785e4a21f3d8858cc"
+  integrity sha512-Gm8XIajEMJapy+e+WJyFDjNa18LyAXV7UFsgwpx5cBMcuWN/JB9Z9/9Njg05taOvTB7EZwp4WRzvMDeslsQqVA==
   dependencies:
-    firebase "11.3.0"
+    firebase "11.3.1"
 
-"@react-native-firebase/auth@^21.10.0":
-  version "21.10.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-21.10.0.tgz"
-  integrity sha512-O8UmEMeD5esp1h+o8e5N4uIKWHMQgNt8atqStlnvlLIgrveZO/a5GvSM3KOPCj4DHeBuxrPzp1fdMmLjB02pVQ==
+"@react-native-firebase/auth@^21.10.1":
+  version "21.10.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-21.10.1.tgz#1aa72423c59e4bc42ae2d98e5ddc36851e33a8c4"
+  integrity sha512-ZAFQp3FhtZ2jS0yz/xtRyTEu5eNNIPVGX/ux9ng95kPfzzINMeUwavh3a7CKBtijWGeC+asyxORUHfr4CXZ8nQ==
   dependencies:
     plist "^3.1.0"
 
-"@react-native-firebase/database@^21.10.0":
-  version "21.10.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/database/-/database-21.10.0.tgz"
-  integrity sha512-TeU36KTO1ooJ72hM+bPSiDI7WIHLkto/5dw5NUgztaJqljcHbur9c0KWrHNzjLjKNLR9dVQBmhYQ1DGlVCv4lQ==
+"@react-native-firebase/database@^21.10.1":
+  version "21.10.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-21.10.1.tgz#301715687a497361bb5eefec3e9e76fe618b729b"
+  integrity sha512-oNAbo4oaJzcnFOQ1ESlxeoOatwPZ0y/U7tkqSOnbmu6Mb2pgFBaaZgzPinTI2u/t0iEylwWyVikw1MEHSysMug==
+
+"@react-native-firebase/firestore@^21.10.1":
+  version "21.10.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-21.10.1.tgz#ee0eaedd150f74ea0404cbe9069dcd9332b1c6f1"
+  integrity sha512-9192Uf0jdxSPreW+2Hdfj1Ya2Cc/bIVcGpOY8PkN8wG6Pay4qydPCIJ5YBL4KhWZK05Bp/1At8wIanJ19RCEWQ==
 
 "@react-native/assets-registry@0.76.7":
   version "0.76.7"
@@ -2133,20 +2184,28 @@
     hermes-parser "0.23.1"
     nullthrows "^1.1.1"
 
+"@react-native/normalize-colors@0.76.6":
+  version "0.76.6"
+  resolved "https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.76.6.tgz"
+  integrity sha512-1n4udXH2Cla31iA/8eLRdhFHpYUYK1NKWCn4m1Sr9L4SarWKAYuRFliK1fcLvPPALCFoFlWvn8I0ekdUOHMzDQ==
+
 "@react-native/normalize-colors@0.76.7":
   version "0.76.7"
-  resolved "https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.76.7.tgz"
-  integrity sha512-ST1xxBuYVIXPdD81dR6+tzIgso7m3pa9+6rOBXTh5Xm7KEEFik7tnQX+GydXYMp3wr1gagJjragdXkPnxK6WNg==
+  resolved "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.76.7.tgz"
+  integrity sha512-pRUf1jUO8H9Ft04CaWv76t34QI9wY0sydoYlIwEtqXjjMJgmgDoOCAWBjArgn2mk8/rK+u/uicI67ZCYCp1pJw==
+  dependencies:
+    invariant "^2.2.4"
+    nullthrows "^1.1.1"
 
 "@react-native/normalize-colors@^0.74.1":
   version "0.74.89"
   resolved "https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.74.89.tgz"
   integrity sha512-qoMMXddVKVhZ8PA1AbUCk83trpd6N+1nF2A6k1i6LsQObyS92fELuk8kU/lQs6M7BsMHwqyLCpQJ1uFgNvIQXg==
 
-"@react-native/virtualized-lists@0.76.7":
-  version "0.76.7"
-  resolved "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.76.7.tgz"
-  integrity sha512-pRUf1jUO8H9Ft04CaWv76t34QI9wY0sydoYlIwEtqXjjMJgmgDoOCAWBjArgn2mk8/rK+u/uicI67ZCYCp1pJw==
+"@react-native/virtualized-lists@0.76.6":
+  version "0.76.6"
+  resolved "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.76.6.tgz"
+  integrity sha512-0HUWVwJbRq1BWFOu11eOWGTSmK9nMHhoMPyoI27wyWcl/nqUx7HOxMbRVq0DsTCyATSMPeF+vZ6o1REapcNWKw==
   dependencies:
     invariant "^2.2.4"
     nullthrows "^1.1.1"
@@ -3882,16 +3941,16 @@ expo-asset@~11.0.3:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
-expo-background-fetch@^13.0.5:
+expo-background-fetch@~13.0.5:
   version "13.0.5"
-  resolved "https://registry.npmjs.org/expo-background-fetch/-/expo-background-fetch-13.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/expo-background-fetch/-/expo-background-fetch-13.0.5.tgz#d781a5251ca37971da5fa8c960e34527cacbc4dd"
   integrity sha512-rLRM+rYDRT0fA0Oaet5ibJK3nKVRkfdjXjISHxjUvIE4ktD9pE+UjAPPdjTXZ5CkNb3JyNNhQGJEGpdJC2HLKw==
   dependencies:
     expo-task-manager "~12.0.5"
 
 expo-blur@~14.0.3:
   version "14.0.3"
-  resolved "https://registry.npmjs.org/expo-blur/-/expo-blur-14.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-14.0.3.tgz#656d6b2442bfbbfb2a6608c6bc1151b29bce6698"
   integrity sha512-BL3xnqBJbYm3Hg9t/HjNjdeY7N/q8eK5tsLYxswWG1yElISWZmMvrXYekl7XaVCPfyFyz8vQeaxd7q74ZY3Wrw==
 
 expo-build-properties@0.13.2:
@@ -4085,7 +4144,7 @@ expo-system-ui@~4.0.7:
     "@react-native/normalize-colors" "0.76.7"
     debug "^4.3.2"
 
-expo-task-manager@^12.0.5, expo-task-manager@~12.0.5:
+expo-task-manager@~12.0.5:
   version "12.0.5"
   resolved "https://registry.npmjs.org/expo-task-manager/-/expo-task-manager-12.0.5.tgz"
   integrity sha512-tDHOBYORA6wuO32NWwz/Egrvn+N6aANHAa0DFs+01VK/IJZfU9D05ZN6M5XYIlZv5ll4GSX1wJZyTCY0HZGapw==
@@ -4270,7 +4329,41 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
-firebase@11.3.0, firebase@^11.3.0:
+firebase@11.3.1:
+  version "11.3.1"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-11.3.1.tgz#1507b2b1e3af17418fbe009e82d7bc30a6b5117c"
+  integrity sha512-P4YVFM0Bm2d8aO61SCEMF8E1pYgieGLrmr/LFw7vs6sAMebwuwHt+Wug+1qL2fhAHWPwpWbCLsdJH8NQ+4Sw8Q==
+  dependencies:
+    "@firebase/analytics" "0.10.11"
+    "@firebase/analytics-compat" "0.2.17"
+    "@firebase/app" "0.11.1"
+    "@firebase/app-check" "0.8.11"
+    "@firebase/app-check-compat" "0.3.18"
+    "@firebase/app-compat" "0.2.50"
+    "@firebase/app-types" "0.9.3"
+    "@firebase/auth" "1.9.0"
+    "@firebase/auth-compat" "0.5.18"
+    "@firebase/data-connect" "0.3.0"
+    "@firebase/database" "1.0.12"
+    "@firebase/database-compat" "2.0.3"
+    "@firebase/firestore" "4.7.8"
+    "@firebase/firestore-compat" "0.3.43"
+    "@firebase/functions" "0.12.2"
+    "@firebase/functions-compat" "0.3.19"
+    "@firebase/installations" "0.6.12"
+    "@firebase/installations-compat" "0.2.12"
+    "@firebase/messaging" "0.12.16"
+    "@firebase/messaging-compat" "0.2.16"
+    "@firebase/performance" "0.7.0"
+    "@firebase/performance-compat" "0.2.13"
+    "@firebase/remote-config" "0.5.0"
+    "@firebase/remote-config-compat" "0.2.12"
+    "@firebase/storage" "0.13.6"
+    "@firebase/storage-compat" "0.3.16"
+    "@firebase/util" "1.10.3"
+    "@firebase/vertexai" "1.0.4"
+
+firebase@^11.3.0:
   version "11.3.0"
   resolved "https://registry.npmjs.org/firebase/-/firebase-11.3.0.tgz"
   integrity sha512-wLuBsWqg/M3pay2qOOLLKjTQxPUO2yrJgZLt4TKUwA3c3lrFNM2zc40uzD9LQdUk6H9HEK6bXjGPFrpwmu7HzA==
@@ -4412,7 +4505,7 @@ fs.realpath@^1.0.0:
 
 fsevents@^2.3.2:
   version "2.3.3"
-  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
