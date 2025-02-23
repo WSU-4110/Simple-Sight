@@ -33,6 +33,7 @@
     "expo-dev-client": "~5.0.12",
     "expo-font": "~13.0.3",
     "expo-haptics": "~14.0.1",
+    "expo-image": "~2.0.6",
     "expo-linear-gradient": "~14.0.2",
     "expo-linking": "~7.0.4",
     "expo-modules-autolinking": "2.0.7",
