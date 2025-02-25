@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -10,9 +9,54 @@ import {
   TouchableOpacity 
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// A large list of cute & fun prompts
+const prompts = [
+  "Take a picture of a flower blooming. 🌸",
+  "Find a heart shape in nature and capture it. 💚",
+  "Capture a sunset or sunrise. 🌅",
+  "Take a picture of your shadow in an interesting way. 🚶‍♂️",
+  "Find a butterfly, bird, or cute bug and snap a pic! 🦋🐞",
+  "Capture the reflection of the sky in water. 🌊",
+  "Take a photo of a tree that looks unique. 🌳",
+  "Find a cloud that looks like an animal. ☁️",
+  "Take a picture of falling leaves or petals. 🍂",
+  "Capture the sparkle of morning dew on grass. ✨",
+  "Find a cute outfit or accessory and snap a pic. 👗",
+  "Take a picture of a dog or cat. 🐶🐱",
+  "Snap a photo of your favorite snack. 🍪",
+  "Photograph something that makes you smile. 😊",
+  "Take a picture of the sky right now! ☁️",
+  "Find a bright color and take a picture of it. 🎨",
+  "Take a picture of something tiny next to something big! 🔍",
+  "Capture something symmetrical. 🔳",
+];
+
+// Function to generate and store the daily prompt
+const generateDailyPrompt = async (setDailyPrompt) => {
+  const today = new Date().toDateString();
+  try {
+    const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
+    const storedDate = await AsyncStorage.getItem("promptDate");
+
+    if (storedPrompt && storedDate === today) {
+      setDailyPrompt(storedPrompt);
+    } else {
+      const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+      setDailyPrompt(newPrompt);
+      await AsyncStorage.setItem("dailyPrompt", newPrompt);
+      await AsyncStorage.setItem("promptDate", today);
+    }
+  } catch (error) {
+    console.error("Error generating daily prompt:", error);
+  }
+};
 
 export default function Feed() {
-  //no post has an image (simulate that the user hasn't taken any pictures yet)
+  // State for the daily prompt
+  const [dailyPrompt, setDailyPrompt] = useState("");
+  // State for feed posts (simulate that no images have been taken yet)
   const [posts, setPosts] = useState([
     {
       id: '1',
@@ -43,10 +87,9 @@ export default function Feed() {
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
 
-  // This function simulates taking a picture.
-  // In your final version, replace this with code to launch the camera.
+  // Simulate taking a picture (for now)
   const handleTakePicture = (id) => {
-    // For simulation, we'll set a dummy image URL.
+    // For simulation, we'll set a dummy image URL
     const dummyImage = 'https://via.placeholder.com/400x300.png?text=User+Photo';
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
@@ -61,32 +104,32 @@ export default function Feed() {
       activeOpacity={0.8}
       onPress={() => {
         if (!item.image) {
-          // simulate taking a picture when no image is present
           handleTakePicture(item.id);
         }
-        // you might show the image in full screen or do something else.
       }}
     >
       <View style={styles.imageContainer}>
         {item.image ? (
           <Image source={{ uri: item.image }} style={styles.image} />
         ) : (
-          // if no image exists, show a placeholder prompt
           <View style={[styles.image, styles.placeholder]}>
             <Text style={styles.placeholderText}>Tap to take picture</Text>
           </View>
         )}
-        {/* Optional gradient overlay for a stylish look */}
         <LinearGradient 
           colors={['transparent', 'rgba(0,0,0,0.7)']} 
           style={styles.gradientOverlay} 
         />
-<View style={styles.cardText}>
-    <Text style={styles.cardTitle}>{item.title.toString()}</Text> {/* Convert to string */}
-</View>
+        <View style={styles.cardText}>
+          <Text style={styles.cardTitle}>{item.title}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
+
+  useEffect(() => {
+    generateDailyPrompt(setDailyPrompt);
+  }, []);
 
   return (
     <FlatList
@@ -94,13 +137,22 @@ export default function Feed() {
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       numColumns={numColumns}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.feedContainer}
+      // Add the daily prompt as a footer component
+      ListFooterComponent={
+        <View style={styles.promptContainer}>
+          <Text style={styles.promptTitle}>📸 Daily Prompt:</Text>
+          <Text style={styles.promptText}>
+            {dailyPrompt || "Loading prompt..."}
+          </Text>
+        </View>
+      }
     />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  feedContainer: {
     padding: 12,
     backgroundColor: '#f5f5f5',
   },
@@ -144,5 +196,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  promptContainer: {
+    backgroundColor: "#ffcccb",
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  promptTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  promptText: {
+    fontSize: 16,
+    fontStyle: "italic",
+    textAlign: "center",
+    marginTop: 5,
   },
 });

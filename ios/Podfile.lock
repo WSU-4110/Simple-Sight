@@ -1162,18 +1162,18 @@ PODS:
     - ExpoModulesCore
   - EXNotifications (0.29.13):
     - ExpoModulesCore
-  - Expo (52.0.28):
+  - Expo (52.0.33):
     - ExpoModulesCore
-  - expo-dev-client (5.0.11):
+  - expo-dev-client (5.0.12):
     - EXManifests
     - expo-dev-launcher
     - expo-dev-menu
     - expo-dev-menu-interface
     - EXUpdatesInterface
-  - expo-dev-launcher (5.0.27):
+  - expo-dev-launcher (5.0.29):
     - DoubleConversion
     - EXManifests
-    - expo-dev-launcher/Main (= 5.0.27)
+    - expo-dev-launcher/Main (= 5.0.29)
     - expo-dev-menu
     - expo-dev-menu-interface
     - ExpoModulesCore
@@ -1199,7 +1199,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-launcher/Main (5.0.27):
+  - expo-dev-launcher/Main (5.0.29):
     - DoubleConversion
     - EXManifests
     - expo-dev-launcher/Unsafe
@@ -1228,7 +1228,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-launcher/Unsafe (5.0.27):
+  - expo-dev-launcher/Unsafe (5.0.29):
     - DoubleConversion
     - EXManifests
     - expo-dev-menu
@@ -1256,10 +1256,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu (6.0.18):
+  - expo-dev-menu (6.0.19):
     - DoubleConversion
-    - expo-dev-menu/Main (= 6.0.18)
-    - expo-dev-menu/ReactNativeCompatibles (= 6.0.18)
+    - expo-dev-menu/Main (= 6.0.19)
+    - expo-dev-menu/ReactNativeCompatibles (= 6.0.19)
     - glog
     - hermes-engine
     - RCT-Folly (= 2024.01.01.00)
@@ -1280,7 +1280,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - expo-dev-menu-interface (1.9.3)
-  - expo-dev-menu/Main (6.0.18):
+  - expo-dev-menu/Main (6.0.19):
     - DoubleConversion
     - EXManifests
     - expo-dev-menu-interface
@@ -1307,7 +1307,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/ReactNativeCompatibles (6.0.18):
+  - expo-dev-menu/ReactNativeCompatibles (6.0.19):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1328,7 +1328,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/SafeAreaView (6.0.18):
+  - expo-dev-menu/SafeAreaView (6.0.19):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -1350,7 +1350,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/Vendored (6.0.18):
+  - expo-dev-menu/Vendored (6.0.19):
     - DoubleConversion
     - expo-dev-menu/SafeAreaView
     - glog
@@ -1372,11 +1372,13 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoAsset (11.0.2):
+  - ExpoAsset (11.0.3):
     - ExpoModulesCore
-  - ExpoBlur (14.0.2):
+  - ExpoBackgroundFetch (13.0.5):
     - ExpoModulesCore
-  - ExpoFileSystem (18.0.7):
+  - ExpoBlur (14.0.3):
+    - ExpoModulesCore
+  - ExpoFileSystem (18.0.10):
     - ExpoModulesCore
   - ExpoFont (13.0.3):
     - ExpoModulesCore
@@ -1388,9 +1390,9 @@ PODS:
     - ExpoModulesCore
   - ExpoLinearGradient (14.0.2):
     - ExpoModulesCore
-  - ExpoLinking (7.0.4):
+  - ExpoLinking (7.0.5):
     - ExpoModulesCore
-  - ExpoModulesCore (2.2.0):
+  - ExpoModulesCore (2.2.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1415,12 +1417,15 @@ PODS:
     - Yoga
   - ExpoSplashScreen (0.29.21):
     - ExpoModulesCore
-  - ExpoSymbols (0.2.1):
+  - ExpoSymbols (0.2.2):
     - ExpoModulesCore
-  - ExpoSystemUI (4.0.7):
+  - ExpoSystemUI (4.0.8):
     - ExpoModulesCore
   - ExpoWebBrowser (14.0.2):
     - ExpoModulesCore
+  - EXTaskManager (12.0.5):
+    - ExpoModulesCore
+    - UMAppLoader
   - EXUpdatesInterface (1.0.0):
     - ExpoModulesCore
   - FBLazyVector (0.76.6)
@@ -2842,7 +2847,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context (4.12.0):
+  - react-native-safe-area-context (4.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2855,8 +2860,8 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-safe-area-context/common (= 4.12.0)
-    - react-native-safe-area-context/fabric (= 4.12.0)
+    - react-native-safe-area-context/common (= 4.14.1)
+    - react-native-safe-area-context/fabric (= 4.14.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2865,7 +2870,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/common (4.12.0):
+  - react-native-safe-area-context/common (4.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2886,7 +2891,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/fabric (4.12.0):
+  - react-native-safe-area-context/fabric (4.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3218,7 +3223,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNDateTimePicker (8.2.0):
+  - RNDateTimePicker (8.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3239,11 +3244,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNFBApp (21.10.1):
-    - Firebase/CoreOnly (= 11.8.0)
+  - RNFBApp (21.8.0):
+    - Firebase/CoreOnly (= 11.7.0)
     - React-Core
-  - RNFBAuth (21.10.1):
-    - Firebase/Auth (= 11.8.0)
+  - RNFBAuth (21.8.0):
+    - Firebase/Auth (= 11.7.0)
     - React-Core
     - RNFBApp
   - RNFBDatabase (21.10.1):
@@ -3429,6 +3434,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
+  - UMAppLoader (5.0.1)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -3445,6 +3451,7 @@ DEPENDENCIES:
   - expo-dev-menu (from `../node_modules/expo-dev-menu`)
   - expo-dev-menu-interface (from `../node_modules/expo-dev-menu-interface/ios`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
+  - ExpoBackgroundFetch (from `../node_modules/expo-background-fetch/ios`)
   - ExpoBlur (from `../node_modules/expo-blur/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
@@ -3458,6 +3465,7 @@ DEPENDENCIES:
   - ExpoSymbols (from `../node_modules/expo-symbols/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
+  - EXTaskManager (from `../node_modules/expo-task-manager/ios`)
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -3533,6 +3541,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -3586,6 +3595,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-dev-menu-interface/ios"
   ExpoAsset:
     :path: "../node_modules/expo-asset/ios"
+  ExpoBackgroundFetch:
+    :path: "../node_modules/expo-background-fetch/ios"
   ExpoBlur:
     :path: "../node_modules/expo-blur/ios"
   ExpoFileSystem:
@@ -3612,6 +3623,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
+  EXTaskManager:
+    :path: "../node_modules/expo-task-manager/ios"
   EXUpdatesInterface:
     :path: "../node_modules/expo-updates-interface/ios"
   FBLazyVector:
@@ -3759,6 +3772,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  UMAppLoader:
+    :path: "../node_modules/unimodules-app-loader/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -3772,25 +3787,27 @@ SPEC CHECKSUMS:
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
   EXManifests: 15142dee1be3ea1cd0039feddef3888c3f0bb057
   EXNotifications: a762c9647d87682e9822f5798ca6666b5a81e213
-  Expo: f160c4be97b390767b78adaae25fd9492bebb6c6
-  expo-dev-client: 837811fcdc69e50023605eec10d4bf5821ad16f4
-  expo-dev-launcher: 236c6fd6a6ed8b077c841226e386483b93e340c6
-  expo-dev-menu: 490f5cb7534a27f8f8814d99d6206b3794369a7c
+  Expo: ad550eed41b5b0013d2a1b793fd33b6958a1b16f
+  expo-dev-client: 6f30fa7fbf4aa6cb5765b983da2411bf63f665bb
+  expo-dev-launcher: ab526cbf036669f6413338ef31fbf71351fbdef4
+  expo-dev-menu: 9561218c41b148d27cf83dd8f69c4f24a0f47a10
   expo-dev-menu-interface: 00dc42302a72722fdecec3fa048de84a9133bcc4
-  ExpoAsset: d2d2cbc6a4efadf51a3da27d85d589935abd0b98
-  ExpoBlur: cb75554318a537db7a65ad589a0a5f32173ca39b
-  ExpoFileSystem: 818e82dbb71175414d1ca310e926c48ff0d07348
+  ExpoAsset: 715ce37a36951fee71c32773b3be50f2285e2fbe
+  ExpoBackgroundFetch: 26f947a6b229fd8b19b93c3eb53d5933db22336a
+  ExpoBlur: 392c1207f71d0ecf22371621c1fbd44ba84d9742
+  ExpoFileSystem: 5df53001901f76b493bd5deb75ac506871cc9b2e
   ExpoFont: 38656978c2a4022fb7e0c43e4968d66340f5e2f3
   ExpoHaptics: 8d199b2f33245ea85289ff6c954c7ee7c00a5b5d
   ExpoHead: 5d1c5c20e3933db5d9ca349424cb3b9a4a84b706
   ExpoKeepAwake: 62ff49bbc3bff90d8ee28329190f9ba371bf88e7
   ExpoLinearGradient: 35ebd83b16f80b3add053a2fd68cc328ed927f60
-  ExpoLinking: 4a09f2f0dc1132607c20f5628ba30d94795ea73d
-  ExpoModulesCore: 8c4ab03eb1bc10efd19e092aba4956e50f56eac6
+  ExpoLinking: 8d12bee174ba0cdf31239706578e29e74a417402
+  ExpoModulesCore: 07e9e7ef36b01db247b3ae19a8d6dbc3e0dae49d
   ExpoSplashScreen: c64f3b577e1cb0b6a2f47d01c528ad7d80d9ae6a
-  ExpoSymbols: a2543b833cfa11d9477247d5c7b5230e03e98031
-  ExpoSystemUI: 36f50ee42da3e814bffd01ee38edcf3c7cc0015d
+  ExpoSymbols: f3002db15156cd4e505c77b6ea1df5c984db9965
+  ExpoSystemUI: 2e5356d22b077c56c132b4dcbc5d69dd667b1f8c
   ExpoWebBrowser: a212e6b480d8857d3e441fba51e0c968333803b3
+  EXTaskManager: 56043fa052a0b9f2e9714dbef594a8c46cafa346
   EXUpdatesInterface: 7c977640bdd8b85833c19e3959ba46145c5719db
   FBLazyVector: be509404b5de73a64a74284edcaf73a5d1e128b1
   Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
@@ -3842,7 +3859,7 @@ SPEC CHECKSUMS:
   React-logger: d42a53754a7252cc7a851315f0da2e46b450ea92
   React-Mapbuffer: 5e03437905ef365c5b29cc261403fd5246cba292
   React-microtasksnativemodule: 7f4d1c22c4de3425995c30f6bf9136cff922aadc
-  react-native-safe-area-context: db6ad47f9354809886d34e349a0809b0580712ea
+  react-native-safe-area-context: ee5c70aeb80909cebc0007f13a1cb44230f8e307
   react-native-webview: 7ca4d79f6a79f011a85417ee0957bf5bbbe0889b
   React-nativeconfig: 014403841159c621de6d2f888ad829aac530f93e
   React-NativeModulesApple: d92ce55cd2e351c54c08671a5198579920588688
@@ -3873,16 +3890,16 @@ SPEC CHECKSUMS:
   ReactCommon: 09e5005e0ea50a4e36f412990212140e5b8f1db3
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCAsyncStorage: 710d4ce7cf39a896e790dd10de7413cce099f0cb
-  RNDateTimePicker: dd58d8235c3d12d349c043c2d9bcedcbb513f106
-  RNFBApp: 54ee335a7d8a72071f53c3786435cc537c2ecc40
-  RNFBAuth: 1eb68127ed4dac6f496934c0819d89cd973c9fe5
-  RNFBDatabase: 1cffb2bf375ddf3c92e5924b450c0497aa67137b
-  RNFBFirestore: a675f550a8ffdbcb49ad9e56caa07daac2a15f93
+  RNDateTimePicker: 44bbbdd386116376ffd30d14ff9d20df9a3cb537
+  RNFBApp: 378d1fe23746dae37db6284d518d0f875675136d
+  RNFBAuth: e282e302ba7e659abc255b4242a309171d7738c7
+  RNFBDatabase: e6a77c52d703a82fd5edfe5a459d914a97b468cc
   RNGestureHandler: 1e33ee267aaf61bbab6089d32df3b38c3024e3dd
   RNReanimated: 23d4dd74e67d9eb5648839dcaabc00be8aba6af4
   RNScreens: f5762e2dd74e365dcee2007dc96942a528ac25d4
   RNVectorIcons: 959270651e3b1bd49d6c469fc9ac52149f67f55c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  UMAppLoader: 7e7e0eaa7854ffd652c00a68c443afb28c3bedba
   Yoga: fd4ca32b81c4069b4175ad9460b042e17db94b66
 
 PODFILE CHECKSUM: 72af4a319a825a12b92b535d161fffe03e392240
