@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+<<<<<<< HEAD
 //import { TouchableOpacity } from 'react-native';
+=======
+>>>>>>> origin/jacobcroket_homework4
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
 import { useNavigation } from 'expo-router';
 import Settings from './settings';
+import Camera from './camera';
 
 // CUTESY FUN PROMPTS
 const prompts = [
@@ -66,7 +70,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Home() {
   const [dailyPrompt, setDailyPrompt] = useState("");
-
+  
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
   }, []);
@@ -86,14 +90,21 @@ export default function Home() {
 
 function Tabs({ dailyPrompt }) {  // <-- Add this: receive dailyPrompt as a prop
   const navigation = useNavigation();
+  // const dailyPrompt = await AsyncStorage.getItem("dailyPrompt");
 
   return (
     <View style={{ flex: 1 }}>
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
+<<<<<<< HEAD
       <Text style={styles.promptText}>📸 Daily Prompt:</Text> {/* Wrapped in <Text> */}
       <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> {/* Wrapped in <Text> */}
 </View>
+=======
+        <Text style={styles.promptText}>📸 Daily Prompt:</Text>
+        {/* <Text style={styles.prompt}>{dailyPrompt || "Loading..."}</Text> */}
+      </View>
+>>>>>>> origin/jacobcroket_homework4
 
       {/* Bottom Tab Navigator */}
       <Tab.Navigator
@@ -117,12 +128,15 @@ function Tabs({ dailyPrompt }) {  // <-- Add this: receive dailyPrompt as a prop
               iconName = 'grid-outline';
             } else if (route.name === 'Gallery') {
               iconName = 'images-outline';
+            } else if (route.name === 'Camera') {
+              iconName = 'camera-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
       >
         <Tab.Screen name="Feed" component={Feed} />
+        <Tab.Screen name="Camera" component={Camera} options={{headerShown: false}}/>
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
     </View>
