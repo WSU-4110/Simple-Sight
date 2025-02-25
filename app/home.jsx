@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // ✅ FIXED IMPORT
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
@@ -77,8 +76,7 @@ export default function Home() {
     <Stack.Navigator>
       <Stack.Screen 
         name="Home" 
-        // THIS IS THE KEY CHANGE: pass dailyPrompt as a prop to Tabs
-        component={() => <Tabs dailyPrompt={dailyPrompt} />} // <-- Pass dailyPrompt here
+        component={() => <Tabs dailyPrompt={dailyPrompt} />}
         options={{ headerShown: false }} 
       />
       <Stack.Screen name='Settings' component={Settings} />
@@ -95,7 +93,7 @@ function Tabs({dailyPrompt}) {
       {/* Daily Prompt Section */}
       <View style={styles.promptContainer}>
         <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text> {/* Default message if it's empty */}
+        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text>{/* Default message if it's empty */}
       </View>
 
       {/* Bottom Tab Navigator */}

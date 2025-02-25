@@ -82,7 +82,7 @@ export default function Feed() {
           style={styles.gradientOverlay} 
         />
 <View style={styles.cardText}>
-    <Text style={styles.cardTitle}>{item.title.toString()}</Text> {/* Convert to string */}
+    <Text style={styles.cardTitle}>{item.title.toString()}</Text>
 </View>
       </View>
     </TouchableOpacity>
