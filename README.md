@@ -40,15 +40,19 @@ npm install -g expo-cli
 **For Android:** ```Bash npx expo run:android ```
 
 ## Technologies Used ##
-React Native – Cross-platform development
+React Native – Cross-platform development (iOS, Android)
+
+AsyncStorage – Persistent storage of user preferences and data
 
 Expo – Simplifies setup and development
 
-AsyncStorage – Stores user preferences and moments
+Expo Notifications – Sends daily prompts
 
-React Navigation – Handles app navigation
+Expo Camera - Allows users to capture daily moments
 
-Push Notifications – Sends daily prompts
+Firebase - User authentication 
+
+Firestore - Cloud storage of user-captured photos
 
 ## License ##
 This project is open-source under the MIT License.

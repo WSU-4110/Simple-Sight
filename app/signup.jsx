@@ -7,7 +7,7 @@ import { useNavigation } from 'expo-router';
 import firestore from '@react-native-firebase/firestore';
 //import { getFirestore } from '@react-native-firebase/firestore';
 
-export default function signup(){
+export default function Signup(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [message,setMessage] = useState('');

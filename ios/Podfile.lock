@@ -1155,18 +1155,14 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXApplication (6.0.2):
     - ExpoModulesCore
-  - EXConstants (17.0.5):
+  - EXConstants (17.0.7):
     - ExpoModulesCore
   - EXJSONUtils (0.14.0)
-  - EXManifests (0.15.5):
+  - EXManifests (0.15.6):
     - ExpoModulesCore
   - EXNotifications (0.29.13):
     - ExpoModulesCore
-<<<<<<< HEAD
-  - Expo (52.0.33):
-=======
-  - Expo (52.0.32):
->>>>>>> origin/jacobcroket_homework4
+  - Expo (52.0.37):
     - ExpoModulesCore
   - expo-dev-client (5.0.12):
     - EXManifests
@@ -1376,34 +1372,37 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoAsset (11.0.3):
+  - ExpoAsset (11.0.4):
     - ExpoModulesCore
   - ExpoBackgroundFetch (13.0.5):
     - ExpoModulesCore
   - ExpoBlur (14.0.3):
     - ExpoModulesCore
-<<<<<<< HEAD
-=======
-  - ExpoCamera (16.0.16):
+  - ExpoCamera (16.0.17):
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
->>>>>>> origin/jacobcroket_homework4
-  - ExpoFileSystem (18.0.10):
+  - ExpoFileSystem (18.0.11):
     - ExpoModulesCore
-  - ExpoFont (13.0.3):
+  - ExpoFont (13.0.4):
     - ExpoModulesCore
   - ExpoHaptics (14.0.1):
     - ExpoModulesCore
   - ExpoHead (4.0.17):
     - ExpoModulesCore
-  - ExpoKeepAwake (14.0.2):
+  - ExpoImage (2.0.6):
+    - ExpoModulesCore
+    - libavif/libdav1d
+    - SDWebImage (~> 5.19.1)
+    - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageSVGCoder (~> 1.7.0)
+  - ExpoKeepAwake (14.0.3):
     - ExpoModulesCore
   - ExpoLinearGradient (14.0.2):
     - ExpoModulesCore
   - ExpoLinking (7.0.5):
     - ExpoModulesCore
-  - ExpoModulesCore (2.2.1):
+  - ExpoModulesCore (2.2.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1426,7 +1425,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoSplashScreen (0.29.21):
+  - ExpoSplashScreen (0.29.22):
     - ExpoModulesCore
   - ExpoSymbols (0.2.2):
     - ExpoModulesCore
@@ -1439,13 +1438,8 @@ PODS:
     - UMAppLoader
   - EXUpdatesInterface (1.0.0):
     - ExpoModulesCore
-<<<<<<< HEAD
-  - FBLazyVector (0.76.6)
-  - Firebase/Auth (11.8.0):
-=======
   - FBLazyVector (0.76.7)
-  - Firebase/Auth (11.7.0):
->>>>>>> origin/jacobcroket_homework4
+  - Firebase/Auth (11.8.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.8.0)
   - Firebase/CoreOnly (11.8.0):
@@ -1623,6 +1617,11 @@ PODS:
     - hermes-engine/Pre-built (= 0.76.7)
   - hermes-engine/Pre-built (0.76.7)
   - leveldb-library (1.22.6)
+  - libavif/core (0.11.1)
+  - libavif/libdav1d (0.11.1):
+    - libavif/core
+    - libdav1d (>= 0.6.0)
+  - libdav1d (1.2.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -3260,18 +3259,18 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNFBApp (21.8.0):
-    - Firebase/CoreOnly (= 11.7.0)
+  - RNFBApp (21.11.0):
+    - Firebase/CoreOnly (= 11.8.0)
     - React-Core
-  - RNFBAuth (21.8.0):
-    - Firebase/Auth (= 11.7.0)
+  - RNFBAuth (21.11.0):
+    - Firebase/Auth (= 11.8.0)
     - React-Core
     - RNFBApp
-  - RNFBDatabase (21.10.1):
+  - RNFBDatabase (21.11.0):
     - Firebase/Database (= 11.8.0)
     - React-Core
     - RNFBApp
-  - RNFBFirestore (21.10.1):
+  - RNFBFirestore (21.11.0):
     - Firebase/Firestore (= 11.8.0)
     - React-Core
     - RNFBApp
@@ -3449,6 +3448,14 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - SDWebImage (5.19.7):
+    - SDWebImage/Core (= 5.19.7)
+  - SDWebImage/Core (5.19.7)
+  - SDWebImageAVIFCoder (0.11.0):
+    - libavif/core (>= 0.11.0)
+    - SDWebImage (~> 5.10)
+  - SDWebImageSVGCoder (1.7.0):
+    - SDWebImage/Core (~> 5.6)
   - SocketRocket (0.7.1)
   - UMAppLoader (5.0.1)
   - Yoga (0.0.0)
@@ -3479,6 +3486,7 @@ DEPENDENCIES:
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoHead (from `../node_modules/expo-router/ios`)
+  - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoLinking (from `../node_modules/expo-linking/ios`)
@@ -3586,8 +3594,13 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
+    - libavif
+    - libdav1d
     - nanopb
     - RecaptchaInterop
+    - SDWebImage
+    - SDWebImageAVIFCoder
+    - SDWebImageSVGCoder
     - SocketRocket
     - ZXingObjC
 
@@ -3632,6 +3645,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-haptics/ios"
   ExpoHead:
     :path: "../node_modules/expo-router/ios"
+  ExpoImage:
+    :path: "../node_modules/expo-image/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLinearGradient:
@@ -3808,47 +3823,36 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXApplication: 4c72f6017a14a65e338c5e74fca418f35141e819
-  EXConstants: e25c3f3ef5d1cf7a6ef911ebf7a3ab94d8d06d82
+  EXConstants: 30c43b9ca8391c31bab9cc45c97f16eddcf11042
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
-  EXManifests: 15142dee1be3ea1cd0039feddef3888c3f0bb057
+  EXManifests: 6bcc8c0997fc00831f2aa874d563004cfc509af0
   EXNotifications: a762c9647d87682e9822f5798ca6666b5a81e213
-<<<<<<< HEAD
-  Expo: ad550eed41b5b0013d2a1b793fd33b6958a1b16f
-=======
-  Expo: 96f872870465cfe54ebd655a2b334c7ba81e63a0
->>>>>>> origin/jacobcroket_homework4
+  Expo: 63515728b6f238842dc95702eb0fb385f00d7c5a
   expo-dev-client: 6f30fa7fbf4aa6cb5765b983da2411bf63f665bb
   expo-dev-launcher: ab526cbf036669f6413338ef31fbf71351fbdef4
   expo-dev-menu: 9561218c41b148d27cf83dd8f69c4f24a0f47a10
   expo-dev-menu-interface: 00dc42302a72722fdecec3fa048de84a9133bcc4
-  ExpoAsset: 715ce37a36951fee71c32773b3be50f2285e2fbe
+  ExpoAsset: 4033893dfb333b444bf45e951351254137b658d5
   ExpoBackgroundFetch: 26f947a6b229fd8b19b93c3eb53d5933db22336a
   ExpoBlur: 392c1207f71d0ecf22371621c1fbd44ba84d9742
-<<<<<<< HEAD
-=======
-  ExpoCamera: c8a041b7f7229e4ee3674cae589a102ac03e7f4b
->>>>>>> origin/jacobcroket_homework4
-  ExpoFileSystem: 5df53001901f76b493bd5deb75ac506871cc9b2e
-  ExpoFont: 38656978c2a4022fb7e0c43e4968d66340f5e2f3
+  ExpoCamera: 166a23592a0133c162ea7334feb9e75e0231134b
+  ExpoFileSystem: 2d804c73034c0d65eb2a640e0a77627033b69edc
+  ExpoFont: f354e926f8feae5e831ec8087f36652b44a0b188
   ExpoHaptics: 8d199b2f33245ea85289ff6c954c7ee7c00a5b5d
   ExpoHead: 5d1c5c20e3933db5d9ca349424cb3b9a4a84b706
-  ExpoKeepAwake: 62ff49bbc3bff90d8ee28329190f9ba371bf88e7
+  ExpoImage: c6d1f54445f38766650052aedf5396a74bb96fff
+  ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoLinearGradient: 35ebd83b16f80b3add053a2fd68cc328ed927f60
   ExpoLinking: 8d12bee174ba0cdf31239706578e29e74a417402
-  ExpoModulesCore: 07e9e7ef36b01db247b3ae19a8d6dbc3e0dae49d
-  ExpoSplashScreen: c64f3b577e1cb0b6a2f47d01c528ad7d80d9ae6a
+  ExpoModulesCore: e01091a0134508a729f1c54885d45508007c5b17
+  ExpoSplashScreen: 0f281e3c2ded4757d2309276c682d023c6299c77
   ExpoSymbols: f3002db15156cd4e505c77b6ea1df5c984db9965
   ExpoSystemUI: 2e5356d22b077c56c132b4dcbc5d69dd667b1f8c
   ExpoWebBrowser: a212e6b480d8857d3e441fba51e0c968333803b3
   EXTaskManager: 56043fa052a0b9f2e9714dbef594a8c46cafa346
   EXUpdatesInterface: 7c977640bdd8b85833c19e3959ba46145c5719db
-<<<<<<< HEAD
-  FBLazyVector: be509404b5de73a64a74284edcaf73a5d1e128b1
-  Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
-=======
   FBLazyVector: ca8044c9df513671c85167838b4188791b6f37e1
-  Firebase: a64bf6a8546e6eab54f1c715cd6151f39d2329f4
->>>>>>> origin/jacobcroket_homework4
+  Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
   FirebaseAppCheckInterop: 7bf86d55a2b7e9bd91464120eba3e52e4b63b2e2
   FirebaseAuth: ad59a1a7b161e75f74c39f70179d2482d40e2737
   FirebaseAuthInterop: 651756e70d9a0b9160db39ead71fd5507dbb6c84
@@ -3867,38 +3871,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 257ead9ba8e15a2d389d79496e02b9cc5dd0c62c
   hermes-engine: eb4a80f6bf578536c58a44198ec93a30f6e69218
   leveldb-library: cc8b8f8e013647a295ad3f8cd2ddf49a6f19be19
+  libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
+  libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   RCT-Folly: 84578c8756030547307e4572ab1947de1685c599
-<<<<<<< HEAD
-  RCTDeprecation: 063fc281b30b7dc944c98fe53a7e266dab1a8706
-  RCTRequired: 8eda2a5a745f6081157a4f34baac40b65fe02b31
-  RCTTypeSafety: 0f96bf6c99efc33eb43352212703854933f22930
-  React: 1d3d5bada479030961d513fb11e42659b30e97ff
-  React-callinvoker: 682c610b9e9d3b93bd8d0075eacb2e6aa304d3e0
-  React-Core: 9f33c0fc7776a5796d4dae09c363bd58e6a27efe
-  React-CoreModules: 91afb654834f0a1f48fb26dd1f4d1a1460c44def
-  React-cxxreact: c7491114266a70f8215306f1d0c4b54a811e77cf
-  React-debug: 7cdd014eb067b2a7f2ef8f373e1d6584f8f78a4c
-  React-defaultsnativemodule: e6d16021593ff79ca52f968f89a37c8f487af880
-  React-domnativemodule: 626d3642f43722f0710f5dd04480f7db4a54b69e
-  React-Fabric: 5a2c46c8730d992a997a32c9526b11745a98914f
-  React-FabricComponents: bf5d90028616430bd63af7f5ede8f48f669e7c8a
-  React-FabricImage: 22992de2fee58dd4c5ec2a94581b397b98056506
-  React-featureflags: 0c0803e06d3db7267bce68cf03057dc820cb569e
-  React-featureflagsnativemodule: 4276457fb3dc4c1849ecc1f2157ac6ee1d3497fa
-  React-graphics: 296c48c5b042dea364705fc7a533b2077ed45080
-  React-hermes: 6eb81c6f72c25d9058b6030227d0fcc1f741a807
-  React-idlecallbacksnativemodule: 8b176f2a5cb62bcbe412178f4a14d01f0df3fba1
-  React-ImageManager: a3d93039080f8b0928c9c6b09a4605196a54685d
-  React-jserrorhandler: 27279233e8cbb5497f3dd848acc162c4dbaf7f8b
-  React-jsi: 47528a2928f38fe15e3d06a96de886e1a779ffc7
-  React-jsiexecutor: 88a141c4dc821e1b2aa7ecc7d6af7b186e8455a2
-  React-jsinspector: 985c8fbb403ccc27acd5323dd0a8d6afcdafa728
-  React-jsitracing: 5bc03305a7972654f4334939340aee0c0c520ab0
-  React-logger: d42a53754a7252cc7a851315f0da2e46b450ea92
-  React-Mapbuffer: 5e03437905ef365c5b29cc261403fd5246cba292
-  React-microtasksnativemodule: 7f4d1c22c4de3425995c30f6bf9136cff922aadc
-=======
   RCTDeprecation: 7691283dd69fed46f6653d376de6fa83aaad774c
   RCTRequired: eac044a04629288f272ee6706e31f81f3a2b4bfe
   RCTTypeSafety: cfe499e127eda6dd46e5080e12d80d0bfe667228
@@ -3927,7 +3903,6 @@ SPEC CHECKSUMS:
   React-logger: 5cad0c76d056809523289e589309012215a393b5
   React-Mapbuffer: bfec84fd4dc022fcd29656030d0ddba0092376bd
   React-microtasksnativemodule: d58c4937901e99ed1a4888bb95ad4cded4a7180a
->>>>>>> origin/jacobcroket_homework4
   react-native-safe-area-context: ee5c70aeb80909cebc0007f13a1cb44230f8e307
   react-native-webview: 7ca4d79f6a79f011a85417ee0957bf5bbbe0889b
   React-nativeconfig: c77447a7820ac780b97f121ae6248ac07248835f
@@ -3960,21 +3935,21 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCAsyncStorage: 710d4ce7cf39a896e790dd10de7413cce099f0cb
   RNDateTimePicker: 44bbbdd386116376ffd30d14ff9d20df9a3cb537
-  RNFBApp: 378d1fe23746dae37db6284d518d0f875675136d
-  RNFBAuth: e282e302ba7e659abc255b4242a309171d7738c7
-  RNFBDatabase: e6a77c52d703a82fd5edfe5a459d914a97b468cc
+  RNFBApp: fd5bf956d6114cd3172680ab9c2185143faaa385
+  RNFBAuth: e5bde6b5e34f51c8135de6c9f89d59af88677729
+  RNFBDatabase: 1c8056874b3ccf3cf8e0cf0e7f84551bba3afe11
+  RNFBFirestore: 887c90528c12a992ae8d88b50ed58825a837ded5
   RNGestureHandler: 1e33ee267aaf61bbab6089d32df3b38c3024e3dd
   RNReanimated: 23d4dd74e67d9eb5648839dcaabc00be8aba6af4
   RNScreens: f5762e2dd74e365dcee2007dc96942a528ac25d4
   RNVectorIcons: 959270651e3b1bd49d6c469fc9ac52149f67f55c
+  SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
+  SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
+  SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   UMAppLoader: 7e7e0eaa7854ffd652c00a68c443afb28c3bedba
-<<<<<<< HEAD
-  Yoga: fd4ca32b81c4069b4175ad9460b042e17db94b66
-=======
   Yoga: d213adae4f2c5518e9b19f919afa25a73848ecfb
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
->>>>>>> origin/jacobcroket_homework4
 
 PODFILE CHECKSUM: 72af4a319a825a12b92b535d161fffe03e392240
 

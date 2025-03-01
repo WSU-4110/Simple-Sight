@@ -3,15 +3,6 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-<<<<<<< HEAD
-  "start": "expo start",
-  "reset-project": "node ./scripts/reset-project.js",
-  "android": "expo run:android",
-  "ios": "expo run:ios",
-  "web": "expo start --web",
-  "test": "jest --watchAll",
-  "lint": "expo lint"
-=======
     "start": "expo start --dev-client",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
@@ -19,10 +10,9 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint"
->>>>>>> origin/jacobcroket_homework4
   },
   "jest": {
-  "preset": "jest-expo"
+    "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -31,26 +21,19 @@
     "@react-native-firebase/app": "^21.10.0",
     "@react-native-firebase/auth": "^21.10.0",
     "@react-native-firebase/database": "^21.10.0",
+    "@react-native-firebase/firestore": "^21.11.0",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
-<<<<<<< HEAD
-    "expo": "^52.0.33",
-=======
-    "@types/react-native-vector-icons": "^6.4.18",
     "expo": "~52.0.27",
->>>>>>> origin/jacobcroket_homework4
     "expo-background-fetch": "^13.0.5",
     "expo-blur": "~14.0.2",
     "expo-build-properties": "0.13.2",
-    "expo-camera": "~16.0.16",
-<<<<<<< HEAD
-    "expo-constants": "~17.0.4",
-=======
->>>>>>> origin/jacobcroket_homework4
+    "expo-camera": "~16.0.17",
     "expo-dev-client": "~5.0.12",
     "expo-font": "~13.0.3",
     "expo-haptics": "~14.0.1",
+    "expo-image": "~2.0.6",
     "expo-linear-gradient": "~14.0.2",
     "expo-linking": "~7.0.4",
     "expo-modules-autolinking": "2.0.7",
@@ -75,17 +58,16 @@
     "react-native-webview": "13.12.5"
   },
   "devDependencies": {
-  "@babel/core": "^7.25.2",
-  "@types/jest": "^29.5.12",
-  "@types/react": "~18.3.12",
-  "@types/react-native": "^0.72.8",
-  "@types/react-test-renderer": "^18.3.0",
-  "jest": "^29.2.1",
-  "jest-expo": "~52.0.3",
-  "react-test-renderer": "18.3.1",
-  "typescript": "^5.7.3"
+    "@babel/core": "^7.25.2",
+    "@types/jest": "^29.5.12",
+    "@types/react": "~18.3.12",
+    "@types/react-native": "^0.72.8",
+    "@types/react-native-vector-icons": "^6.4.18",
+    "@types/react-test-renderer": "^18.3.0",
+    "jest": "^29.2.1",
+    "jest-expo": "~52.0.3",
+    "react-test-renderer": "18.3.1",
+    "typescript": "^5.7.3"
   },
   "private": true
-  }
-  
-  
+}

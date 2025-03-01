@@ -7,7 +7,7 @@ import {
   import AsyncStorage from '@react-native-async-storage/async-storage';
   import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
   
-  // Fetch start time value stored on phone
+  // start time value stored on phone
   export async function fetchStartTime() {
     let startTime;
     try {
@@ -25,7 +25,7 @@ import {
     return new Date(startTime);
   }
   
-  // Fetch end time stored on phone
+  // end time stored on phone
   export async function fetchEndTime() {
     let endTime;
     try {
@@ -43,7 +43,7 @@ import {
     return new Date(endTime);
   }
   
-  // Save time values locally
+  // Save time values 
   async function saveTime(time, key) {
     try {
       await AsyncStorage.setItem(key, time.toISOString());

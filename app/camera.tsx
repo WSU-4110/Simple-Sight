@@ -1,179 +1,154 @@
-import { useEffect, useRef, useState } from "react";
-import { CameraView, CameraType, useCameraPermissions, FlashMode } from 'expo-camera';
-import { Button, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { CameraType, CameraView, FlashMode, useCameraPermissions } from "expo-camera";
+import { useRef, useState } from "react";
+import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-class CameraModel {
-    private flashMode: FlashMode;
-    private cameraFacing: CameraType;
-    private prompt: string;
-    private photoUri: string;
+export default function CameraScreen() {
+  const [permission, requestPermission] = useCameraPermissions();
+  const ref = useRef<CameraView>(null);
+  const [uri, setUri] = useState<string | undefined>(undefined);
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [flashMode, setFlashMode] = useState<FlashMode>('off');
+  const iconSize: number = 32;
 
-    constructor() {
-        this.flashMode = 'off';
-        this.cameraFacing = 'back';
-        this.prompt = '';
-        this.photoUri = '';
-    }
+  if (!permission) {
+    return null;
+  }
 
-    setFlashMode(flashMode: FlashMode) {
-        this.flashMode = flashMode;
-    }
-
-    setCameraFacing(facing: CameraType) {
-        this.cameraFacing = facing;
-    }
-
-    setPhotoUri(uri: string) {
-        this.photoUri = uri;
-    }
-    
-    setPrompt(prompt: string) {
-        this.prompt = prompt;
-    }
-
-    getFlashMode(): FlashMode {
-        return this.flashMode;
-    }
-
-    getCameraFacing(): CameraType {
-        return this.cameraFacing;
-    }
-
-    getPrompt(): string {
-        return this.prompt;
-    }
-} // end camera model
-
-//controller
-class CameraContoller {
-    private static model: CameraModel = new CameraModel();
-
-    constructor() {
-        this.fetchPrompt();
-    }
-
-    async fetchPrompt() {
-        try {
-            const prompt = await AsyncStorage.getItem("dailyPrompt") || "";
-            CameraContoller.model.setPrompt(prompt);
-        } catch (error) {
-            console.error("Error fetching prompt: ", error)
-        }
-    }
-
-    toggleCameraFacing(setFacing: Function, current: string) {
-        if (current === 'back') {
-            setFacing('front');
-            CameraContoller.model.setCameraFacing('front');
-        } else {
-            setFacing('back');
-            CameraContoller.model.setCameraFacing('back');
-        }
-        // setFacing(current => (current === 'back' ? 'front' : 'back'));
-      }
-
-    toggleFlashMode(setFlashMode: Function, flashMode: FlashMode) {
-        const modes: Array<FlashMode> = ['off', 'auto', 'on'];
-        var currentMode = modes.indexOf(flashMode);
-        const newMode = modes[++currentMode % 3]
-
-        setFlashMode(newMode);
-        CameraContoller.model.setFlashMode(newMode);
-    }
-
-    async takePhoto(ref: React.RefObject<CameraView>) {
-        const photo = await ref.current?.takePictureAsync();
-
-        //if photo is defined, save photo
-        if (photo) {
-            CameraContoller.model.setPhotoUri(photo.uri);
-            //upload photo to database here
-        } else {
-            console.error("Photo cannot be saved, photo is undefined")
-        }
-    }
-
-    getPrompt(): string {
-        return CameraContoller.model.getPrompt();
-    }
-} // end controller
-
-//view
-export default function Camera() {
-    const controller: CameraContoller = new CameraContoller();
-
-    const [permission, requestPermission] = useCameraPermissions();
-    const [facing, setFacing] = useState<CameraType>('back');
-    const [flashMode, setFlashMode] = useState<FlashMode>('off');
-    const ref = useRef<CameraView>(null);
-    const [prompt, setPrompt] = useState('');
-
-    useEffect(() => {
-        async function fetchPrompt() {
-            await controller.fetchPrompt();
-            const prompt = controller.getPrompt();
-            setPrompt(prompt);
-        }
-        fetchPrompt();
-    }, [])
-
-    if (!permission || !prompt) {
-        return (
-            <View>
-                <Text>Loading...</Text>
-            </View>
-        );
-    } else if (!permission.granted) {
-        return (
-            <View>
-                <Text>Please enable camera permissions to get the best experience using Simple Sight</Text>
-                <Button title="Enable camera" onPress={requestPermission} />
-            </View>
-        );
-    }
-
-    const size: number = 32;
-
+  if (!permission.granted) {
     return (
-        <CameraView facing={facing} style={styles.camera}>
-            <Text style={styles.prompt}>Daily prompt: {controller.getPrompt()}</Text>
-            <TouchableOpacity id="cameraReverse" onPress={() => controller.toggleCameraFacing(setFacing, facing)}>
-                <Ionicons name="camera-reverse-outline" size={size} style={styles.button}/>
-            </TouchableOpacity>        
-            <TouchableOpacity id="flash" onPress={() => controller.toggleFlashMode(setFlashMode, flashMode)}>
-                <Ionicons name={flashMode == 'off' ? 'flash-off-outline' : 'flash-outline'} size={size} style={styles.button}/> 
-            </TouchableOpacity>
-            <TouchableOpacity id="shutter" onPress={() => controller.takePhoto(ref)}>
-                <Ionicons name="ellipse-outline" size={size*3} style={styles.cameraButton}/> 
-            </TouchableOpacity>
-        </CameraView>
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to use the camera
+        </Text>
+        <Button onPress={requestPermission} title="Grant permission" />
+      </View>
     );
+  }
+
+  const takePicture = async () => {
+    if (ref.current) {
+      const photo = await ref.current.takePictureAsync();
+      if (photo?.uri) {
+        setUri(photo.uri);
+      }
+    }
+  };
+
+  const toggleFacing = () => {
+    setFacing((prev) => (prev === "back" ? "front" : "back"));
+  };
+
+  const toggleFlashMode = () => {
+    const modes: FlashMode[] = ['off', 'auto', 'on'];
+    const currentMode = modes.indexOf(flashMode);
+    const newMode = modes[(currentMode + 1) % modes.length];
+    setFlashMode(newMode);
+  };
+
+  const uploadPhoto = async () => {
+    // Upload photo logic here
+  };
+
+  const renderPicture = () => (
+    <View style={styles.previewContainer}>
+      <Image
+        source={{ uri }}
+        contentFit="contain"
+        style={styles.previewImage}
+      />
+      <View style={styles.previewOptions}>
+        <TouchableOpacity onPress={() => setUri(undefined)} style={styles.deleteButton}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={uploadPhoto} style={styles.saveButton}>
+          <Text>Save</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderCamera = () => (
+    <CameraView
+      ref={ref}
+      style={styles.camera}
+      mode="picture"
+      facing={facing}
+      flash={flashMode}
+      onCameraReady={() => console.log("Camera is ready")}
+    >
+      <View style={styles.shutterContainer}>
+        <Pressable onPress={toggleFlashMode}>
+          <Ionicons name={flashMode === 'off' ? 'flash-off-outline' : 'flash-outline'} size={iconSize} color="white" />
+        </Pressable>
+        <Pressable onPress={takePicture} style={styles.shutterBtn}>
+          <Ionicons name="ellipse-outline" size={iconSize * 3} color="white" />
+        </Pressable>
+        <Pressable onPress={toggleFacing}>
+          <Ionicons name="camera-reverse-outline" size={iconSize} color="white" />
+        </Pressable>
+      </View>
+    </CameraView>
+  );
+
+  return <View style={styles.container}>{uri ? renderPicture() : renderCamera()}</View>;
 }
 
 const styles = StyleSheet.create({
-    camera: {
-        flex: 1,
-    },
-    prompt: {
-        alignItems: 'center',
-        textAlign: 'center',
-        width: '100%',
-        color: 'white',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        fontSize: 18,
-        padding: 5,
-    },
-    button: {
-        color: 'white',
-        padding: 9,
-        marginLeft: 'auto',
-        marginRight: 2,
-    },
-    cameraButton: {
-        marginTop: '110%',
-        color: 'white',
-        margin: 'auto',
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+    width: "100%",
+  },
+  shutterContainer: {
+    position: "absolute",
+    bottom: 40,
+    left: 0,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 30,
+  },
+  shutterBtn: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  previewContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
+  previewImage: {
+    width: "90%",
+    height: "80%",
+    borderRadius: 10,
+  },
+  previewOptions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginTop: 20,
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+  },
+  saveButton: {
+    backgroundColor: "green",
+    padding: 10,
+    borderRadius: 5,
+  },
+});
