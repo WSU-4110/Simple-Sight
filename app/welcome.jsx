@@ -1,25 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 
 export default function Welcome() {
   const navigation = useNavigation();
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <LinearGradient colors={['#fbc2eb', '#a6c1ee']} style={styles.container}>
       <Text style={styles.title}>Welcome to Simple‑Sight</Text>
       <Text style={styles.subtitle}>
         Capture and share the beauty around you.
       </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log('Register button pressed');
-          navigation.replace('signup');
-        }}
-      >
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+      <Animated.View style={{ opacity: fadeAnim }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.replace('signup')}
+        >
+          <Text style={styles.buttonText}>Register / Login</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </LinearGradient>
   );
 }
