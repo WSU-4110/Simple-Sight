@@ -10,7 +10,6 @@ import { useNavigation } from 'expo-router';
 import Settings from './settings';
 import Camera from './camera';
 
-// CUTESY FUN PROMPTS
 const prompts = [
   "Take a picture of a flower blooming. 🌸",
   "Find a heart shape in nature and capture it. 💚",
@@ -32,7 +31,6 @@ const prompts = [
   "Capture something symmetrical. 🔳",
 ];
 
-// function to generate and store the daily prompt
 const generateDailyPrompt = async (setDailyPrompt) => {
     const today = new Date().toDateString();
     
@@ -40,17 +38,10 @@ const generateDailyPrompt = async (setDailyPrompt) => {
         const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
         const storedDate = await AsyncStorage.getItem("promptDate");
 
-        console.log("📌 STORED PROMPT:", storedPrompt);
-        console.log("📌 STORED DATE:", storedDate);
-        console.log("📌 TODAY’S DATE:", today);
-
         if (storedPrompt && storedDate === today) {
-            console.log("✅ Using stored daily prompt:", storedPrompt);
-            setDailyPrompt(storedPrompt); // Keep today's prompt
+            setDailyPrompt(storedPrompt);
         } else {
             const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-            console.log("🎉 Generating new prompt:", newPrompt);
-
             setDailyPrompt(newPrompt);
             await AsyncStorage.setItem("dailyPrompt", newPrompt);
             await AsyncStorage.setItem("promptDate", today);
@@ -59,7 +50,6 @@ const generateDailyPrompt = async (setDailyPrompt) => {
         console.error("🚨 ERROR FETCHING PROMPT:", error);
     }
 };
-
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,7 +60,6 @@ export default function Home() {
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
   }, []);
-
 
   return (
     <Stack.Navigator>
@@ -84,19 +73,11 @@ export default function Home() {
   );
 }
 
-function Tabs({dailyPrompt}) {
+function Tabs({ dailyPrompt }) {
   const navigation = useNavigation();
-  // const dailyPrompt = await AsyncStorage.getItem("dailyPrompt");
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Daily Prompt Section */}
-      <View style={styles.promptContainer}>
-        <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text>{/* Default message if it's empty */}
-      </View>
-
-      {/* Bottom Tab Navigator */}
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerStyle: { backgroundColor: '#1E90FF' },
@@ -126,19 +107,27 @@ function Tabs({dailyPrompt}) {
         })}
       >
         <Tab.Screen name="Feed" component={Feed} />
-        <Tab.Screen name="Camera" component={Camera} options={{headerShown: false}}/>
+        <Tab.Screen name="Camera" component={Camera} options={{ headerShown: false }} />
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
+
+      <View style={styles.promptContainer}>
+        <Text style={styles.promptText}>📸 Daily Prompt:</Text>
+        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   promptContainer: {
-    backgroundColor: "#ffcccb",
-    padding: 15,
+    backgroundColor: "#51DEFF",
+    padding: 0.1,
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    bottom: 80, 
+    width: "100%",
   },
   promptText: {
     fontSize: 18,
