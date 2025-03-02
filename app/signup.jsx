@@ -5,14 +5,44 @@ import auth from "@react-native-firebase/auth";
 import db from "@react-native-firebase/database";
 import { useNavigation } from 'expo-router';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import { getFirestore } from '@react-native-firebase/firestore';
+import { Switch } from "react-native"
 
 export default function signup(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [message,setMessage] = useState('');
     const [username, setUsername] = useState('');
+    const [stayLoggedIn, setStayLoggedIn] = useState(false);
     const navigation = useNavigation()
+
+    //Signed in functions
+    useEffect(()=> {
+      /*
+      const loadStayLoggedIn = async() => {
+        try{
+          const value = await AsyncStorage.getItem('stayLoggedIn');
+          if (value!=null){
+            setStayLoggedIn(JSON.parse(value));
+          }
+        }catch(error){
+          console.error("Error loading stayLoggedIn value", error);
+        }
+      };
+      */
+      
+      //Check if user is already logged in
+      const checkUser = async() => {
+        const storedUser = await AsyncStorage.getItem('user');
+        if(storedUser){
+          navigation.replace('home');
+        }
+          
+      };
+      checkUser();
+      //loadStayLoggedIn();//checkUser();
+    }, []);
 
     const handlesignup = () => {
       auth()
@@ -29,14 +59,13 @@ export default function signup(){
               username: username,
               email: user.email,
             });
-          /*
-          const firestore = getFirestore();
-          const userDocRef = doc(firestore,'users',user.uid)
-          return setDoc(userDocRef, {
-            username:username,
-            email:user.email,
-          });
-          */
+
+          if(stayLoggedIn){
+            //AsyncStorage.setItem('stayLoggedIn', JSON.stringify(true));
+            AsyncStorage.setItem('user',JSON.stringify({email: user.email, uid: user.uid}));
+
+          }
+         
         })
         .then(()=>{
           console.log("User successfully added to firestore");
@@ -54,6 +83,10 @@ export default function signup(){
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with: ', user.email);
+        if(stayLoggedIn){
+          //AsyncStorage.setItem('stayLoggedIn', JSON.stringify(true));
+          AsyncStorage.setItem('user',JSON.stringify({email: user.email, uid: user.uid}));
+        }
         setMessage('Login Successful!');
         navigation.replace('home');
       })
@@ -85,6 +118,10 @@ export default function signup(){
             onChangeText={setPassword}
             secureTextEntry
           />
+          <View style={styles.switchContainer}>
+            <Text>Stay Logged In</Text>
+            <Switch value={stayLoggedIn} onValueChange={setStayLoggedIn}/>
+          </View>
           <Button title="Sign Up" onPress={handlesignup} />
           <Button title="Log In" onPress={handlelogin} />
           {message ? <Text style={styles.message}>{message}</Text> : null}
@@ -108,5 +145,11 @@ const styles = StyleSheet.create({
       marginTop: 20,
       textAlign: 'center',
       color: 'green',
+    },
+    switchContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between', 
+      alignItems: 'center', 
+      marginVertical:10,
     },
 });

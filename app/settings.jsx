@@ -141,6 +141,8 @@ export default function Settings() {
   const handleLogout = async() => {
     try{
       await auth().signOut();
+      await AsyncStorage.removeItem('user'); //clear async storage
+      setMessage('Logged out Successfully');
       navigation.replace("welcome"); // User is redirected to welcome page after logout
     }catch(error){
       console.error("Logout error: ", error);
