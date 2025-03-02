@@ -6,6 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
 import {getFirestore, doc, getDoc} from '@react-native-firebase/firestore';
 import {getAuth} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
+import firestore from "@react-native-firebase/firestore";
+import { useNavigation } from 'expo-router';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -65,6 +68,8 @@ export default function Settings() {
   const [securityQuestion, setSecurityQuestion] = useState('Your favorite color?');
   const [securityAnswer, setSecurityAnswer] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const[loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   //fetch dates
   const [startTime, setStartTime] = useState(null); // State for start time
@@ -116,6 +121,33 @@ export default function Settings() {
     fetchUsername();
   }, []); // Runs only when the component mounts
 
+  //Function to update username and store updated username in firestore
+  const updateUsername = async () => {
+    try{
+      const userId = auth().currentUser?.uid;
+      if(!userId) return;
+
+      await firestore().collection('users').doc(userId).update({
+        username: username,
+      });
+      alert("username successfully updated!");
+    }catch(error){
+      console.error("Error updating username:", error);
+      alert("Failed to update username");
+    }
+  };
+
+  //Function to handle logout
+  const handleLogout = async() => {
+    try{
+      await auth().signOut();
+      navigation.replace("welcome"); // User is redirected to welcome page after logout
+    }catch(error){
+      console.error("Logout error: ", error);
+      alert("Failed to log out.");
+    }
+  };
+
   //if the times have yet to be fetched, display a loading view
   if (!startTime || !endTime || !randomTime) {
     return <Text>Loading settings...</Text>;
@@ -137,6 +169,7 @@ export default function Settings() {
           placeholder="Enter username" 
         />
       </View>
+      <Button title="Save Username" onPress={updateUsername}/>
 
       <View style={styles.field}>
         <Text style={styles.label}>Password</Text>
@@ -198,6 +231,10 @@ export default function Settings() {
       <TouchableOpacity style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save Settings</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Log Out</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -248,5 +285,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  logoutButton: {
+    backgroundColor: "red",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  logoutText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
