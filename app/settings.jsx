@@ -4,6 +4,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
+import {getFirestore, doc, getDoc} from '@react-native-firebase/firestore';
+import {getAuth} from '@react-native-firebase/auth';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -56,8 +58,9 @@ async function saveTime(time, key) {
   }
 }
 
+
 export default function Settings() {
-  const [username, setUsername] = useState('YourUsername');
+  const [username, setUsername] = useState('Loading...');
   const [password, setPassword] = useState('password');
   const [securityQuestion, setSecurityQuestion] = useState('Your favorite color?');
   const [securityAnswer, setSecurityAnswer] = useState('');
@@ -85,12 +88,41 @@ export default function Settings() {
     loadTimes();
   }, []); // Runs only when the component mounts
 
+  ///Fetch username from firestore using UID
+  useEffect(() => {
+    async function fetchUsername() {
+      try{
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if(user){
+          const db = getFirestore();
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if(userDoc.exists){
+            setUsername(userDoc.data().username);
+          }else{
+            console.log('No user data found in firestore');
+            setUsername('User not found');
+          }
+        }else{
+          console.log('No authenticated user');
+          setUsername('Guest');
+        }
+      }catch(error){
+        console.error('Error fetching username: ', error);
+        setUsername('Error loading username');
+      }
+    }
+    fetchUsername();
+  }, []); // Runs only when the component mounts
+
   //if the times have yet to be fetched, display a loading view
   if (!startTime || !endTime || !randomTime) {
     return <Text>Loading settings...</Text>;
   }
 
   // const randomTime = getRandomTime(); //calculate random time to be notified
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
