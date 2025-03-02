@@ -29,9 +29,7 @@ export async function requestPermissions() {
 
 export async function scheduleDailyNotification() { 
     const randTime = await getRandomTime(); //get random time to be used in the notification
-
-    // console.log(randTime.getHours())
-    // console.log(randTime.getMinutes())
+    const navigation = useNavigation();
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
 
@@ -41,6 +39,7 @@ export async function scheduleDailyNotification() {
             title: "It's Time ⏰",
             body: "Take a second to be in the moment",
             sound: true, //plays sound and vibrates device (if device isnt silent)
+            data: {screen: "Camera"}
         },
         trigger: {
             type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
@@ -63,10 +62,11 @@ export async function scheduleNotificationNow() {
             title: "Simple Sight",
             body: "Simple Sight says hello!",
             sound: true, //plays sound and vibrates device (if device isnt silent)
+            data: { screen: "Camera" },
         },
         trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
             seconds: 2,
-            repeats: false,
         }
     });
 
