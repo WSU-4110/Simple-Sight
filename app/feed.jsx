@@ -1,91 +1,68 @@
-import React, { useState } from 'react';
-
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  Image, 
-  Dimensions, 
-  TouchableOpacity 
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Feed() {
-  //no post has an image (simulate that the user hasn't taken any pictures yet)
-  const [posts, setPosts] = useState([
-    {
-      id: '1',
-      title: 'Rose Garden',
-      description: 'A beautiful rose garden in full bloom.',
-      image: null,
-    },
-    {
-      id: '2',
-      title: 'Sunset',
-      description: 'Sunset over the mountains.',
-      image: null,
-    },
-    {
-      id: '3',
-      title: 'City Lights',
-      description: 'The city at night, sparkling lights.',
-      image: null,
-    },
-    {
-      id: '4',
-      title: 'Forest Walk',
-      description: 'A peaceful walk in the forest.',
-      image: null,
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+  const [dailyPrompt, setDailyPrompt] = useState('');
 
-  const numColumns = 2;
-  const itemWidth = Dimensions.get('window').width / numColumns - 24;
+  useEffect(() => {
+    const fetchPrompt = async () => {
+      const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
+      if (storedPrompt) {
+        setDailyPrompt(storedPrompt);
+        setExamplePosts(storedPrompt);
+      }
+    };
+    fetchPrompt();
+  }, []);
 
-  // This function simulates taking a picture.
-  // In your final version, replace this with code to launch the camera.
-  const handleTakePicture = (id) => {
-    // For simulation, we'll set a dummy image URL.
-    const dummyImage = 'https://via.placeholder.com/400x300.png?text=User+Photo';
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === id ? { ...post, image: dummyImage } : post
-      )
-    );
+  const setExamplePosts = (prompt) => {
+    const promptLower = prompt.toLowerCase();
+    let examplePosts = [];
+
+    if (promptLower.includes('flower')) {
+      examplePosts = [
+        { id: '1', description: 'A beautiful rose garden in full bloom.', image: 'https://via.placeholder.com/400x300.png?text=Rose+Garden' },
+        { id: '2', description: 'Wildflowers growing in the park.', image: 'https://via.placeholder.com/400x300.png?text=Wildflowers' },
+        { id: '3', description: 'A close-up of a sunflower.', image: 'https://via.placeholder.com/400x300.png?text=Sunflower' },
+        { id: '4', description: 'Cherry blossoms in spring.', image: 'https://via.placeholder.com/400x300.png?text=Cherry+Blossoms' },
+      ];
+    } else if (promptLower.includes('sunset')) {
+      examplePosts = [
+        { id: '5', description: 'A breathtaking sunset over the ocean.', image: 'https://via.placeholder.com/400x300.png?text=Ocean+Sunset' },
+        { id: '6', description: 'Sunset in the city skyline.', image: 'https://via.placeholder.com/400x300.png?text=City+Sunset' },
+        { id: '7', description: 'A mountain view at dusk.', image: 'https://via.placeholder.com/400x300.png?text=Mountain+Sunset' },
+        { id: '8', description: 'Sunset reflecting on a lake.', image: 'https://via.placeholder.com/400x300.png?text=Lake+Sunset' },
+      ];
+    } else if (promptLower.includes('sky')) {
+      examplePosts = [
+        { id: '9', description: 'A clear blue sky with fluffy clouds.', image: 'https://via.placeholder.com/400x300.png?text=Blue+Sky' },
+        { id: '10', description: 'A rainbow after the rain.', image: 'https://via.placeholder.com/400x300.png?text=Rainbow' },
+        { id: '11', description: 'Stars shining in the night sky.', image: 'https://via.placeholder.com/400x300.png?text=Night+Sky' },
+        { id: '12', description: 'A sunrise with golden hues.', image: 'https://via.placeholder.com/400x300.png?text=Sunrise' },
+      ];
+    } else {
+      examplePosts = [
+        { id: '13', description: `Try capturing: ${prompt}`, image: 'https://via.placeholder.com/400x300.png?text=Example+Post' },
+        { id: '14', description: `Another take on: ${prompt}`, image: 'https://via.placeholder.com/400x300.png?text=Alternate+Example' },
+        { id: '15', description: `A creative angle of: ${prompt}`, image: 'https://via.placeholder.com/400x300.png?text=Creative+Shot' },
+        { id: '16', description: `A unique perspective on: ${prompt}`, image: 'https://via.placeholder.com/400x300.png?text=Perspective' },
+      ];
+    }
+
+    setPosts(examplePosts);
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.card, { width: itemWidth }]}
-      activeOpacity={0.8}
-      onPress={() => {
-        if (!item.image) {
-          // simulate taking a picture when no image is present
-          handleTakePicture(item.id);
-        }
-        // you might show the image in full screen or do something else.
-      }}
-    >
-      <View style={styles.imageContainer}>
-        {item.image ? (
-          <Image source={{ uri: item.image }} style={styles.image} />
-        ) : (
-          // if no image exists, show a placeholder prompt
-          <View style={[styles.image, styles.placeholder]}>
-            <Text style={styles.placeholderText}>Tap to take picture</Text>
-          </View>
-        )}
-        {/* Optional gradient overlay for a stylish look */}
-        <LinearGradient 
-          colors={['transparent', 'rgba(0,0,0,0.7)']} 
-          style={styles.gradientOverlay} 
-        />
-<View style={styles.cardText}>
-    <Text style={styles.cardTitle}>{item.title.toString()}</Text> {/* Convert to string */}
-</View>
+    <View style={styles.card}>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
+      <View style={styles.textContainer}>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -93,54 +70,39 @@ export default function Feed() {
       data={posts}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
-      numColumns={numColumns}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.listContainer}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  listContainer: {
     padding: 12,
-    backgroundColor: '#f5f5f5',
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    margin: 8,
+    marginVertical: 10,
     overflow: 'hidden',
     elevation: 3,
   },
-  imageContainer: {
-    position: 'relative',
-    height: 150,
-  },
   image: {
     width: '100%',
-    height: '100%',
-  },
-  placeholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ddd',
-  },
-  placeholderText: {
-    fontSize: 14,
-    color: '#555',
+    height: 250,
   },
   gradientOverlay: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    height: 50,
+    height: 60,
   },
-  cardText: {
+  textContainer: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     left: 10,
   },
-  cardTitle: {
+  description: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',

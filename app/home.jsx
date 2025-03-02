@@ -121,7 +121,7 @@ function Tabs({ dailyPrompt }) {
 
 const styles = StyleSheet.create({
   promptContainer: {
-    backgroundColor: "#51DEFF",
+    backgroundColor: "#1E90FF",
     padding: 0.1,
     alignItems: "center",
     justifyContent: "center",
@@ -132,11 +132,13 @@ const styles = StyleSheet.create({
   promptText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#FFFFFF", 
   },
   prompt: {
     fontSize: 16,
     fontStyle: "italic",
     textAlign: "center",
     marginTop: 5,
+    color: "#FFFFFF",
   },
 });
