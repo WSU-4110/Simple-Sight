@@ -1,27 +1,41 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity  } from 'react-native'; // TouchableOpacity removed
+import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Gallery() {
-  // NO IMAGES EXIST YET
   const [images, setImages] = useState([
-    { id: '1', uri: null },
-    { id: '2', uri: null },
-    { id: '3', uri: null },
-    { id: '4', uri: null },
-    { id: '5', uri: null },
-    { id: '6', uri: null },
+    { id: '1', uri: null, name: 'Image 1' },
+    { id: '2', uri: null, name: 'Image 2' },
+    { id: '3', uri: null, name: 'Image 3' },
+    { id: '4', uri: null, name: 'Image 4' },
+    { id: '5', uri: null, name: 'Image 5' },
+    { id: '6', uri: null, name: 'Image 6' },
   ]);
+  const [loading, setLoading] = useState(false);
 
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
 
-  // simulate taking a picture
   const handleTakePicture = (id) => {
     const dummyImage = 'https://via.placeholder.com/200.png?text=User+Photo';
     setImages(prevImages =>
       prevImages.map(img => (img.id === id ? { ...img, uri: dummyImage } : img))
     );
+  };
+
+  const loadMoreImages = () => {
+    if (!loading) {
+      setLoading(true);
+      setTimeout(() => {
+        const newImages = Array.from({ length: 6 }, (_, i) => ({
+          id: (images.length + i + 1).toString(),
+          uri: null,
+          name: `Image ${images.length + i + 1}` // Ensure all new images have proper names
+        }));
+        setImages(prevImages => [...prevImages, ...newImages]);
+        setLoading(false);
+      }, 1000);
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -45,7 +59,7 @@ export default function Gallery() {
         colors={['transparent', 'rgba(0,0,0,0.5)']}
         style={styles.overlay}
       >
-        <Text style={styles.imageLabel}>Image {item.id}</Text>
+        <Text style={styles.imageLabel}>{item.name}</Text> 
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -57,6 +71,9 @@ export default function Gallery() {
       keyExtractor={(item) => item.id}
       numColumns={numColumns}
       contentContainerStyle={styles.container}
+      onEndReached={loadMoreImages}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={loading ? <ActivityIndicator size="large" color="#1E90FF" /> : null}
     />
   );
 }
