@@ -48,7 +48,6 @@ export default function CameraScreen() {
   };
 
   const uploadPhoto = async () => {
-    // Upload photo logic here
   };
 
   const renderPicture = () => (
@@ -79,13 +78,12 @@ export default function CameraScreen() {
       onCameraReady={() => console.log("Camera is ready")}
     >
       <View style={styles.shutterContainer}>
-        <Pressable onPress={toggleFlashMode}>
+        <Pressable onPress={toggleFlashMode} style={styles.iconButton}>
           <Ionicons name={flashMode === 'off' ? 'flash-off-outline' : 'flash-outline'} size={iconSize} color="white" />
         </Pressable>
         <Pressable onPress={takePicture} style={styles.shutterBtn}>
-          <Ionicons name="ellipse-outline" size={iconSize * 3} color="white" />
         </Pressable>
-        <Pressable onPress={toggleFacing}>
+        <Pressable onPress={toggleFacing} style={styles.iconButton}>
           <Ionicons name="camera-reverse-outline" size={iconSize} color="white" />
         </Pressable>
       </View>
@@ -108,21 +106,33 @@ const styles = StyleSheet.create({
   },
   shutterContainer: {
     position: "absolute",
-    bottom: 40,
+    bottom: 100,
     left: 0,
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 30,
+    paddingHorizontal: 80,
   },
   shutterBtn: {
     width: 80,
     height: 80,
     borderRadius: 40,
     backgroundColor: "white",
+    borderWidth: 4,
+    borderColor: "#ddd",
     alignItems: "center",
     justifyContent: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  iconButton: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    padding: 12,
+    borderRadius: 50,
   },
   previewContainer: {
     flex: 1,
