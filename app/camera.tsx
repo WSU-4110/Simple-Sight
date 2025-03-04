@@ -3,6 +3,9 @@ import { useRef, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { initializeApp } from "@react-native-firebase/app";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {storage} from "./firebase";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -45,6 +48,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
   const uploadPhoto = async () => {
     // Upload photo logic here
+    if(!uri) return;
+    try{
+      const response = await fetch(uri); //get image from uri
+      const blob = await response.blob(); //convert image to blob
+
+      const filename = 'photos/${Date.now()}.jpg';
+      const fileRef = storageRef(storage, filename); // reference storage location
+      await uploadBytes(fileRef, blob); // upload blob to firebase storage
+      const downloadURL = await getDownloadURL(fileRef);
+
+      console.log("Uploaded successfully: ", downloadURL);
+      alert("Photo uploaded successfully!");
+      setUri(undefined);
+    }catch(error){
+      console.error("Upload failed:", error);
+      alert("upload failed");
+    }
   };
 
   const renderPicture = () => (
