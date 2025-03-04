@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { initializeApp } from "@react-native-firebase/app";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage} from "./firebase";
+import uuid from "react-native-uuid";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -53,7 +54,7 @@ import {storage} from "./firebase";
       const response = await fetch(uri); //get image from uri
       const blob = await response.blob(); //convert image to blob
 
-      const filename = 'photos/${Date.now()}.jpg';
+      const filename = `photos/${uuid.v4()}_${Date.now()}.jpg`;
       const fileRef = storageRef(storage, filename); // reference storage location
       await uploadBytes(fileRef, blob); // upload blob to firebase storage
       const downloadURL = await getDownloadURL(fileRef);
@@ -75,14 +76,15 @@ import {storage} from "./firebase";
         style={styles.previewImage}
       />
       <View style={styles.previewOptions}>
-        <TouchableOpacity onPress={() => setUri(undefined)} style={styles.deleteButton}>
-          <Text>Delete</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={uploadPhoto} style={styles.saveButton}>
-          <Text>Save</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => setUri(undefined)} style={styles.deleteButton}>
+            <Text>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={uploadPhoto} style={styles.saveButton}>
+            <Text>Save</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    
   );
 
   const renderCamera = () => (
@@ -172,10 +174,13 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
+    elevation: 5,
   },
   saveButton: {
     backgroundColor: "green",
     padding: 10,
     borderRadius: 5,
+    elevation: 5,
   },
+  
 });
