@@ -227,20 +227,37 @@ export default function Settings() {
         />
       </View>
 
+      {/* Time Pickers */}
       <View>
         <Text>From</Text>
-        <DateTimePicker display='default' mode='time' value={startTime} onChange={(event, time) => {
-          setStartTime(time); 
-          saveTime(startTime, persistentKeys.startTimeKey);
-          scheduleDailyNotification();
-        }}/> 
+        <TouchableOpacity onPress={() => setShowStartPicker(true)}>
+          <Text style={styles.timeText}>
+            {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </Text>
+        </TouchableOpacity>
+        {showStartPicker && (
+          <DateTimePicker 
+            display="default" 
+            mode="time" 
+            value={startTime} 
+            onChange={handleStartTimeChange}
+          />
+        )}
+
         <Text>Until</Text>
-        <DateTimePicker display='default' mode='time' value={endTime} onChange={(event, time) => {
-          console.log("changed")
-          setEndTime(time);
-          saveTime(endTime, persistentKeys.endTimeKey);
-          scheduleDailyNotification();
-        }}/>
+        <TouchableOpacity onPress={() => setShowEndPicker(true)}>
+          <Text style={styles.timeText}>
+            {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </Text>
+        </TouchableOpacity>
+        {showEndPicker && (
+          <DateTimePicker 
+            display="default" 
+            mode="time" 
+            value={endTime} 
+            onChange={handleEndTimeChange}
+          />
+        )}
       </View>
 
       <View style={styles.switchField}>
