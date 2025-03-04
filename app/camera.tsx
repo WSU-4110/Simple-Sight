@@ -166,10 +166,13 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     padding: 17,
     borderRadius: 5,
+    elevation: 5,
   },
   saveButton: {
     backgroundColor: "white", 
     padding: 17,
     borderRadius: 5,
+    elevation: 5,
   },
+  
 });
