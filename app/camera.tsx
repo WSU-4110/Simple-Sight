@@ -6,37 +6,38 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
 
-export default function Camera() {
-  const [permission, requestPermission] = useCameraPermissions();
-  const ref = useRef<CameraView>(null);
-  const [uri, setUri] = useState<string | undefined>(undefined);
-  const [facing, setFacing] = useState<CameraType>("back");
-  const [flashMode, setFlashMode] = useState<FlashMode>('off');
-  const iconSize: number = 32;
-
-  if (!permission) {
-    return null;
-  }
-
-  if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to use the camera
-        </Text>
-        <Button onPress={requestPermission} title="Grant permission" />
-      </View>
-    );
-  }
-
-  const takePicture = async () => {
-    const photo = await ref.current?.takePictureAsync();
-    setUri(photo?.uri);
-  };
-
-  const toggleFacing = () => {
-    setFacing((prev) => (prev === "back" ? "front" : "back"));
-  };
+  export default function Camera() {
+    const [permission, requestPermission] = useCameraPermissions();
+    const ref = useRef<CameraView>(null);
+    const [uri, setUri] = useState<string | undefined>(undefined);
+    const [facing, setFacing] = useState<CameraType>("back");
+    const [flashMode, setFlashMode] = useState<FlashMode>('off');
+    const iconSize: number = 32;
+  
+    if (!permission) {
+      requestPermission()
+      return null;
+    }
+  
+    if (!permission.granted) {
+      return (
+        <View style={styles.container}>
+          <Text style={{ textAlign: "center" }}>
+            We need your permission to use the camera
+          </Text>
+          <Button onPress={requestPermission} title="Grant permission" />
+        </View>
+      );
+    }
+  
+    const takePicture = async () => {
+      const photo = await ref.current?.takePictureAsync();
+      setUri(photo?.uri);
+    };
+  
+    const toggleFacing = () => {
+      setFacing((prev) => (prev === "back" ? "front" : "back"));
+    };
 
   const toggleFlashMode = () => {
     const modes: FlashMode[] = ['off', 'auto', 'on'];

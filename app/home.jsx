@@ -78,7 +78,7 @@ export default function Home() {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={() => <Tabs dailyPrompt={dailyPrompt} />} options={{ headerShown: false }} />
+      <Stack.Screen name="Home" options={{ headerShown: false }} children={() => <Tabs dailyPrompt={dailyPrompt} />}/>
       <Stack.Screen name='Settings' component={Settings} />
     </Stack.Navigator>
   );
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 80, 
+    bottom: 50, 
     width: "100%",
   },
   promptText: {

@@ -44,12 +44,12 @@ export async function scheduleDailyNotification() {
             type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
             hour: randTime.getHours(), 
             minute: randTime.getMinutes(), 
-            repeats: true, 
+            repeats: false, 
         },
     });
 
     // add background event to wait until after the notification has delivered to schedule the next one
-    await registerBackgroundNotificationScheduler();
+    //await registerBackgroundNotificationScheduler();
 }
 
 export async function scheduleNotificationNow() {
@@ -64,12 +64,13 @@ export async function scheduleNotificationNow() {
             data: { screen: "Camera" },
         },
         trigger: {
-            type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+            //type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
             seconds: 2,
+            repeats: false,
         }
     });
 
-    await registerBackgroundNotificationScheduler();
+    //await registerBackgroundNotificationScheduler();
 }
 
 // returns Date object with a random minute and hour value
