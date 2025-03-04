@@ -29,7 +29,6 @@ export async function requestPermissions() {
 
 export async function scheduleDailyNotification() { 
     const randTime = await getRandomTime(); //get random time to be used in the notification
-    const navigation = useNavigation();
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
 
@@ -50,7 +49,7 @@ export async function scheduleDailyNotification() {
     });
 
     // add background event to wait until after the notification has delivered to schedule the next one
-    // await registerBackgroundNotificationScheduler();
+    await registerBackgroundNotificationScheduler();
 }
 
 export async function scheduleNotificationNow() {
