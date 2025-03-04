@@ -6,9 +6,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
-import { useNavigation } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import Settings from './settings';
 import Camera from './camera';
+import { requestPermissions } from './notifications';
+import * as Notifications from 'expo-notifications';
 
 const prompts = [
   "Take a picture of a flower blooming. 🌸",
@@ -56,18 +58,27 @@ const Tab = createBottomTabNavigator();
 
 export default function Home() {
   const [dailyPrompt, setDailyPrompt] = useState("");
+  const router = useRouter();
   
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
+    requestPermissions();
+
+    // Notification Tap Listener
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      const screen = response.notification.request.content.data?.screen;
+      
+      if (screen === "Camera") {
+        router.replace('/home')
+      }
+    });
+
+    return () => subscription.remove(); 
   }, []);
 
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Home" 
-        component={() => <Tabs dailyPrompt={dailyPrompt} />}
-        options={{ headerShown: false }} 
-      />
+      <Stack.Screen name="Home" component={() => <Tabs dailyPrompt={dailyPrompt} />} options={{ headerShown: false }} />
       <Stack.Screen name='Settings' component={Settings} />
     </Stack.Navigator>
   );
@@ -79,6 +90,7 @@ function Tabs({ dailyPrompt }) {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
+      initialRouteName='Camera'
         screenOptions={({ route }) => ({
           headerStyle: { backgroundColor: '#1E90FF' },
           headerTintColor: '#fff',

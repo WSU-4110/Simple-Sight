@@ -7,7 +7,6 @@ const BACKGROUND_TASK_NAME = "notificationScheduler";
 
 // Define the background task
 TaskManager.defineTask(BACKGROUND_TASK_NAME, async () => {
-  console.log("Background Task Running...");
 
   // schedule notification
   scheduleDailyNotification();
