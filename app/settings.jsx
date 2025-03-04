@@ -59,7 +59,6 @@ async function saveTime(time, key) {
   }
 }
 
-
 export default function Settings() {
   const [username, setUsername] = useState('Loading...');
   const [password, setPassword] = useState('password');
@@ -75,6 +74,10 @@ export default function Settings() {
   const [startTime, setStartTime] = useState(null); // State for start time
   const [endTime, setEndTime] = useState(null); // State for end time
   const [randomTime, setRandomTime] = useState(null); // State for random time
+
+  // Picker visibility states
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
 
   useEffect(() => {
     async function loadTimes() {
@@ -136,6 +139,25 @@ export default function Settings() {
     }
   };
 
+  // Handlers for DateTimePicker
+  const handleStartTimeChange = (event, selectedTime) => {
+    setShowStartPicker(false);
+    if (selectedTime) {
+      setStartTime(selectedTime);
+      saveTime(selectedTime, persistentKeys.startTimeKey);
+      scheduleDailyNotification();
+    }
+  };
+
+  const handleEndTimeChange = (event, selectedTime) => {
+    setShowEndPicker(false);
+    if (selectedTime) {
+      setEndTime(selectedTime);
+      saveTime(selectedTime, persistentKeys.endTimeKey);
+      scheduleDailyNotification();
+    }
+  };
+
   //Load stayloggedin value from async storage
   useEffect(() =>{
     const loadStayLoggedIn = async() => {
@@ -172,14 +194,10 @@ export default function Settings() {
     await AsyncStorage.setItem('stayLoggedIn', JSON.stringify(value));
   };
 
-
   //if the times have yet to be fetched, display a loading view
   if (!startTime || !endTime || !randomTime) {
     return <Text>Loading settings...</Text>;
   }
-
-  // const randomTime = getRandomTime(); //calculate random time to be notified
-
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
