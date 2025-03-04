@@ -3,41 +3,40 @@ import { useRef, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { initializeApp } from "@react-native-firebase/app";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import {storage} from "./firebase";
+import { storage } from "./firebase";
 
-  export default function Camera() {
-    const [permission, requestPermission] = useCameraPermissions();
-    const ref = useRef<CameraView>(null);
-    const [uri, setUri] = useState<string | undefined>(undefined);
-    const [facing, setFacing] = useState<CameraType>("back");
-    const [flashMode, setFlashMode] = useState<FlashMode>('off');
-    const iconSize: number = 32;
-  
-    if (!permission) {
-      return null;
-    }
-  
-    if (!permission.granted) {
-      return (
-        <View style={styles.container}>
-          <Text style={{ textAlign: "center" }}>
-            We need your permission to use the camera
-          </Text>
-          <Button onPress={requestPermission} title="Grant permission" />
-        </View>
-      );
-    }
-  
-    const takePicture = async () => {
-      const photo = await ref.current?.takePictureAsync();
-      setUri(photo?.uri);
-    };
-  
-    const toggleFacing = () => {
-      setFacing((prev) => (prev === "back" ? "front" : "back"));
-    };
+export default function Camera() {
+  const [permission, requestPermission] = useCameraPermissions();
+  const ref = useRef<CameraView>(null);
+  const [uri, setUri] = useState<string | undefined>(undefined);
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [flashMode, setFlashMode] = useState<FlashMode>('off');
+  const iconSize: number = 32;
+
+  if (!permission) {
+    return null;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to use the camera
+        </Text>
+        <Button onPress={requestPermission} title="Grant permission" />
+      </View>
+    );
+  }
+
+  const takePicture = async () => {
+    const photo = await ref.current?.takePictureAsync();
+    setUri(photo?.uri);
+  };
+
+  const toggleFacing = () => {
+    setFacing((prev) => (prev === "back" ? "front" : "back"));
+  };
 
   const toggleFlashMode = () => {
     const modes: FlashMode[] = ['off', 'auto', 'on'];
@@ -47,34 +46,27 @@ import {storage} from "./firebase";
   };
 
   const uploadPhoto = async () => {
-    // Upload photo logic here
-    if(!uri) return;
-    try{
-      const response = await fetch(uri); //get image from uri
-      const blob = await response.blob(); //convert image to blob
-
-      const filename = 'photos/${Date.now()}.jpg';
-      const fileRef = storageRef(storage, filename); // reference storage location
-      await uploadBytes(fileRef, blob); // upload blob to firebase storage
+    if (!uri) return;
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const filename = `photos/${Date.now()}.jpg`;
+      const fileRef = storageRef(storage, filename);
+      await uploadBytes(fileRef, blob);
       const downloadURL = await getDownloadURL(fileRef);
-
       console.log("Uploaded successfully: ", downloadURL);
       alert("Photo uploaded successfully!");
       setUri(undefined);
-    }catch(error){
+    } catch (error) {
       console.error("Upload failed:", error);
-      alert("upload failed");
+      alert("Upload failed");
     }
   };
 
   const renderPicture = () => (
     <View style={styles.previewContainer}>
-      <Image
-        source={{ uri }}
-        contentFit="contain"
-        style={styles.previewImage}
-      />
-      <View style={styles.previewOptions}>
+      <Image source={{ uri }} contentFit="contain" style={styles.previewImage} />
+      <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => setUri(undefined)} style={styles.deleteButton}>
           <Text>Delete</Text>
         </TouchableOpacity>
@@ -98,8 +90,7 @@ import {storage} from "./firebase";
         <Pressable onPress={toggleFlashMode} style={styles.iconButton}>
           <Ionicons name={flashMode === 'off' ? 'flash-off-outline' : 'flash-outline'} size={iconSize} color="white" />
         </Pressable>
-        <Pressable onPress={takePicture} style={styles.shutterBtn}>
-        </Pressable>
+        <Pressable onPress={takePicture} style={styles.shutterBtn} />
         <Pressable onPress={toggleFacing} style={styles.iconButton}>
           <Ionicons name="camera-reverse-outline" size={iconSize} color="white" />
         </Pressable>
@@ -162,20 +153,23 @@ const styles = StyleSheet.create({
     height: "80%",
     borderRadius: 10,
   },
-  previewOptions: {
+  buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50%",
+    marginTop: 0.1,
+    gap: 50,
+    marginRight: "5%",
   },
   deleteButton: {
     backgroundColor: "red",
-    padding: 10,
+    padding: 17,
     borderRadius: 5,
   },
   saveButton: {
-    backgroundColor: "green",
-    padding: 10,
+    backgroundColor: "white", 
+    padding: 17,
     borderRadius: 5,
   },
 });
