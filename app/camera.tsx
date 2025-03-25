@@ -96,6 +96,7 @@ import { storage } from "./firebaseconfig";
       <View style={styles.shutterContainer}>
         <Pressable onPress={toggleFlashMode} style={styles.iconButton}>
           <Ionicons name={flashMode === 'off' ? 'flash-off-outline' : 'flash-outline'} size={iconSize} color="white" />
+          <Text style={{color: 'white', padding: 5}}>{flashMode.charAt(0).toUpperCase() + flashMode.substring(1)}</Text>
         </Pressable>
         <Pressable onPress={takePicture} style={styles.shutterBtn} />
         <Pressable onPress={toggleFacing} style={styles.iconButton}>
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     padding: 12,
     borderRadius: 50,
+    alignItems: 'center',
   },
   previewContainer: {
     flex: 1,
