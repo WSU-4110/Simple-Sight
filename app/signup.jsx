@@ -5,6 +5,7 @@ import { useNavigation } from 'expo-router';
 import{auth,db} from './firebaseconfig'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {doc, setDoc } from 'firebase/firestore';
+import { LinearGradient } from 'expo-linear-gradient';
 
 //reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
@@ -58,6 +59,7 @@ export default function Signup() {
 
     return (
         <View style={styles.container}>
+            <LinearGradient colors={['#fbc2eb', '#a6c1ee']} style={styles.background} >
             <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} autoCapitalize='none' placeholderTextColor={'gray'}/>
             <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" placeholderTextColor={'gray'}/>
             <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize='none' placeholderTextColor={'gray'}/>
@@ -72,6 +74,7 @@ export default function Signup() {
             <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
                 <Text style={styles.buttonText}>Log In</Text>
             </TouchableOpacity>
+            </LinearGradient>
         </View>
     );
 }
@@ -80,10 +83,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
         backgroundColor: '#fff',
     },
+    background: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+      },
     input: {
         width: '100%',
         borderWidth: 1,
@@ -101,19 +108,22 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#fff',
+        width: '50%',
         paddingVertical: 15,
-        paddingHorizontal: 50,
-        borderRadius: 8,
-        width: '80%',
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    buttonText: {
-        color: '#fff',
+        borderRadius: 30,
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
+        margin: 5,
+      },
+      buttonText: {
+        color: '#a6c1ee',
         fontSize: 18,
         fontWeight: '600',
-    },
+        textAlign: 'center',
+      },
     message: {
         marginTop: 10,
         color: 'red',
