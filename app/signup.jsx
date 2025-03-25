@@ -58,9 +58,9 @@ export default function Signup() {
 
     return (
         <View style={styles.container}>
-            <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} autoCapitalize='none' />
-            <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-            <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} autoCapitalize='none' placeholderTextColor={'gray'}/>
+            <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" placeholderTextColor={'gray'}/>
+            <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize='none' placeholderTextColor={'gray'}/>
             <View style={styles.switchContainer}>
                 <Text>Stay Logged In</Text>
                 <Switch value={stayLoggedIn} onValueChange={setStayLoggedIn} />
