@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
-import auth from "@react-native-firebase/auth";
-import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
+import{auth,db} from './firebaseconfig'
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {doc, setDoc } from 'firebase/firestore';
 
+//reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,36 +24,36 @@ export default function Signup() {
         });
     }, []);
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         setLoading(true);
-        auth().createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user;
-                firestore().collection('users').doc(user.uid).set({
-                    username: username,
-                    email: user.email,
-                });
-                setMessage('Signup Successful!');
-            })
-            .catch(error => {
-                setMessage(error.message);
-            })
-            .finally(() => setLoading(false));
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            await setDoc(doc(db, 'users', user.uid), {
+                username: username,
+                email: user.email,
+            });
+            setMessage('Signup Successful!');
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         setLoading(true);
-        auth().signInWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                if (stayLoggedIn) {
-                    AsyncStorage.setItem('stayLoggedIn', 'true');
-                }
-                navigation.replace('home');
-            })
-            .catch(error => {
-                setMessage(error.message);
-            })
-            .finally(() => setLoading(false));
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            if (stayLoggedIn) {
+                await AsyncStorage.setItem('stayLoggedIn', 'true');
+            }
+            navigation.replace('home');
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -117,4 +119,3 @@ const styles = StyleSheet.create({
         color: 'red',
     },
 });
-

@@ -1,7 +1,11 @@
-/*import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getStorage } from "firebase/storage";
+
+
 const firebaseConfig = {
-    apiKey: "AIzaSyD0wnMC4eEbSOXiBHhtalo9FPFaCzNRr",
+    apiKey: "AIzaSyD0wnMC4eEbSOXiBHhtalo9FPFaCzNRrzU",
     authDomain: "simple-sight.firebaseapp.com",
     projectId: "simple-sight",
     storageBucket: "simple-sight.firebasestorage.app",
@@ -11,7 +15,11 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig); // No config needed because it's auto-detected
+const auth = getAuth(app);
+const db = getFirestore(app);
+//const db = firebaseConfig.firestore();
 const storage = getStorage(app);
 
 export { storage };
-*/
+export {auth};
+export {db};

@@ -4,10 +4,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
-import {getFirestore, doc, getDoc} from '@react-native-firebase/firestore';
-import {getAuth} from '@react-native-firebase/auth';
-import auth from '@react-native-firebase/auth';
-import firestore from "@react-native-firebase/firestore";
+import{auth,db} from './firebaseconfig'
+import{doc,getDoc,updateDoc} from 'firebase/firestore'
+import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
 
 //fetch start time value stored on phone
@@ -95,17 +94,16 @@ export default function Settings() {
     loadTimes();
   }, []); // Runs only when the component mounts
 
-  ///Fetch username from firestore using UID
-  useEffect(() => {
+  //fetch usernmae from firestore using UID expo go
+  useEffect(() =>{
     async function fetchUsername() {
       try{
-        const auth = getAuth();
         const user = auth.currentUser;
-
         if(user){
-          const db = getFirestore();
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
-          if(userDoc.exists){
+          const userDocRef = doc(db,'users',user.uid);
+          const userDoc = await getDoc(userDocRef);
+          //const userDoc = await getDoc(doc(db,'users',user.uid));
+          if(userDoc.exists()){
             setUsername(userDoc.data().username);
           }else{
             console.log('No user data found in firestore');
@@ -121,21 +119,23 @@ export default function Settings() {
       }
     }
     fetchUsername();
-  }, []); // Runs only when the component mounts
+  },[]);
 
-  //Function to update username and store updated username in firestore
+  //Function to update usernmae in firestore expo go
   const updateUsername = async () => {
     try{
-      const userId = auth().currentUser?.uid;
+      const userId = auth.currentUser?.uid;
       if(!userId) return;
 
-      await firestore().collection('users').doc(userId).update({
-        username: username,
-      });
-      alert("username successfully updated!");
+      //await updateDoc(doc(db,'users',userId),{
+      //  username:username,
+      //});
+      const userDocRef = doc(db,'users', userId);
+      await updateDoc(userDocRef, {username});
+      Alert.alert('Success!','Username successfully updated!');
     }catch(error){
-      console.error("Error updating username:", error);
-      alert("Failed to update username");
+      console.error('Error updating username: ', error);
+      Alert.alert('Error', "Failed to update username");
     }
   };
 
@@ -158,41 +158,42 @@ export default function Settings() {
     }
   };
 
-  //Load stayloggedin value from async storage
-  useEffect(() =>{
-    const loadStayLoggedIn = async() => {
-      try{
+  // Load stayLoggedIn value from AsyncStorage in expo go
+  useEffect(() => {
+    const loadStayLoggedIn = async () => {
+      try {
         const value = await AsyncStorage.getItem('stayLoggedIn');
-        if(value!=null){
+        if (value !== null) {
           setStayLoggedIn(JSON.parse(value));
         }
-      }catch(error){
-        console.error("Error Loading Stayloggedin value: ", error);
+      } catch (error) {
+        console.error('Error loading stayLoggedIn value: ', error);
       }
     };
     loadStayLoggedIn();
-  },[]);
+  }, []);
 
-  //Function to handle logout
-  const handleLogout = async() => {
+  // Function to handle logout in expo go
+  const handleLogout = async () => {
     setLoading(true);
-    try{
-      await auth().signOut();
+    try {
+      await signOut(auth);
       await AsyncStorage.removeItem('stayLoggedIn');
-      console.log("User logged out and stayloggedin removed");
+      console.log('User logged out and stayLoggedIn removed');
       navigation.replace('welcome');
-    } catch(error){
-      console.error("Logout error: ", error);
-    }finally{
+    } catch (error) {
+      console.error('Logout error: ', error);
+    } finally {
       setLoading(false);
     }
   };
 
-  // toggle stay logged in state and save it to async storage
-  const toggleStayLoggedIn = async(value) =>{
+  // Toggle stayLoggedIn state and save it to AsyncStorage in expo go
+  const toggleStayLoggedIn = async (value) => {
     setStayLoggedIn(value);
     await AsyncStorage.setItem('stayLoggedIn', JSON.stringify(value));
   };
+
 
   //if the times have yet to be fetched, display a loading view
   if (!startTime || !endTime || !randomTime) {

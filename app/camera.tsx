@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from "rea
 import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebase";
+import { storage } from "./firebaseconfig";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
