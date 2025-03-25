@@ -60,9 +60,6 @@ async function saveTime(time, key) {
 
 export default function Settings() {
   const [username, setUsername] = useState('Loading...');
-  const [password, setPassword] = useState('password');
-  const [securityQuestion, setSecurityQuestion] = useState('Your favorite color?');
-  const [securityAnswer, setSecurityAnswer] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const[loading, setLoading] = useState(false);
   const[stayLoggedIn, setStayLoggedIn] = useState(false);
@@ -75,8 +72,8 @@ export default function Settings() {
   const [randomTime, setRandomTime] = useState(null); // State for random time
 
   // Picker visibility states
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
+  const [showStartPicker, setShowStartPicker] = useState(true);
+  const [showEndPicker, setShowEndPicker] = useState(true);
 
   useEffect(() => {
     async function loadTimes() {
@@ -211,40 +208,11 @@ export default function Settings() {
           value={username} 
           onChangeText={setUsername} 
           placeholder="Enter username" 
+          placeholderTextColor={'gray'}
         />
       </View>
       <Button title="Save Username" onPress={updateUsername}/>
 
-      <View style={styles.field}>
-        <Text style={styles.label}>Password</Text>
-        <TextInput 
-          style={styles.input} 
-          value={password} 
-          onChangeText={setPassword} 
-          placeholder="Enter password" 
-          secureTextEntry
-        />
-      </View>
-
-      <View style={styles.field}>
-        <Text style={styles.label}>Security Question</Text>
-        <TextInput 
-          style={styles.input} 
-          value={securityQuestion} 
-          onChangeText={setSecurityQuestion} 
-          placeholder="Security question" 
-        />
-      </View>
-
-      <View style={styles.field}>
-        <Text style={styles.label}>Security Answer</Text>
-        <TextInput 
-          style={styles.input} 
-          value={securityAnswer} 
-          onChangeText={setSecurityAnswer} 
-          placeholder="Enter answer" 
-        />
-      </View>
 
       {/* Time Pickers */}
       <View>
@@ -290,9 +258,6 @@ export default function Settings() {
         />
       </View>
 
-      <TouchableOpacity style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Save Settings</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Log Out</Text>
@@ -335,18 +300,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  saveButton: {
-    backgroundColor: '#1E90FF',
-    paddingVertical: 15,
-    borderRadius: 30,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  saveButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
   },
   logoutButton: {
     backgroundColor: "red",
