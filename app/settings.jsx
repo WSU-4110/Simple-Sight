@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
+import { disableNotifications, getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
 import{auth,db} from './firebaseconfig'
 import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
@@ -283,11 +283,12 @@ export default function Settings() {
         <Text style={styles.label}>Enable Notifications</Text>
         <Switch 
           value={notificationsEnabled} 
-          onValueChange={setNotificationsEnabled} 
+          onValueChange={() => {
+            setNotificationsEnabled(notificationsEnabled); 
+            notificationsEnabled ? scheduleDailyNotification() : disableNotifications();
+          }} 
         />
       </View>
-
-      <Button title='schedule notification' onPress={ () => {scheduleNotificationNow()} } />
 
       <TouchableOpacity style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save Settings</Text>

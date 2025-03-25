@@ -49,7 +49,7 @@ export async function scheduleDailyNotification() {
     });
 
     // add background event to wait until after the notification has delivered to schedule the next one
-    //await registerBackgroundNotificationScheduler();
+    await registerBackgroundNotificationScheduler();
 }
 
 export async function scheduleNotificationNow() {
@@ -69,8 +69,10 @@ export async function scheduleNotificationNow() {
             repeats: false,
         }
     });
+}
 
-    //await registerBackgroundNotificationScheduler();
+export async function disableNotifications() {
+    await Notifications.cancelAllScheduledNotificationsAsync();
 }
 
 // returns Date object with a random minute and hour value
