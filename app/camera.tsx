@@ -32,6 +32,12 @@ import { storage } from "./firebaseconfig";
   
     const takePicture = async () => {
       const photo = await ref.current?.takePictureAsync();
+
+      if (!photo) {
+        alert("Photo not saved, try again.");
+        return;
+      }
+
       setUri(photo?.uri);
     };
   
@@ -153,6 +159,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "80%",
     borderRadius: 10,
+    aspectRatio: 1,
   },
   buttonContainer: {
     flexDirection: "row",
