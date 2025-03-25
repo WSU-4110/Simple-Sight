@@ -34,23 +34,23 @@ const prompts = [
 ];
 
 const generateDailyPrompt = async (setDailyPrompt) => {
-    const today = new Date().toDateString();
-    
-    try {
-        const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
-        const storedDate = await AsyncStorage.getItem("promptDate");
+  const today = new Date().toDateString();
 
-        if (storedPrompt && storedDate === today) {
-            setDailyPrompt(storedPrompt);
-        } else {
-            const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-            setDailyPrompt(newPrompt);
-            await AsyncStorage.setItem("dailyPrompt", newPrompt);
-            await AsyncStorage.setItem("promptDate", today);
-        }
-    } catch (error) {
-        console.error("🚨 ERROR FETCHING PROMPT:", error);
+  try {
+    const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
+    const storedDate = await AsyncStorage.getItem("promptDate");
+
+    if (storedPrompt && storedDate === today) {
+      setDailyPrompt(storedPrompt);
+    } else {
+      const newPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+      setDailyPrompt(newPrompt);
+      await AsyncStorage.setItem("dailyPrompt", newPrompt);
+      await AsyncStorage.setItem("promptDate", today);
     }
+  } catch (error) {
+    console.error("🚨 ERROR FETCHING PROMPT:", error);
+  }
 };
 
 const Stack = createNativeStackNavigator();
@@ -59,27 +59,26 @@ const Tab = createBottomTabNavigator();
 export default function Home() {
   const [dailyPrompt, setDailyPrompt] = useState("");
   const router = useRouter();
-  
+
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
     requestPermissions();
 
-    // Notification Tap Listener
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       const screen = response.notification.request.content.data?.screen;
-      
+
       if (screen === "Camera") {
-        router.replace('/home')
+        router.replace('/home');
       }
     });
 
-    return () => subscription.remove(); 
+    return () => subscription.remove();
   }, []);
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" options={{ headerShown: false }} children={() => <Tabs dailyPrompt={dailyPrompt} />}/>
-      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name="Home" options={{ headerShown: false }} children={() => <Tabs dailyPrompt={dailyPrompt} />} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   );
 }
@@ -90,7 +89,7 @@ function Tabs({ dailyPrompt }) {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
-      initialRouteName='Camera'
+        initialRouteName="Camera"
         screenOptions={({ route }) => ({
           headerStyle: { backgroundColor: '#1E90FF' },
           headerTintColor: '#fff',
@@ -104,7 +103,19 @@ function Tabs({ dailyPrompt }) {
           ),
           tabBarActiveTintColor: '#1E90FF',
           tabBarInactiveTintColor: '#888',
-          tabBarStyle: { backgroundColor: '#fff' },
+          tabBarStyle: {
+            backgroundColor: '#fff',
+            height: 75,
+            paddingBottom: 10,
+          },
+          tabBarLabelStyle: {
+            fontSize: 14,
+            paddingBottom: 5,
+          },
+          tabBarIconStyle: {
+            width: 30,
+            height: 30,
+          },
           tabBarIcon: ({ color, size }) => {
             let iconName;
             if (route.name === 'Feed') {
@@ -114,7 +125,7 @@ function Tabs({ dailyPrompt }) {
             } else if (route.name === 'Camera') {
               iconName = 'camera-outline';
             }
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Ionicons name={iconName} size={30} color={color} />;
           },
         })}
       >
@@ -138,13 +149,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 50, 
+    bottom: 75,
     width: "100%",
   },
   promptText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFFFFF", 
+    color: "#FFFFFF",
   },
   prompt: {
     fontSize: 16,
