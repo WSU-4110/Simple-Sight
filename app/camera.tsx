@@ -62,7 +62,6 @@ import { storage } from "./firebaseconfig";
       await uploadBytes(fileRef, blob);
       const downloadURL = await getDownloadURL(fileRef);
       console.log("Uploaded successfully: ", downloadURL);
-      alert("Photo uploaded successfully!");
       setUri(undefined);
     } catch (error) {
       console.error("Upload failed:", error);
@@ -75,10 +74,10 @@ import { storage } from "./firebaseconfig";
       <Image source={{ uri }} contentFit="contain" style={styles.previewImage} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => setUri(undefined)} style={styles.deleteButton}>
-          <Text>Delete</Text>
+          <Text style={{fontSize: 30}}>Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={uploadPhoto} style={styles.saveButton}>
-          <Text>Save</Text>
+          <Text style={{fontSize: 30}}>Save</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -91,7 +90,6 @@ import { storage } from "./firebaseconfig";
       mode="picture"
       facing={facing}
       flash={flashMode}
-      onCameraReady={() => console.log("Camera is ready")}
     >
       <View style={styles.shutterContainer}>
         <Pressable onPress={toggleFlashMode} style={styles.iconButton}>
@@ -158,29 +156,32 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   previewImage: {
-    width: "90%",
-    height: "80%",
+    height: "100%",
     borderRadius: 10,
     aspectRatio: 1,
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    width: "50%",
-    marginTop: 0.1,
-    gap: 50,
-    marginRight: "5%",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 0,
+    marginBottom: 60,
   },
   deleteButton: {
+    alignItems: 'center',
     backgroundColor: "red",
-    padding: 17,
+    width: '50%',
+    padding: 10,
     borderRadius: 5,
     elevation: 5,
+    fontSize: 300,
   },
   saveButton: {
-    backgroundColor: "white", 
-    padding: 17,
+    alignItems: 'center',
+    backgroundColor: "green", 
+    width: '50%',
+    padding: 10,
     borderRadius: 5,
     elevation: 5,
   },
