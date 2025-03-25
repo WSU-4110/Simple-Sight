@@ -31,12 +31,13 @@ export async function scheduleDailyNotification() {
     const randTime = await getRandomTime(); //get random time to be used in the notification
 
     await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
+    const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
 
     //schedule notificaiton
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: "It's Time ⏰",
-            body: "Take a second to be in the moment",
+            title: "Take a second to be in the moment",
+            body: storedPrompt,
             sound: true, //plays sound and vibrates device (if device isnt silent)
             data: {screen: "Camera"}
         },
