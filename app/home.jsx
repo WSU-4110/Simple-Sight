@@ -33,7 +33,7 @@ const prompts = [
   "Capture something symmetrical. 🔳",
 ];
 
-const generateDailyPrompt = async (setDailyPrompt) => {
+export const generateDailyPrompt = async (setDailyPrompt) => {
   const today = new Date().toDateString();
 
   try {
@@ -134,34 +134,6 @@ function Tabs({ dailyPrompt }) {
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
 
-      <View style={styles.promptContainer}>
-        <Text style={styles.promptText}>📸 Daily Prompt:</Text>
-        <Text style={styles.prompt}>{String(dailyPrompt) || "Loading..."}</Text>
-      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  promptContainer: {
-    backgroundColor: "#1E90FF",
-    padding: 0.1,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 75,
-    width: "100%",
-  },
-  promptText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-  },
-  prompt: {
-    fontSize: 16,
-    fontStyle: "italic",
-    textAlign: "center",
-    marginTop: 5,
-    color: "#FFFFFF",
-  },
-});

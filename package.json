@@ -59,6 +59,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/jest": "^29.5.12",
+    "@types/node": "^22.13.13",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.72.8",
     "@types/react-native-vector-icons": "^6.4.18",

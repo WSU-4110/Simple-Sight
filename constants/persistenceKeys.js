@@ -3,6 +3,4 @@ export const persistentKeys = {
     //keys for notification time range
     startTimeKey: "kStartTime",
     endTimeKey: "kEndTime",
-
-    //NEXT SET
 }

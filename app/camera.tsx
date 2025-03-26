@@ -5,6 +5,8 @@ import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebaseconfig";
+import PromptContainer from './promptContainer';
+import { colors } from '@/constants/colors'
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -91,6 +93,10 @@ import { storage } from "./firebaseconfig";
       facing={facing}
       flash={flashMode}
     >
+      <View style={styles.promptContainer}>
+        <PromptContainer/>
+      </View>
+
       <View style={styles.shutterContainer}>
         <Pressable onPress={toggleFlashMode} style={styles.iconButton}>
           <Ionicons name={flashMode === 'off' ? 'flash-off-outline' : 'flash-outline'} size={iconSize} color="white" />
@@ -117,6 +123,10 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     width: "100%",
+  },
+  promptContainer: {
+    backgroundColor: colors.prmoptContainerBackground,
+    paddingTop: '15%',
   },
   shutterContainer: {
     position: "absolute",
