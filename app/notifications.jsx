@@ -1,30 +1,33 @@
 import * as Notifications from 'expo-notifications';
-import { Alert } from 'react-native';
+import { Alert, Button } from 'react-native';
 import { fetchStartTime, fetchEndTime } from './settings';
 import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
 
+//define settings for notification handler
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
+});
+
 export async function requestPermissions() {
     const { status } = await Notifications.getPermissionsAsync(); //retunrs current status of notification permissions
-    console.log(status)
-    if (status !== 'granted') {
-        status = await Notifications.requestPermissionsAsync();
+    const scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
+    console.log(status);
+    console.log(scheduledNotifications.length);
 
-        if (status === 'granted') {    
-            scheduleDailyNotification();
-        } else {
-            Alert.alert('Permission Required', 'Please enable notifications in settings.');
-            return;
-        }
+    if (status != Notifications.PermissionStatus.GRANTED) {
+        console.log("Entered")
+        Alert.alert('Permission Required', 'Please enable notifications in settings.', <Button title='Enable notifications' onPress={requestPermissions}/>);
+        return;
+    } 
+    console.log("hello")
+    if (status == Notifications.PermissionStatus.GRANTED && scheduledNotifications.length == 0) {    
+        console.log("scheduling notification");
+        await scheduleDailyNotification();
     }
-
-    //define settings for notification handler
-    Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: true,
-        }),
-    });
 }
 
 export async function scheduleDailyNotification() { 
