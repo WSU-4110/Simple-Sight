@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from './feed';
 import Gallery from './gallery';
+import { useNavigation, useRouter } from 'expo-router';
 import Settings from './settings';
 import Camera from './camera';
 import { requestPermissions } from './notifications';
 import * as Notifications from 'expo-notifications';
-import { useNavigation, useRouter } from 'expo-router';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebaseconfig';
-import Welcome from './welcome'; // your login screen
 
 const prompts = [
   "Take a picture of a flower blooming. 🌸",
@@ -36,11 +33,7 @@ const prompts = [
   "Capture something symmetrical. 🔳",
 ];
 
-<<<<<<< HEAD
 export const generateDailyPrompt = async (setDailyPrompt) => {
-=======
-const generateDailyPrompt = async (setDailyPrompt) => {
->>>>>>> Kailiebranch
   const today = new Date().toDateString();
 
   try {
@@ -65,24 +58,8 @@ const Tab = createBottomTabNavigator();
 
 export default function Home() {
   const [dailyPrompt, setDailyPrompt] = useState("");
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-<<<<<<< HEAD
-  // 🔐 Firebase auth state listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  // 📆 Daily prompt & notification setup
-=======
->>>>>>> Kailiebranch
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
     requestPermissions();
@@ -97,20 +74,6 @@ export default function Home() {
 
     return () => subscription.remove();
   }, []);
-
-  // ⏳ Loading screen while checking auth
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#1E90FF" />
-      </View>
-    );
-  }
-
-  // 🔒 If user not logged in, show Welcome/login screen
-  if (!user) {
-    return <Welcome />;
-  }
 
   return (
     <Stack.Navigator>
@@ -170,38 +133,7 @@ function Tabs({ dailyPrompt }) {
         <Tab.Screen name="Camera" component={Camera} options={{ headerShown: false }} />
         <Tab.Screen name="Gallery" component={Gallery} />
       </Tab.Navigator>
+
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-<<<<<<< HEAD
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-=======
-  promptContainer: {
-    backgroundColor: "#1E90FF",
-    padding: 0.1,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 75,
-    width: "100%",
-  },
-  promptText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-  },
-  prompt: {
-    fontSize: 16,
-    fontStyle: "italic",
-    textAlign: "center",
-    marginTop: 5,
-    color: "#FFFFFF",
-  },
->>>>>>> Kailiebranch
-});
