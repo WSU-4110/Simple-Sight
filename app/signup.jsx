@@ -6,6 +6,7 @@ import{auth,db} from './firebaseconfig'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient';
+import {getDoc} from 'firebase/firestore';
 
 //reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
@@ -41,7 +42,39 @@ export default function Signup() {
             setLoading(false);
         }
     };
-
+    const handleLogin = async () => {
+        setLoading(true);
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+    
+            console.log("User signed in:", user.uid);
+    
+            if (stayLoggedIn) {
+                await AsyncStorage.setItem('stayLoggedIn', 'true');
+            } else {
+                await AsyncStorage.removeItem('stayLoggedIn'); // Remove if they didn’t choose stay logged in
+            }
+    
+            // Fetch and store username
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                const fetchedUsername = userDoc.data().username;
+                await AsyncStorage.setItem("username", fetchedUsername);
+                console.log("Stored username in AsyncStorage:", fetchedUsername);
+            } else {
+                console.log("No username found in Firestore");
+            }
+    
+            navigation.replace('home');
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    /*
     const handleLogin = async () => {
         setLoading(true);
         try {
@@ -56,6 +89,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
+    */
 
     return (
         <View style={styles.container}>
