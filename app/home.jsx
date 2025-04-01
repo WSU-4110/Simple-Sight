@@ -36,7 +36,11 @@ const prompts = [
   "Capture something symmetrical. 🔳",
 ];
 
+<<<<<<< HEAD
 export const generateDailyPrompt = async (setDailyPrompt) => {
+=======
+const generateDailyPrompt = async (setDailyPrompt) => {
+>>>>>>> Kailiebranch
   const today = new Date().toDateString();
 
   try {
@@ -65,6 +69,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+<<<<<<< HEAD
   // 🔐 Firebase auth state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -76,6 +81,8 @@ export default function Home() {
   }, []);
 
   // 📆 Daily prompt & notification setup
+=======
+>>>>>>> Kailiebranch
   useEffect(() => {
     generateDailyPrompt(setDailyPrompt);
     requestPermissions();
@@ -168,9 +175,33 @@ function Tabs({ dailyPrompt }) {
 }
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+=======
+  promptContainer: {
+    backgroundColor: "#1E90FF",
+    padding: 0.1,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 75,
+    width: "100%",
+  },
+  promptText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+  prompt: {
+    fontSize: 16,
+    fontStyle: "italic",
+    textAlign: "center",
+    marginTop: 5,
+    color: "#FFFFFF",
+  },
+>>>>>>> Kailiebranch
 });
