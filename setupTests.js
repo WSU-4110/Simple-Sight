@@ -14,3 +14,9 @@ jest.mock('expo-notifications', () => ({
   setNotificationHandler: jest.fn(),
   getAllScheduledNotificationsAsync: jest.fn(),
 }));
+
+//mock firebase
+// jest.mock('firebase/app');
+// jest.mock('firebase/auth');
+// jest.mock('firebase/firestore');
+// jest.mock('firebase/storage');

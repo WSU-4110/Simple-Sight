@@ -1,4 +1,4 @@
-const { scheduleNotificationAsync, getAllScheduledNotificationsAsync } = require('expo-notifications');
+const { scheduleNotificationAsync, getAllScheduledNotificationsAsync, requestPermissionsAsync, getPermissionsAsync } = require('expo-notifications');
 const { getRandomInt } = require('../utils/randomInt.jsx');
 
 test('Test random int function used in random time generation', () => {
@@ -7,7 +7,14 @@ test('Test random int function used in random time generation', () => {
     expect(randNum).toBeGreaterThanOrEqual(0);
 });
 
-test('Notifications can be set', async () => {
+test('Notifications can be enabled and permissions can be retrieved', async () => {
+    const request = await requestPermissionsAsync();
+    const permissions = await getPermissionsAsync();
+
+    expect(request.granted === permissions.granted).toBeTruthy();
+});
+
+test('Notifications can be stored', async () => {
 
     //create notification
     const now = new Date();
@@ -29,4 +36,4 @@ test('Notifications can be set', async () => {
     const allNotifications = await getAllScheduledNotificationsAsync();
 
     expect(allNotifications).toEqual([notificationIdentifier]);
-})
+});
