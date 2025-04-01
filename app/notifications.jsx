@@ -54,9 +54,6 @@ export async function scheduleDailyNotification() {
 }
 
 export async function scheduleNotificationNow() {
-    await Notifications.cancelAllScheduledNotificationsAsync(); // Prevent duplicates
-
-    //schedule notificaiton
     await Notifications.scheduleNotificationAsync({
         content: {
             title: "Simple Sight",
