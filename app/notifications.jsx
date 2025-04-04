@@ -2,7 +2,6 @@ import * as Notifications from 'expo-notifications';
 import { Alert, Button } from 'react-native';
 import { fetchStartTime, fetchEndTime } from './settings';
 import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
-import { start } from 'repl';
 
 //define settings for notification handler
 Notifications.setNotificationHandler({
