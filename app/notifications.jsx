@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import { Alert, Button } from 'react-native';
 import { fetchStartTime, fetchEndTime } from './settings';
 import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
+import { start } from 'repl';
 
 //define settings for notification handler
 Notifications.setNotificationHandler({
@@ -57,7 +58,7 @@ export async function scheduleDailyNotification() {
 }
 
 export async function scheduleNotificationNow() {
-    await Notifications.scheduleNotificationAsync({
+    return await Notifications.scheduleNotificationAsync({
         content: {
             title: "Simple Sight",
             body: "Simple Sight says hello!",
@@ -79,9 +80,9 @@ export async function disableNotifications() {
 // returns Date object with a random minute and hour value
 // use to determine a random time to deliver notification to user
 // accepts two parameters of type Date
-export async function getRandomTime() { 
-    let startTime = await fetchStartTime();
-    let endTime = await fetchEndTime();
+export async function getRandomTime(startTime = undefined, endTime = undefined) {
+    if (!startTime) startTime = await fetchStartTime();
+    if (!endTime) endTime = await fetchEndTime();
 
     // get the total amount of minutes elapsed (since midnight) of the selected start and end times
     let totalstartTimeMinutes = startTime.getHours() * 60 + startTime.getMinutes();

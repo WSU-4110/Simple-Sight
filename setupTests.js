@@ -4,19 +4,48 @@ import MockAsyncStorage from 'mock-async-storage';
 const mockImpl = new MockAsyncStorage();
 jest.mock('@react-native-async-storage/async-storage', () => mockImpl);
 
+
 //mock notifications
 jest.mock('expo-notifications', () => ({
-  addNotificationReceivedListener: jest.fn(),
-  addNotificationResponseReceivedListener: jest.fn(),
   requestPermissionsAsync: jest.fn().mockResolvedValue({ granted: true }),
   getPermissionsAsync: jest.fn().mockResolvedValue({ granted: true }),
-  scheduleNotificationAsync: jest.fn(),
+  scheduleNotificationAsync: jest.fn().mockResolvedValue('notification-identifier'),
   setNotificationHandler: jest.fn(),
-  getAllScheduledNotificationsAsync: jest.fn(),
 }));
 
+
 //mock firebase
-// jest.mock('firebase/app');
-// jest.mock('firebase/auth');
-// jest.mock('firebase/firestore');
-// jest.mock('firebase/storage');
+jest.mock('firebase/app');
+jest.mock('firebase/auth');
+jest.mock('firebase/firestore');
+jest.mock('firebase/storage');
+
+
+//mock navigation
+jest.mock('expo-router', () => ({
+  useNavigation: () => ({
+    navigate: jest.fn(),
+    push: jest.fn(),
+    replace: jest.fn(),
+    goBack: jest.fn(),
+  }),
+}));
+
+
+//mock expo background task functions
+jest.mock('expo-task-manager', () => ({
+  defineTask: jest.fn(),
+  isTaskDefined: jest.fn().mockReturnValue(false),
+  unregisterAllTasksAsync: jest.fn().mockResolvedValue(undefined),
+}));
+
+jest.mock('expo-background-fetch', () => ({
+  BackgroundFetchStatus: {
+    AVAILABLE: 'available',
+    DENIED: 'denied',
+    RESTRICTED: 'restricted',
+  },
+  registerTaskAsync: jest.fn().mockResolvedValue(undefined),
+  unregisterTaskAsync: jest.fn().mockResolvedValue(undefined),
+  getStatusAsync: jest.fn().mockResolvedValue('available'),
+}));

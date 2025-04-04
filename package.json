@@ -18,7 +18,7 @@
     },
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)",
-      "node_modules/(?!(expo|expo-modules-core|expo-notifications|expo-camera|expo-image|react-native|@react-native-community/datetimepicker|react-native-async-storage|@react-native|firebase/.*|mock-async-storage|@firebase/.*)/)"
+      "node_modules/(?!(expo|expo-modules-core|expo-notifications|expo-router|expo-camera|expo-image|react-native|@react-native-community/datetimepicker|react-native-async-storage|@react-native|firebase/.*|mock-async-storage|@firebase/.*)/)"
     ],
     "setupFilesAfterEnv": [
       "./setupTests.js"
@@ -30,7 +30,10 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(png|jpg|jpeg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
   },
   "dependencies": {
     "@babel/highlight": "^7.25.9",
