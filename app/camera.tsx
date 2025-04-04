@@ -7,6 +7,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "fire
 import { storage } from "./firebaseconfig";
 import PromptContainer from './promptContainer';
 import { colors } from '@/constants/colors'
+import { useIsFocused } from "@react-navigation/native";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -15,6 +16,7 @@ import { colors } from '@/constants/colors'
     const [facing, setFacing] = useState<CameraType>("back");
     const [flashMode, setFlashMode] = useState<FlashMode>('off');
     const iconSize: number = 32;
+    const isFocused = useIsFocused();
   
     if (!permission) {
       requestPermission()
@@ -85,7 +87,7 @@ import { colors } from '@/constants/colors'
     </View>
   );
 
-  const renderCamera = () => (
+  const renderCamera = () => (isFocused ?
     <CameraView
       ref={ref}
       style={styles.camera}
@@ -108,6 +110,7 @@ import { colors } from '@/constants/colors'
         </Pressable>
       </View>
     </CameraView>
+    : null
   );
 
   return <View style={styles.container}>{uri ? renderPicture() : renderCamera()}</View>;
