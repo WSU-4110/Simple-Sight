@@ -8,6 +8,7 @@ import{auth,db} from './firebaseconfig'
 import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
+import { onAuthStateChanged } from 'firebase/auth';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -92,6 +93,57 @@ export default function Settings() {
   }, []); // Runs only when the component mounts
 
   //fetch usernmae from firestore using UID expo go
+  useEffect(() => {
+    const loadUsernameFromStorage = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem("username");
+        if (storedUsername) {
+          console.log("Loaded username from AsyncStorage:", storedUsername);
+          setUsername(storedUsername);
+        } else {
+          console.log("No username found in AsyncStorage, checking Firebase...");
+        }
+      } catch (error) {
+        console.error("Error loading username from AsyncStorage:", error);
+      }
+    };
+  
+    loadUsernameFromStorage(); // Load stored username before setting up Firebase listener
+  
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log("User authenticated:", user.uid);
+  
+        try {
+          // Fetch username from Firestore
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+  
+          if (userDoc.exists()) {
+            const fetchedUsername = userDoc.data().username || "User";
+            console.log("Fetched username from Firestore:", fetchedUsername);
+            setUsername(fetchedUsername);
+  
+            // Store in AsyncStorage for persistence
+            await AsyncStorage.setItem("username", fetchedUsername);
+            console.log("Username stored in AsyncStorage.");
+          } else {
+            console.log("User document not found in Firestore.");
+            setUsername("User not found");
+          }
+        } catch (error) {
+          console.error("Error fetching username:", error);
+          setUsername("Error loading username");
+        }
+      } else {
+        console.log("No authenticated user found.");
+        setUsername("Guest");
+      }
+    });
+  
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, []);
+  /*
   useEffect(() =>{
     async function fetchUsername() {
       try{
@@ -117,7 +169,7 @@ export default function Settings() {
     }
     fetchUsername();
   },[]);
-
+  */
   //Function to update usernmae in firestore expo go
   const updateUsername = async () => {
     try{
@@ -175,6 +227,21 @@ export default function Settings() {
     setLoading(true);
     try {
       await signOut(auth);
+      await AsyncStorage.removeItem("username");  // Clear stored username
+      await AsyncStorage.removeItem("stayLoggedIn");
+      console.log("User logged out and stayLoggedIn removed");
+      navigation.replace("welcome");
+    } catch (error) {
+      console.error("Logout error: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  /*
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await signOut(auth);
       await AsyncStorage.removeItem('stayLoggedIn');
       console.log('User logged out and stayLoggedIn removed');
       navigation.replace('welcome');
@@ -184,6 +251,7 @@ export default function Settings() {
       setLoading(false);
     }
   };
+  */
 
   // Toggle stayLoggedIn state and save it to AsyncStorage in expo go
   const toggleStayLoggedIn = async (value) => {
