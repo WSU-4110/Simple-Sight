@@ -20,37 +20,6 @@ export default function Signup() {
     const navigation = useNavigation();
 
     useEffect(() => {
-        const autoLogin = async () => {
-            const stayLoggedIn = await AsyncStorage.getItem('stayLoggedIn');
-            const savedEmail = await AsyncStorage.getItem('email');
-            const savedPassword = await AsyncStorage.getItem('password');
-    
-            if (stayLoggedIn === 'true' && savedEmail && savedPassword) {
-                try {
-                    const userCredential = await signInWithEmailAndPassword(auth, savedEmail, savedPassword);
-                    console.log("Auto-logged in user:", userCredential.user.uid);
-    
-                    const userDocRef = doc(db, "users", userCredential.user.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    if (userDoc.exists()) {
-                        const fetchedUsername = userDoc.data().username;
-                        await AsyncStorage.setItem("username", fetchedUsername);
-                        console.log("Restored username in AsyncStorage:", fetchedUsername);
-                    }
-    
-                    navigation.replace('home');
-                } catch (err) {
-                    console.log("Auto-login failed:", err.message);
-                }
-            } else {
-                console.log("No authenticated user found.");
-            }
-        };
-    
-        autoLogin();
-    }, []);
-
-    useEffect(() => {
         AsyncStorage.getItem('stayLoggedIn').then(value => {
             if (value === 'true') {
                 navigation.replace('home');
@@ -75,42 +44,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
-    const handleLogin = async () => {
-        setLoading(true);
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
     
-            console.log("User signed in:", user.uid);
-    
-            if (stayLoggedIn) {
-                await AsyncStorage.multiSet([
-                    ['stayLoggedIn', 'true'],
-                    ['email', email],
-                    ['password', password]
-                ]);
-            } else {
-                await AsyncStorage.multiRemove(['stayLoggedIn', 'email', 'password']);
-            }
-    
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists()) {
-                const fetchedUsername = userDoc.data().username;
-                await AsyncStorage.setItem("username", fetchedUsername);
-                console.log("Stored username in AsyncStorage:", fetchedUsername);
-            } else {
-                console.log("No username found in Firestore");
-            }
-    
-            navigation.replace('home');
-        } catch (error) {
-            setMessage(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-    /*
     const handleLogin = async () => {
         setLoading(true);
         try {
@@ -143,7 +77,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
-    */
+    
     /*
     const handleLogin = async () => {
         setLoading(true);
