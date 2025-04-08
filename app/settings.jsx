@@ -8,7 +8,7 @@ import{auth,db} from './firebaseconfig'
 import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
-import { onAuthStateChanged } from 'firebase/auth';
+import { getAuth,onAuthStateChanged } from 'firebase/auth';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
