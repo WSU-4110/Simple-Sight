@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, Switch, ScrollView, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Switch, ScrollView, TouchableOpacity, Button, Alert } from 'react-native';
 import React, { useEffect, useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
@@ -9,7 +9,6 @@ import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
 import { getAuth,onAuthStateChanged } from 'firebase/auth';
-import { Alert } from 'react-native';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -316,17 +315,22 @@ export default function Settings() {
         )}
       </View>
 
+      {/* Notification Toggle Section */}
       <View style={styles.switchField}>
         <Text style={styles.label}>Enable Notifications</Text>
-        <Switch 
-          value={notificationsEnabled} 
-          onValueChange={() => {
-            setNotificationsEnabled(notificationsEnabled); 
-            notificationsEnabled ? scheduleDailyNotification() : disableNotifications();
-          }} 
+        <Switch
+          value={notificationsEnabled}
+          onValueChange={async (value) => {
+            setNotificationsEnabled(value);
+            await AsyncStorage.setItem('notificationsEnabled', JSON.stringify(value));
+            if (value) {
+              scheduleDailyNotification();  // Schedule daily notification if enabled
+            } else {
+              disableNotifications();  // Disable notifications if toggled off
+            }
+          }}
         />
       </View>
-
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Log Out</Text>
@@ -383,3 +387,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
