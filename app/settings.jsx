@@ -63,8 +63,8 @@ export default function Settings() {
   const [endTime, setEndTime] = useState(null);
   const [randomTime, setRandomTime] = useState(null);
 
-  const [showStartPicker, setShowStartPicker] = useState(true);
-  const [showEndPicker, setShowEndPicker] = useState(true);
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
 
   // Load saved times
   useEffect(() => {
@@ -204,14 +204,26 @@ export default function Settings() {
       </View>
       <Button title="Save Username" onPress={updateUsername} />
 
-      {/* Notification time window */}
-      <View>
-        <Text>From</Text>
-        <TouchableOpacity onPress={() => setShowStartPicker(true)}>
-          <Text style={styles.timeText}>
-            {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </Text>
-        </TouchableOpacity>
+      {/* Notification time window - cleaned layout */}
+      <View style={{ marginVertical: 20 }}>
+        <Text style={{ textAlign: 'center', fontSize: 16, fontWeight: '500', marginBottom: 10 }}>
+          Notification Window
+        </Text>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => setShowStartPicker(true)}>
+            <Text style={styles.timeText}>
+              From: {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setShowEndPicker(true)}>
+            <Text style={styles.timeText}>
+              Until: {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {showStartPicker && (
           <DateTimePicker
             display="default"
@@ -220,13 +232,6 @@ export default function Settings() {
             onChange={handleStartTimeChange}
           />
         )}
-
-        <Text>Until</Text>
-        <TouchableOpacity onPress={() => setShowEndPicker(true)}>
-          <Text style={styles.timeText}>
-            {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </Text>
-        </TouchableOpacity>
         {showEndPicker && (
           <DateTimePicker
             display="default"
@@ -237,12 +242,11 @@ export default function Settings() {
         )}
       </View>
 
-      {/* FIXED NOTIFICATION TOGGLE */}
+      {/* Notification Toggle */}
       <View style={styles.switchField}>
         <Text style={styles.label}>Enable Notifications</Text>
         <Switch
           value={notificationsEnabled}
-          //Fixed: now uses passed value and saves it
           onValueChange={async (value) => {
             setNotificationsEnabled(value);
             await AsyncStorage.setItem('notificationsEnabled', JSON.stringify(value));
@@ -310,4 +314,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  timeText: {
+    fontSize: 16,
+    color: '#000',
+    paddingVertical: 10,
+  }
 });
