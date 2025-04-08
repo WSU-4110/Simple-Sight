@@ -8,6 +8,7 @@ import {doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getDoc} from 'firebase/firestore';
 
+
 //reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
     const [email, setEmail] = useState('');
