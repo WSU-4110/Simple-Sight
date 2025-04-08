@@ -6,8 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { disableNotifications, getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
 import{auth,db} from './firebaseconfig'
 import{doc,getDoc,updateDoc} from 'firebase/firestore'
+import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -225,7 +226,7 @@ export default function Settings() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await auth.signOut()
+      await signOut(auth);
       await AsyncStorage.removeItem("username");  // Clear stored username
       await AsyncStorage.removeItem("stayLoggedIn");
       console.log("User logged out and stayLoggedIn removed");

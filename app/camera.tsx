@@ -4,11 +4,10 @@ import { Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from "rea
 import { Image } from "expo-image";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage,db } from "./firebaseconfig";
+import { storage } from "./firebaseconfig";
 import PromptContainer from './promptContainer';
 import { colors } from '@/constants/colors'
 import { useIsFocused } from "@react-navigation/native";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -66,13 +65,6 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
       const fileRef = storageRef(storage, filename);
       await uploadBytes(fileRef, blob);
       const downloadURL = await getDownloadURL(fileRef);
-
-      //save url to firestore as well
-      await addDoc(collection(db,"photos"),{
-        imageUrl: downloadURL,
-        createdAt: serverTimestamp()
-      });
-      
       console.log("Uploaded successfully: ", downloadURL);
       setUri(undefined);
     } catch (error) {
