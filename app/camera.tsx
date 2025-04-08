@@ -8,7 +8,8 @@ import { storage,db } from "./firebaseconfig";
 import PromptContainer from './promptContainer';
 import { colors } from '@/constants/colors'
 import { useIsFocused } from "@react-navigation/native";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc,addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
   export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -18,7 +19,8 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
     const [flashMode, setFlashMode] = useState<FlashMode>('off');
     const iconSize: number = 32;
     const isFocused = useIsFocused();
-  
+   
+
     if (!permission) {
       requestPermission()
       return null;
@@ -60,6 +62,17 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
   const uploadPhoto = async () => {
     if (!uri) return;
     try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if(!user){
+        alert("User not authenticated");
+        return;
+      }
+      //Fetch username from firestore
+      const userDocRef = doc(db,"users",user.uid);
+      const userDoc = await getDoc(userDocRef);
+      const username = userDoc.exists() ? userDoc.data().username : "Anonymous";
+
       const response = await fetch(uri);
       const blob = await response.blob();
       const filename = `photos/${Date.now()}.jpg`;
@@ -67,10 +80,13 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
       await uploadBytes(fileRef, blob);
       const downloadURL = await getDownloadURL(fileRef);
 
-      //save url to firestore as well
+      //save url,date,username to firestore when uploading photo
       await addDoc(collection(db,"photos"),{
         imageUrl: downloadURL,
         createdAt: serverTimestamp(),
+        userId: user.uid,
+        username: username,
+
       });
 
       console.log("Uploaded successfully: ", downloadURL);

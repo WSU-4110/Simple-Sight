@@ -37,6 +37,12 @@ export default function Feed() {
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
     return(
       <View style={styles.card}>
+        {/* New: username*/}
+        {item.username && (
+          <View style={styles.usernameContainer}>
+            <Text style={styles.username}>{item.username}</Text>
+          </View>
+        )}
         <Image source={{ uri: item.imageUrl }} style={styles.image} />
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
         <View style={styles.textContainer}>
@@ -108,8 +114,24 @@ const styles = StyleSheet.create({
   },
   date:{
     color: '#fff',
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: '400',
     marginTop: 5,
   },
+  usernameContainer:{
+    paddingHorizontal:10,
+    paddingVertical:6,
+    backgroundColor: '#f8d5e5',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  username:{
+    fontFamily: 'Garamond',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    marginLeft: 10,
+    marginTop: 6,
+    color: '#4a4a4a',
+  }
 });
