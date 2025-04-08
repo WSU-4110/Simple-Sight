@@ -70,9 +70,9 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
       //save url to firestore as well
       await addDoc(collection(db,"photos"),{
         imageUrl: downloadURL,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
       });
-      
+
       console.log("Uploaded successfully: ", downloadURL);
       setUri(undefined);
     } catch (error) {

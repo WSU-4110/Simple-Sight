@@ -45,6 +45,7 @@
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "babel-preset-expo": "~12.0.0",
+    "date-fns": "^4.1.0",
     "expo": "~52.0.27",
     "expo-background-fetch": "^13.0.5",
     "expo-blur": "~14.0.2",

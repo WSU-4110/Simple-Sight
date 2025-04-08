@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {format} from 'date-fns';
 
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot} from 'firebase/firestore';
@@ -32,6 +33,20 @@ export default function Feed() {
     return unsubscribe;
   }, []);
 
+  const renderItem = ({item}) =>{
+    const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
+    return(
+      <View style={styles.card}>
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
+        <View style={styles.textContainer}>
+          {item.description && <Text style={styles.description}>{item.description}</Text>}
+          <Text style={styles.date}>{formattedDate}</Text>
+        </View>
+      </View>
+    );
+  };
+/*
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
@@ -41,7 +56,7 @@ export default function Feed() {
       </View>
     </View>
   );
-
+*/
   return (
     <FlatList
       data={posts}
@@ -90,5 +105,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  date:{
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '400',
+    marginTop: 5,
   },
 });
