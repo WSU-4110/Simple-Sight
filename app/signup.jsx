@@ -7,6 +7,7 @@ import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fireb
 import {doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getDoc} from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 //reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
@@ -26,6 +27,7 @@ export default function Signup() {
         });
     }, []);
 
+
     const handleSignup = async () => {
         setLoading(true);
         try {
@@ -42,6 +44,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
+    
     const handleLogin = async () => {
         setLoading(true);
         try {
@@ -74,6 +77,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
+    
     /*
     const handleLogin = async () => {
         setLoading(true);
@@ -90,6 +94,7 @@ export default function Signup() {
         }
     };
     */
+
 
     return (
         <View style={styles.container}>
