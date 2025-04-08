@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {db} from './firebaseconfig';
-import {collection, query, orderBy, onSnapshot} from 'firebase/firestore';
-
 export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [dailyPrompt, setDailyPrompt] = useState('');
@@ -15,25 +12,12 @@ export default function Feed() {
       const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
       if (storedPrompt) {
         setDailyPrompt(storedPrompt);
-        //setExamplePosts(storedPrompt);
+        setExamplePosts(storedPrompt);
       }
     };
     fetchPrompt();
-    //fetch posts from firestore
-    const q = query(collection(db, 'photos'), orderBy('createdAt','desc'));
-    const unsubscribe = onSnapshot(q, (snapshot)=>{
-      const photolist = snapshot.docs.map(doc=>({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPosts(photolist);
-    });
-
-    return unsubscribe;
   }, []);
 
-
-/*
   const setExamplePosts = (prompt) => {
     const promptLower = prompt.toLowerCase();
     let examplePosts = [];
@@ -70,13 +54,13 @@ export default function Feed() {
 
     setPosts(examplePosts);
   };
-*/
+
   const renderItem = ({ item }) => (
     <View style={styles.card}>
-      <Image source={{ uri: item.imageUrl }} style={styles.image} />
+      <Image source={{ uri: item.image }} style={styles.image} />
       <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
       <View style={styles.textContainer}>
-        {item.description && <Text style={styles.description}>{item.description}</Text>}
+        <Text style={styles.description}>{item.description}</Text>
       </View>
     </View>
   );
@@ -95,12 +79,6 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 12,
   },
-  promptText:{
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 10,
-    marginLeft: 4,
-  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -110,8 +88,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height:550,
-    resizeMode:'cover',
+    height: 250,
   },
   gradientOverlay: {
     position: 'absolute',
