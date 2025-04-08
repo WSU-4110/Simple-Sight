@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {format} from 'date-fns';
 
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot} from 'firebase/firestore';
@@ -32,6 +33,26 @@ export default function Feed() {
     return unsubscribe;
   }, []);
 
+  const renderItem = ({item}) =>{
+    const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
+    return(
+      <View style={styles.card}>
+        {/* New: username*/}
+        {item.username && (
+          <View style={styles.usernameContainer}>
+            <Text style={styles.username}>{item.username}</Text>
+          </View>
+        )}
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
+        <View style={styles.textContainer}>
+          {item.description && <Text style={styles.description}>{item.description}</Text>}
+          <Text style={styles.date}>{formattedDate}</Text>
+        </View>
+      </View>
+    );
+  };
+/*
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
@@ -41,7 +62,7 @@ export default function Feed() {
       </View>
     </View>
   );
-
+*/
   return (
     <FlatList
       data={posts}
@@ -91,4 +112,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  date:{
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '400',
+    marginTop: 5,
+  },
+  usernameContainer:{
+    paddingHorizontal:10,
+    paddingVertical:6,
+    backgroundColor: '#f8d5e5',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  username:{
+    fontFamily: 'Garamond',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    marginLeft: 10,
+    marginTop: 6,
+    color: '#4a4a4a',
+  }
 });

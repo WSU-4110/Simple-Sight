@@ -9,6 +9,7 @@ import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
 import { getAuth,onAuthStateChanged } from 'firebase/auth';
+import { Alert } from 'react-native';
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
