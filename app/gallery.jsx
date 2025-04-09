@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import {format} from 'date-fns';
 
 import {collection,query,where,orderBy,onSnapshot} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth';
@@ -55,6 +56,7 @@ export default function Gallery() {
       const userImages = snapshot.docs.map((doc)=>({
         id:doc.id,
         uri: doc.data().imageUrl,
+        createdAt: doc.data().createdAt,
         //name: 'Photo',
 
       }));
@@ -65,16 +67,22 @@ export default function Gallery() {
     return() => unsubscribe();
   },[]);
 
-  const renderItem = ({item})=> (
-    <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]}>
-      <Image source = {{uri: item.uri}} style = {styles.image}/>
-      <LinearGradient
-        colors = {['transparent','rgba(0,0,0,0.5)']}
-        style = {styles.overlay}>
-          <Text style={styles.imageLabel}>{item.name}</Text>
+  const renderItem = ({item})=> {
+    //format the date
+    const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
+    return(
+      <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]}>
+        <Image source = {{uri: item.uri}} style = {styles.image}/>
+        <LinearGradient
+          colors = {['transparent','rgba(0,0,0,0.5)']}
+          style = {styles.overlay}>
+            <Text style={styles.imageLabel}>{item.name}</Text>
+            {/*Add date to image*/}
+            <Text style={styles.dateLabel}>{formattedDate}</Text>
         </LinearGradient>
-    </View>
-  );
+      </View>
+    );
+  };
 
   /*
   const renderItem = ({ item }) => (
@@ -145,5 +153,11 @@ const styles = StyleSheet.create({
   imageLabel: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  dateLabel:{
+    color:'#fff',
+    fontSize:12,
+    fontWeight: '400',
+    marginTop: 4,
   },
 });
