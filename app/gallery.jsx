@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import {collection,query,where,orderBy,onSnapshot} from 'firebase/firestore'
+import {getAuth} from 'firebase/auth';
+import {db} from './firebaseconfig';
+
 export default function Gallery() {
-  const [images, setImages] = useState([
-    { id: '1', uri: null, name: 'Image 1' },
-    { id: '2', uri: null, name: 'Image 2' },
-    { id: '3', uri: null, name: 'Image 3' },
-    { id: '4', uri: null, name: 'Image 4' },
-    { id: '5', uri: null, name: 'Image 5' },
-    { id: '6', uri: null, name: 'Image 6' },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
 
+  /*
   const handleTakePicture = (id) => {
     const dummyImage = 'https://via.placeholder.com/200.png?text=User+Photo';
     setImages(prevImages =>
       prevImages.map(img => (img.id === id ? { ...img, uri: dummyImage } : img))
     );
   };
+  
 
   const loadMoreImages = () => {
     if (!loading) {
@@ -37,7 +36,41 @@ export default function Gallery() {
       }, 1000);
     }
   };
+  */
 
+  useEffect(()=>{
+    const auth = getAuth();
+    const user = auth.currentUser;
+    //query to only pull photos with the current users uid
+    if(!user) return;
+    const q = query(
+      collection(db, 'photos'),
+      where('userId','==', user.uid)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const userImages = snapshot.docs.map((doc)=>({
+        id:doc.id,
+        uri: doc.data().imageUrl,
+        name: 'Photo',
+      }));
+      setImages(userImages);
+      setLoading(false);
+    });
+    return() => unsubscribe();
+  },[]);
+
+  const renderItem = ({item})=> (
+    <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]}>
+      <Image source = {{uri: item.uri}} style = {styles.image}/>
+      <LinearGradient
+        colors = {['transparent','rgba(0,0,0,0.5)']}
+        style = {styles.overlay}>
+          <Text style={styles.imageLabel}>{item.name}</Text>
+        </LinearGradient>
+    </View>
+  );
+
+  /*
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
@@ -63,18 +96,22 @@ export default function Gallery() {
       </LinearGradient>
     </TouchableOpacity>
   );
+  */
 
   return (
-    <FlatList
-      data={images}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      numColumns={numColumns}
-      contentContainerStyle={styles.container}
-      onEndReached={loadMoreImages}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={loading ? <ActivityIndicator size="large" color="#1E90FF" /> : null}
-    />
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator size = "large" color="#1E90FF"/>
+      ):(
+        <FlatList
+          data={images}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={numColumns}
+          contentContainerStyle={{paddingBottom: 24}}
+        />
+      )}
+    </View>
   );
 }
 
@@ -82,6 +119,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 12,
     backgroundColor: '#f5f5f5',
+    flex: 1,
   },
   imageWrapper: {
     margin: 8,
@@ -92,15 +130,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-  },
-  placeholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ddd',
-  },
-  placeholderText: {
-    fontSize: 14,
-    color: '#555',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

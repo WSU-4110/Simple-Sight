@@ -41,7 +41,7 @@ export default function Feed() {
             userMap[uid] = 'Unknown';
           }
         }catch(error){
-          console.error('Error fetching user for UID ${uid}:',error);
+          console.error('Error fetching user for UID- ',uid,": ",error);
           userMap[uid] = 'Unknown';
         }
       }));
