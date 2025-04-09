@@ -16,7 +16,6 @@ export default function Feed() {
       const storedPrompt = await AsyncStorage.getItem("dailyPrompt");
       if (storedPrompt) {
         setDailyPrompt(storedPrompt);
-        //setExamplePosts(storedPrompt);
       }
     };
     fetchPrompt();
@@ -52,8 +51,6 @@ export default function Feed() {
         username: userMap[photo.userId],
       }));
       setPosts(postsWithUsernames);
-
-      //setPosts(photolist);
     });
     return unsubscribe;
   }, []);
@@ -62,7 +59,7 @@ export default function Feed() {
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
     return(
       <View style={styles.card}>
-        {/* New: username*/}
+        {/* Display username*/}
         {item.username && (
           <View style={styles.usernameContainer}>
             <Text style={styles.username}>{item.username}</Text>
@@ -77,17 +74,7 @@ export default function Feed() {
       </View>
     );
   };
-/*
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={{ uri: item.imageUrl }} style={styles.image} />
-      <LinearGradient colors={['transparent', 'rgba(0,0,0,0.6)']} style={styles.gradientOverlay} />
-      <View style={styles.textContainer}>
-      {item.description && <Text style={styles.description}>{item.description}</Text>}
-      </View>
-    </View>
-  );
-*/
+
   return (
     <FlatList
       data={posts}
