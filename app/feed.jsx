@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {format} from 'date-fns';
 
 import {db} from './firebaseconfig';
-import {collection, query, orderBy, onSnapshot} from 'firebase/firestore';
+import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
@@ -23,12 +23,37 @@ export default function Feed() {
 
     //fetch posts from firestore
     const q = query(collection(db, 'photos'), orderBy('createdAt','desc'));
-    const unsubscribe = onSnapshot(q, (snapshot)=>{
+    const unsubscribe = onSnapshot(q, async(snapshot)=>{
       const photolist = snapshot.docs.map(doc=>({
         id: doc.id,
         ...doc.data(),
       }));
-      setPosts(photolist);
+      //get userId from photos
+      const userIds = [...new Set(photolist.map(photo=>photo.userId))];
+      //create map of userId -> username
+      const userMap = {};
+      await Promise.all(userIds.map(async(uid)=>{
+        try{
+          const userDoc = await getDoc(doc(db,'users',uid));
+          if(userDoc.exists()){
+            userMap[uid] = userDoc.data().username || 'User';
+          }
+          else{
+            userMap[uid] = 'Unknown';
+          }
+        }catch(error){
+          console.error('Error fetching user for UID ${uid}:',error);
+          userMap[uid] = 'Unknown';
+        }
+      }));
+      //Write username into each post
+      const postsWithUsernames = photolist.map(photo=>({
+        ...photo,
+        username: userMap[photo.userId],
+      }));
+      setPosts(postsWithUsernames);
+
+      //setPosts(photolist);
     });
     return unsubscribe;
   }, []);

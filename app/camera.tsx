@@ -85,7 +85,7 @@ import { getAuth } from "firebase/auth";
         imageUrl: downloadURL,
         createdAt: serverTimestamp(),
         userId: user.uid,
-        username: username,
+        //username: username,
 
       });
 
