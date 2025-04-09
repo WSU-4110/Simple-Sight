@@ -41,18 +41,24 @@ export default function Gallery() {
   useEffect(()=>{
     const auth = getAuth();
     const user = auth.currentUser;
-    //query to only pull photos with the current users uid
+
     if(!user) return;
+    //query to only pull photos with the current users uid
     const q = query(
       collection(db, 'photos'),
-      where('userId','==', user.uid)
+      where('userId','==', user.uid),
+      //order by newest first
+      orderBy('createdAt','desc') 
     );
+    
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const userImages = snapshot.docs.map((doc)=>({
         id:doc.id,
         uri: doc.data().imageUrl,
-        name: 'Photo',
+        //name: 'Photo',
+
       }));
+      console.log('Fetched photos:', userImages);
       setImages(userImages);
       setLoading(false);
     });
