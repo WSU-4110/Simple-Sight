@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {format} from 'date-fns';
+import {Picker} from '@react-native-picker/picker';
+import { isToday } from 'date-fns';
 
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
@@ -10,6 +12,7 @@ import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firest
 export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [dailyPrompt, setDailyPrompt] = useState('');
+  const [filter, setFilter] = useState('All');
 
   useEffect(() => {
     const fetchPrompt = async () => {
@@ -55,6 +58,14 @@ export default function Feed() {
     return unsubscribe;
   }, []);
 
+  //filter function that will filter posts with selection
+  const filteredPosts = posts.filter((post)=>{
+    if(filter == 'Today'){
+      return post.createdAt && isToday(post.createdAt.toDate());
+    }
+    return true;
+  });
+
   const renderItem = ({item}) =>{
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
     return(
@@ -76,12 +87,23 @@ export default function Feed() {
   };
 
   return (
-    <FlatList
-      data={posts}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.listContainer}
-    />
+    <View style={{flex:1}}>
+      <Picker
+        selectedValue = {filter}
+        onValueChange={(value)=>setFilter(value)}
+        style={{marginHorizontal:12}}
+      >
+        <Picker.Item label="All" value ="ALL"/>
+        <Picker.Item label="Today" value ="Today"/>
+      </Picker>
+
+      <FlatList
+        data={filteredPosts}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
   );
 }
 

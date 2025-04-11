@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {format} from 'date-fns';
+import {useRouter} from 'expo-router';
 
 import {collection,query,where,orderBy,onSnapshot} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth';
@@ -10,34 +11,10 @@ import {db} from './firebaseconfig';
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
-
-  /*
-  const handleTakePicture = (id) => {
-    const dummyImage = 'https://via.placeholder.com/200.png?text=User+Photo';
-    setImages(prevImages =>
-      prevImages.map(img => (img.id === id ? { ...img, uri: dummyImage } : img))
-    );
-  };
-  
-
-  const loadMoreImages = () => {
-    if (!loading) {
-      setLoading(true);
-      setTimeout(() => {
-        const newImages = Array.from({ length: 6 }, (_, i) => ({
-          id: (images.length + i + 1).toString(),
-          uri: null,
-          name: `Image ${images.length + i + 1}` // Ensure all new images have proper names
-        }));
-        setImages(prevImages => [...prevImages, ...newImages]);
-        setLoading(false);
-      }, 1000);
-    }
-  };
-  */
 
   useEffect(()=>{
     const auth = getAuth();
@@ -66,7 +43,147 @@ export default function Gallery() {
     });
     return() => unsubscribe();
   },[]);
+  /*
+  const renderItem = ({ item }) => {
+    const formattedDate = item.createdAt
+      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
+      : 'Unknown Date';
 
+    return (
+      <TouchableOpacity
+        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
+        onPress={() => {
+          try {
+            console.log(`Navigating to fullScreen with uri: ${item.uri}`);
+            router.push({
+              pathname: '/fullScreenImage', // Static route for fullScreen
+              query: { uri: item.uri }, // Pass the URI as a query parameter
+            });
+          } catch (error) {
+            console.log('Error navigating to full image:', error);
+          }
+        }}
+      >
+        <Image source={{ uri: item.uri }} style={styles.image} />
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.5)']}
+          style={styles.overlay}
+        >
+          <Text style={styles.imageLabel}>{item.name}</Text>
+          <Text style={styles.dateLabel}>{formattedDate}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  };
+  */
+  
+  
+
+  /*
+  const renderItem = ({ item }) => {
+    const formattedDate = item.createdAt
+      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
+      : 'Unknown Date';
+  
+    return (
+      <TouchableOpacity
+        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
+        onPress={() => {
+          try {
+            console.log(`Uri before encoding ${item.uri}`);
+            const encodedUri = encodeURIComponent(item.uri); // Keep URI encoded
+            console.log(`Navigating to /fullScreen/ with encoded uri-${encodedUri}`);
+            router.push({
+              pathname: `/fullScreen/${encodedUri}` // Pass the encoded URI
+            });
+          } catch (error) {
+            console.log('Error navigating to full image:', error);
+          }
+        }}
+      >
+        <Image source={{ uri: item.uri }} style={styles.image} />
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.5)']}
+          style={styles.overlay}
+        >
+          <Text style={styles.imageLabel}>{item.name}</Text>
+          <Text style={styles.dateLabel}>{formattedDate}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  };
+  */
+  
+
+  /*
+  const renderItem = ({ item }) => {
+    const formattedDate = item.createdAt
+      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
+      : 'Unknown Date';
+  
+    return (
+      <TouchableOpacity
+        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
+        onPress={() => {
+          try {
+            const encodedUri = encodeURIComponent(item.uri); // Encoding the URI
+            console.log(`Navigating to /fullScreen/${encodedUri}`);
+            
+            // Navigate to FullImage screen with URI as part of the URL
+            router.push(`/fullScreen/${encodedUri}`); // Directly passing the encoded URI as part of the URL path
+          } catch (error) {
+            console.log('Error navigating to full image:', error);
+          }
+        }}
+      >
+        <Image source={{ uri: item.uri }} style={styles.image} />
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.5)']}
+          style={styles.overlay}
+        >
+          <Text style={styles.imageLabel}>{item.name}</Text>
+          <Text style={styles.dateLabel}>{formattedDate}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  };
+  */
+  
+
+  /*
+  const renderItem = ({ item }) => {
+    const formattedDate = item.createdAt
+      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
+      : 'Unknown Date';
+
+    return (
+      <TouchableOpacity
+        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
+        onPress={() => {
+          try {
+            console.log(`Navigating to /fullScreen/${encodeURIComponent(item.uri)}`);
+            router.push({
+              pathname: `/fullScreen/${encodeURIComponent(item.uri)}`
+            });
+          } catch (error) {
+            console.log('Error navigating to full image:', error);
+          }
+        }}
+      >
+        <Image source={{ uri: item.uri }} style={styles.image} />
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.5)']}
+          style={styles.overlay}
+        >
+          <Text style={styles.imageLabel}>{item.name}</Text>
+          <Text style={styles.dateLabel}>{formattedDate}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  };
+  */
+
+  
   const renderItem = ({item})=> {
     //format the date
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
@@ -77,13 +194,13 @@ export default function Gallery() {
           colors = {['transparent','rgba(0,0,0,0.5)']}
           style = {styles.overlay}>
             <Text style={styles.imageLabel}>{item.name}</Text>
-            {/*Add date to image*/}
             <Text style={styles.dateLabel}>{formattedDate}</Text>
         </LinearGradient>
       </View>
     );
   };
-
+  
+  
   /*
   const renderItem = ({ item }) => (
     <TouchableOpacity
