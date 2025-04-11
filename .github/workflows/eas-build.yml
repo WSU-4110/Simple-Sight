@@ -2,9 +2,9 @@ name: EAS Build
 
 on:
   push:
-    branches: [main]
+    branches: ["**"] # change back to main
   pull_request:
-    branches: [main]
+    branches: ["**"] # change back to main
 
 jobs:
   eas-build:
@@ -20,10 +20,13 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install # changed from yarn install
 
       - name: Set up Expo
         run: npm install -g eas-cli
+
+      - name: Run tests
+        run: npm test
 
       - name: Login to Expo
         run: eas whoami
