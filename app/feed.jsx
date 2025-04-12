@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {format} from 'date-fns';
-import {Picker} from '@react-native-picker/picker';
 import { isToday } from 'date-fns';
 import {Menu,Button,Provider as PaperProvider} from 'react-native-paper';
 import {Ionicons} from '@expo/vector-icons';

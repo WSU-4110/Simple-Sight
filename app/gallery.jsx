@@ -3,15 +3,19 @@ import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, 
 import { LinearGradient } from 'expo-linear-gradient';
 import {format} from 'date-fns';
 import {useRouter} from 'expo-router';
+import {Menu,Provider as PaperProvider} from 'react-native-paper';
 
-import {collection,query,where,orderBy,onSnapshot} from 'firebase/firestore'
+import {collection,query,where,orderBy,onSnapshot,deleteDoc, doc} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth';
 import {db} from './firebaseconfig';
+import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [menuVisible,setMenuVisible] = useState(null);
 
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
@@ -43,147 +47,31 @@ export default function Gallery() {
     });
     return() => unsubscribe();
   },[]);
-  /*
-  const renderItem = ({ item }) => {
-    const formattedDate = item.createdAt
-      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
-      : 'Unknown Date';
-
-    return (
-      <TouchableOpacity
-        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-        onPress={() => {
-          try {
-            console.log(`Navigating to fullScreen with uri: ${item.uri}`);
-            router.push({
-              pathname: '/fullScreenImage', // Static route for fullScreen
-              query: { uri: item.uri }, // Pass the URI as a query parameter
-            });
-          } catch (error) {
-            console.log('Error navigating to full image:', error);
+  
+  //delete function
+  const deletePic = async(photoId)=>{
+    console.log('Trying to delete photo:', photoId);
+    setTimeout(()=>{
+      Alert.alert(
+        'Delete Photo',
+        'Are you sure you want to delete this photo?',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: async()=>{
+            try{
+              await deleteDoc(doc(db,'photos',photoId));
+              Alert.alert('Photo Successfully Deleted');
+              console.log('Photo Successfully Deleted: ', photoId);
+            }catch(error){
+              console.error('Error deleting photo:', error);
+            }
           }
-        }}
-      >
-        <Image source={{ uri: item.uri }} style={styles.image} />
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.5)']}
-          style={styles.overlay}
-        >
-          <Text style={styles.imageLabel}>{item.name}</Text>
-          <Text style={styles.dateLabel}>{formattedDate}</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    );
+        }
+        ]
+      );
+    },300);
   };
-  */
-  
-  
 
-  /*
-  const renderItem = ({ item }) => {
-    const formattedDate = item.createdAt
-      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
-      : 'Unknown Date';
-  
-    return (
-      <TouchableOpacity
-        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-        onPress={() => {
-          try {
-            console.log(`Uri before encoding ${item.uri}`);
-            const encodedUri = encodeURIComponent(item.uri); // Keep URI encoded
-            console.log(`Navigating to /fullScreen/ with encoded uri-${encodedUri}`);
-            router.push({
-              pathname: `/fullScreen/${encodedUri}` // Pass the encoded URI
-            });
-          } catch (error) {
-            console.log('Error navigating to full image:', error);
-          }
-        }}
-      >
-        <Image source={{ uri: item.uri }} style={styles.image} />
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.5)']}
-          style={styles.overlay}
-        >
-          <Text style={styles.imageLabel}>{item.name}</Text>
-          <Text style={styles.dateLabel}>{formattedDate}</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    );
-  };
-  */
-  
-
-  /*
-  const renderItem = ({ item }) => {
-    const formattedDate = item.createdAt
-      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
-      : 'Unknown Date';
-  
-    return (
-      <TouchableOpacity
-        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-        onPress={() => {
-          try {
-            const encodedUri = encodeURIComponent(item.uri); // Encoding the URI
-            console.log(`Navigating to /fullScreen/${encodedUri}`);
-            
-            // Navigate to FullImage screen with URI as part of the URL
-            router.push(`/fullScreen/${encodedUri}`); // Directly passing the encoded URI as part of the URL path
-          } catch (error) {
-            console.log('Error navigating to full image:', error);
-          }
-        }}
-      >
-        <Image source={{ uri: item.uri }} style={styles.image} />
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.5)']}
-          style={styles.overlay}
-        >
-          <Text style={styles.imageLabel}>{item.name}</Text>
-          <Text style={styles.dateLabel}>{formattedDate}</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    );
-  };
-  */
-  
-
-  /*
-  const renderItem = ({ item }) => {
-    const formattedDate = item.createdAt
-      ? format(item.createdAt.toDate(), 'MMMM dd, yyyy')
-      : 'Unknown Date';
-
-    return (
-      <TouchableOpacity
-        style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-        onPress={() => {
-          try {
-            console.log(`Navigating to /fullScreen/${encodeURIComponent(item.uri)}`);
-            router.push({
-              pathname: `/fullScreen/${encodeURIComponent(item.uri)}`
-            });
-          } catch (error) {
-            console.log('Error navigating to full image:', error);
-          }
-        }}
-      >
-        <Image source={{ uri: item.uri }} style={styles.image} />
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.5)']}
-          style={styles.overlay}
-        >
-          <Text style={styles.imageLabel}>{item.name}</Text>
-          <Text style={styles.dateLabel}>{formattedDate}</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    );
-  };
-  */
-
-  
   const renderItem = ({item})=> {
     //format the date
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
@@ -196,40 +84,29 @@ export default function Gallery() {
             <Text style={styles.imageLabel}>{item.name}</Text>
             <Text style={styles.dateLabel}>{formattedDate}</Text>
         </LinearGradient>
+
+        <View style={styles.menuContainer}>
+          <Menu
+            visible={menuVisible===item.id}
+            onDismiss={()=> setMenuVisible(null)}
+            anchor={
+              <TouchableOpacity onPress={()=>setMenuVisible(item.id)}>
+                <Ionicons name="ellipsis-vertical" size={20} color="white"/>
+              </TouchableOpacity>
+            }
+            >
+              <Menu.Item title="Delete" onPress={()=>{
+                setMenuVisible(null);
+                setTimeout(()=>deletePic(item.id),100);
+              }}/>
+            </Menu>
+        </View>
       </View>
     );
   };
-  
-  
-  /*
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-      activeOpacity={0.8}
-      onPress={() => {
-        if (!item.uri) {
-          handleTakePicture(item.id);
-        }
-      }}
-    >
-      {item.uri ? (
-        <Image source={{ uri: item.uri }} style={styles.image} />
-      ) : (
-        <View style={[styles.image, styles.placeholder]}>
-          <Text style={styles.placeholderText}>Tap to take picture</Text>
-        </View>
-      )}
-      <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.5)']}
-        style={styles.overlay}
-      >
-        <Text style={styles.imageLabel}>{item.name}</Text> 
-      </LinearGradient>
-    </TouchableOpacity>
-  );
-  */
 
   return (
+    <PaperProvider>
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size = "large" color="#1E90FF"/>
@@ -243,6 +120,7 @@ export default function Gallery() {
         />
       )}
     </View>
+    </PaperProvider>
   );
 }
 
@@ -276,5 +154,13 @@ const styles = StyleSheet.create({
     fontSize:12,
     fontWeight: '400',
     marginTop: 4,
+  },
+  menuContainer:{
+    position: 'absolute',
+    top:8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 6,
+    borderRadius: 20,
   },
 });
