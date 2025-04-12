@@ -14,7 +14,7 @@ import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firest
 export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [dailyPrompt, setDailyPrompt] = useState('');
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('Today');
   const [menuVisible, setMenuVisible] = useState(false);
   const openMenu = ()=>setMenuVisible(true);
   const closeMenu = ()=>setMenuVisible(false);
