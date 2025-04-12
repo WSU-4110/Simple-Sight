@@ -2,9 +2,9 @@ name: EAS Build
 
 on:
   push:
-    branches: ["**"] # change back to main
+    branches: ["main"] 
   pull_request:
-    branches: ["**"] # change back to main
+    branches: ["main"] 
 
 jobs:
   eas-build:
