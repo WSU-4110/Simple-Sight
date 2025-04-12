@@ -39,8 +39,8 @@ jobs:
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      # iOS build
-      - name: Build iOS app
-        run: eas build --platform ios --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      # iOS build - commented out because an Apple Developer account is needed for for CI build
+      # - name: Build iOS app
+      #   run: eas build --platform ios --non-interactive
+      #   env:
+      #     EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
