@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {format} from 'date-fns';
@@ -7,7 +7,7 @@ import {Picker} from '@react-native-picker/picker';
 import { isToday } from 'date-fns';
 import {Menu,Button,Provider as PaperProvider} from 'react-native-paper';
 import {Ionicons} from '@expo/vector-icons';
-
+import { TouchableRipple } from 'react-native-paper';
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
 
@@ -18,6 +18,8 @@ export default function Feed() {
   const [menuVisible, setMenuVisible] = useState(false);
   const openMenu = ()=>setMenuVisible(true);
   const closeMenu = ()=>setMenuVisible(false);
+
+  const [dropdownWidth, setdropdownWidht] = useState(0);
 
   useEffect(() => {
     const fetchPrompt = async () => {
@@ -99,19 +101,32 @@ export default function Feed() {
           visible={menuVisible}
           onDismiss={closeMenu}
           anchor={
-            <Button mode="outlined"
-            onPress={openMenu}
-            style={styles.dropdownButton}
-            contentStyle={styles.buttonContent}
-            labelStyle={styles.buttonLabel}
+            <View 
+              style={styles.anchorWrapper}
+              onLayout={(e)=>setdropdownWidht(e.nativeEvent.layout.width)}
+
             >
-              {filter === 'Today' ? "Today's Moments ✨" : 'All Moments 📸'}
-            </Button>
+              <TouchableOpacity onPress={openMenu} style={styles.customDropdown}>
+              <Text style={styles.dropdownText}>
+                {filter === 'Today' ? "Today's Moments ✨" : "All Moments 📸"}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color="black"/>
+            </TouchableOpacity>
+            </View>
           }
-          contentStyle={{ backgroundColor: '#fff' }}
+          contentStyle={[styles.dropdownMenu,{width:dropdownWidth},]}
         >
-          <Menu.Item onPress={() => { setFilter('All'); closeMenu(); }} title="All Moments 📸" />
-          <Menu.Item onPress={() => { setFilter('Today'); closeMenu(); }} title="Today's Moments ✨" />
+          <TouchableRipple onPress={() => { setFilter('All'); closeMenu(); }}>
+            <View style={styles.menuItemContainer}>
+              <Text style={styles.menuItemText}>All Moments 📸</Text>
+              </View>
+          </TouchableRipple>
+
+          <TouchableRipple onPress={() => { setFilter('Today'); closeMenu(); }}>
+            <View style={styles.menuItemContainer}>
+              <Text style={styles.menuItemText}>Today's Moments ✨</Text>
+            </View>
+          </TouchableRipple>
         </Menu>
       </View>
 
@@ -138,43 +153,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 10,
     paddingBottom: 6,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#D4D7ee',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     zIndex: 10,
   },
-  
-  dropdownButton: {
-    width: '100%',
-    borderRadius: 10,
+  anchorWrapper:{
+    width:'100%'
   },
-  buttonContent:{
-    justifyContent:'center',
-  },
-  buttonLabel:{
-    fontSize: 16,
-    color: 'black',
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  filterContainer:{
-    height: 60,
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBotomColor: '#ddd',
+  customDropdown:{
+    flexDirection:'row',
+    alignItems:'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    zIndex:1,
-  },
-  picker:{
-    height:40,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: '#E0E2f1',
+    paddingVertical: 10,
+    borderRadius:10,
     borderWidth:1,
     borderColor: '#ddd',
-    marginHorizontal: 12,
-    paddingVertical:0,
+    width:'100%',
+  },
+  dropdownText:{
+    fontSize:16,
+    fontWeight:'600',
+    color:'black',
+    marginRight: 8,
+
+  },
+  menuItemContainer:{
+    width:'100%',
+    alignItems:'center',
+    paddingVertical:8,
+  },
+  menuItemText:{
+    textAlign:'center',
+    fontSize: 16,
+    color: 'black',
   },
   promptText:{
     fontSize: 18,
