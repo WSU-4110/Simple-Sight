@@ -1,7 +1,10 @@
 const { scheduleNotificationAsync, getAllScheduledNotificationsAsync, requestPermissionsAsync, getPermissionsAsync } = require('expo-notifications');
 const { getRandomInt } = require('../utils/randomInt.jsx');
 const { scheduleNotificationNow, getRandomTime } = require('../app/notifications.jsx');
-const { start } = require('repl');
+
+afterEach(() => {
+    jest.clearAllTimers();
+})
 
 test('Test random int function used in random time generation', () => {
     const randNum = getRandomInt(0, 10);
