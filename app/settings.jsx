@@ -5,10 +5,21 @@ import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { disableNotifications, getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
 import{auth,db} from './firebaseconfig'
-import{doc,getDoc,updateDoc} from 'firebase/firestore'
+//import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
 import { getAuth,onAuthStateChanged } from 'firebase/auth';
+import { 
+  doc, 
+  getDoc, 
+  updateDoc, 
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  writeBatch 
+} from 'firebase/firestore';
+
 
 //fetch start time value stored on phone
 export async function fetchStartTime() {
@@ -179,8 +190,25 @@ export default function Settings() {
       //await updateDoc(doc(db,'users',userId),{
       //  username:username,
       //});
+      //update username is 'users' collections
       const userDocRef = doc(db,'users', userId);
       await updateDoc(userDocRef, {username});
+
+      //find all photos with this username
+      const photosQuery = query(
+        collection(db,'photos'),
+        where('userId', '==', userId)
+      );
+      const snapshot = await getDocs(photosQuery);
+
+      //update each photo with the new username
+      const batch = writeBatch(db);
+      snapshot.forEach((docSnap)=>{
+        const photoRef = doc(db, 'photos', docSnap.id);
+        batch.update(photoRef,{username});
+      });
+      await batch.commit();
+
       Alert.alert('Success!','Username successfully updated!');
     }catch(error){
       console.error('Error updating username: ', error);

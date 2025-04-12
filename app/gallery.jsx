@@ -1,80 +1,126 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import {format} from 'date-fns';
+import {useRouter} from 'expo-router';
+import {Menu,Provider as PaperProvider} from 'react-native-paper';
+
+import {collection,query,where,orderBy,onSnapshot,deleteDoc, doc} from 'firebase/firestore'
+import {getAuth} from 'firebase/auth';
+import {db} from './firebaseconfig';
+import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
 
 export default function Gallery() {
-  const [images, setImages] = useState([
-    { id: '1', uri: null, name: 'Image 1' },
-    { id: '2', uri: null, name: 'Image 2' },
-    { id: '3', uri: null, name: 'Image 3' },
-    { id: '4', uri: null, name: 'Image 4' },
-    { id: '5', uri: null, name: 'Image 5' },
-    { id: '6', uri: null, name: 'Image 6' },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [menuVisible,setMenuVisible] = useState(null);
 
   const numColumns = 2;
   const itemWidth = Dimensions.get('window').width / numColumns - 24;
 
-  const handleTakePicture = (id) => {
-    const dummyImage = 'https://via.placeholder.com/200.png?text=User+Photo';
-    setImages(prevImages =>
-      prevImages.map(img => (img.id === id ? { ...img, uri: dummyImage } : img))
+  useEffect(()=>{
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if(!user) return;
+    //query to only pull photos with the current users uid
+    const q = query(
+      collection(db, 'photos'),
+      where('userId','==', user.uid),
+      //order by newest first
+      orderBy('createdAt','desc') 
+    );
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const userImages = snapshot.docs.map((doc)=>({
+        id:doc.id,
+        uri: doc.data().imageUrl,
+        createdAt: doc.data().createdAt,
+        //name: 'Photo',
+
+      }));
+      console.log('Fetched photos:', userImages);
+      setImages(userImages);
+      setLoading(false);
+    });
+    return() => unsubscribe();
+  },[]);
+  
+  //delete function
+  const deletePic = async(photoId)=>{
+    console.log('Trying to delete photo:', photoId);
+    setTimeout(()=>{
+      Alert.alert(
+        'Delete Photo',
+        'Are you sure you want to delete this photo?',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: async()=>{
+            try{
+              await deleteDoc(doc(db,'photos',photoId));
+              Alert.alert('Photo Successfully Deleted');
+              console.log('Photo Successfully Deleted: ', photoId);
+            }catch(error){
+              console.error('Error deleting photo:', error);
+            }
+          }
+        }
+        ]
+      );
+    },300);
+  };
+
+  const renderItem = ({item})=> {
+    //format the date
+    const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
+    return(
+      <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]}>
+        <Image source = {{uri: item.uri}} style = {styles.image}/>
+        <LinearGradient
+          colors = {['transparent','rgba(0,0,0,0.5)']}
+          style = {styles.overlay}>
+            <Text style={styles.imageLabel}>{item.name}</Text>
+            <Text style={styles.dateLabel}>{formattedDate}</Text>
+        </LinearGradient>
+
+        <View style={styles.menuContainer}>
+          <Menu
+            visible={menuVisible===item.id}
+            onDismiss={()=> setMenuVisible(null)}
+            anchor={
+              <TouchableOpacity onPress={()=>setMenuVisible(item.id)}>
+                <Ionicons name="ellipsis-vertical" size={20} color="white"/>
+              </TouchableOpacity>
+            }
+            >
+              <Menu.Item title="Delete" onPress={()=>{
+                setMenuVisible(null);
+                setTimeout(()=>deletePic(item.id),100);
+              }}/>
+            </Menu>
+        </View>
+      </View>
     );
   };
 
-  const loadMoreImages = () => {
-    if (!loading) {
-      setLoading(true);
-      setTimeout(() => {
-        const newImages = Array.from({ length: 6 }, (_, i) => ({
-          id: (images.length + i + 1).toString(),
-          uri: null,
-          name: `Image ${images.length + i + 1}` // Ensure all new images have proper names
-        }));
-        setImages(prevImages => [...prevImages, ...newImages]);
-        setLoading(false);
-      }, 1000);
-    }
-  };
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}
-      activeOpacity={0.8}
-      onPress={() => {
-        if (!item.uri) {
-          handleTakePicture(item.id);
-        }
-      }}
-    >
-      {item.uri ? (
-        <Image source={{ uri: item.uri }} style={styles.image} />
-      ) : (
-        <View style={[styles.image, styles.placeholder]}>
-          <Text style={styles.placeholderText}>Tap to take picture</Text>
-        </View>
-      )}
-      <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.5)']}
-        style={styles.overlay}
-      >
-        <Text style={styles.imageLabel}>{item.name}</Text> 
-      </LinearGradient>
-    </TouchableOpacity>
-  );
-
   return (
-    <FlatList
-      data={images}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      numColumns={numColumns}
-      contentContainerStyle={styles.container}
-      onEndReached={loadMoreImages}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={loading ? <ActivityIndicator size="large" color="#1E90FF" /> : null}
-    />
+    <PaperProvider>
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator size = "large" color="#1E90FF"/>
+      ):(
+        <FlatList
+          data={images}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={numColumns}
+          contentContainerStyle={{paddingBottom: 24}}
+        />
+      )}
+    </View>
+    </PaperProvider>
   );
 }
 
@@ -82,6 +128,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 12,
     backgroundColor: '#f5f5f5',
+    flex: 1,
   },
   imageWrapper: {
     margin: 8,
@@ -93,15 +140,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  placeholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ddd',
-  },
-  placeholderText: {
-    fontSize: 14,
-    color: '#555',
-  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
@@ -110,5 +148,19 @@ const styles = StyleSheet.create({
   imageLabel: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  dateLabel:{
+    color:'#fff',
+    fontSize:12,
+    fontWeight: '400',
+    marginTop: 4,
+  },
+  menuContainer:{
+    position: 'absolute',
+    top:8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 6,
+    borderRadius: 20,
   },
 });

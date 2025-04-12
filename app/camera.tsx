@@ -80,13 +80,11 @@ import { getAuth } from "firebase/auth";
       await uploadBytes(fileRef, blob);
       const downloadURL = await getDownloadURL(fileRef);
 
-      //save url,date,username to firestore when uploading photo
+      //save url,date, and uid to firestore when uploading photo
       await addDoc(collection(db,"photos"),{
         imageUrl: downloadURL,
         createdAt: serverTimestamp(),
         userId: user.uid,
-        username: username,
-
       });
 
       console.log("Uploaded successfully: ", downloadURL);
