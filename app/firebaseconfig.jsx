@@ -16,7 +16,12 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig); // No config needed because it's auto-detected
-const auth = initializeAuth(app, { persistence: getReactNativePersistence(ReactNativeAsyncStorage)});
+
+const isJest = process.env.NODE_ENV === "test";
+let auth;
+if (!isJest) {
+    auth = initializeAuth(app, { persistence: getReactNativePersistence(ReactNativeAsyncStorage)});
+}
 const db = getFirestore(app);
 //const db = firebaseConfig.firestore();
 const storage = getStorage(app);
