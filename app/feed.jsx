@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {format} from 'date-fns';
 import {Picker} from '@react-native-picker/picker';
 import { isToday } from 'date-fns';
+import {Menu,Button,Provider as PaperProvider} from 'react-native-paper';
+import {Ionicons} from '@expo/vector-icons';
 
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
@@ -13,6 +15,9 @@ export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [dailyPrompt, setDailyPrompt] = useState('');
   const [filter, setFilter] = useState('All');
+  const [menuVisible, setMenuVisible] = useState(false);
+  const openMenu = ()=>setMenuVisible(true);
+  const closeMenu = ()=>setMenuVisible(false);
 
   useEffect(() => {
     const fetchPrompt = async () => {
@@ -87,15 +92,28 @@ export default function Feed() {
   };
 
   return (
-    <View style={{flex:1}}>
-      <Picker
-        selectedValue = {filter}
-        onValueChange={(value)=>setFilter(value)}
-        style={{marginHorizontal:12}}
-      >
-        <Picker.Item label="All" value ="ALL"/>
-        <Picker.Item label="Today" value ="Today"/>
-      </Picker>
+    <PaperProvider>
+     <View style={styles.container}>
+      <View style={styles.dropdownContainer}>
+        <Menu
+          visible={menuVisible}
+          onDismiss={closeMenu}
+          anchor={
+            <Button mode="outlined"
+            onPress={openMenu}
+            style={styles.dropdownButton}
+            contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
+            >
+              {filter === 'Today' ? "Today's Moments ✨" : 'All Moments 📸'}
+            </Button>
+          }
+          contentStyle={{ backgroundColor: '#fff' }}
+        >
+          <Menu.Item onPress={() => { setFilter('All'); closeMenu(); }} title="All Moments 📸" />
+          <Menu.Item onPress={() => { setFilter('Today'); closeMenu(); }} title="Today's Moments ✨" />
+        </Menu>
+      </View>
 
       <FlatList
         data={filteredPosts}
@@ -104,12 +122,59 @@ export default function Feed() {
         contentContainerStyle={styles.listContainer}
       />
     </View>
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor: '#fff',
+  },
   listContainer: {
-    padding: 12,
+    padding:12,
+  },
+  dropdownContainer: {
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: 6,
+    backgroundColor: '#f0f0f0',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    zIndex: 10,
+  },
+  
+  dropdownButton: {
+    width: '100%',
+    borderRadius: 10,
+  },
+  buttonContent:{
+    justifyContent:'center',
+  },
+  buttonLabel:{
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  filterContainer:{
+    height: 60,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBotomColor: '#ddd',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    zIndex:1,
+  },
+  picker:{
+    height:40,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth:1,
+    borderColor: '#ddd',
+    marginHorizontal: 12,
+    paddingVertical:0,
   },
   promptText:{
     fontSize: 18,
