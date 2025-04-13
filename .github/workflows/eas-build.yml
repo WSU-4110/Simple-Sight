@@ -1,0 +1,46 @@
+name: EAS Build
+
+on:
+  push:
+    branches: ["main"] # change back to main
+  pull_request:
+    branches: ["main"] # change back to main
+
+jobs:
+  eas-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install # changed from yarn install
+
+      - name: Set up Expo
+        run: npm install -g eas-cli
+
+      - name: Run tests
+        run: npm test
+
+      - name: Login to Expo
+        run: eas whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # Android build
+      - name: Build Android app
+        run: eas build --platform android --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # iOS build - commented out because an Apple Developer account is needed for for CI build
+      # - name: Build iOS app
+      #   run: eas build --platform ios --non-interactive
+      #   env:
+      #     EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

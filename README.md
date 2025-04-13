@@ -3,6 +3,8 @@
 Encouraging Mindfulness Through Daily Moments
 Simple Sight is a mobile app designed to promote mindfulness by encouraging users to capture and appreciate real-life moments. Unlike traditional social media, Simple Sight focuses on authentic experiences rather than curated content.
 
+![EAS Build](https://github.com/WSU-4110/Simple-Sight/actions/workflows/eas-build.yml/badge.svg)
+
 ## Features ##
 
 **Daily Prompts**

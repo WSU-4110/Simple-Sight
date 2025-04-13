@@ -7,6 +7,10 @@ beforeEach(() => {
     // console.log(AsyncStorage)
 });
 
+afterEach(() => {
+    jest.clearAllTimers();
+});
+
 it('can read asyncstorage', async () => {
 
     await AsyncStorage.setItem('username', 'testUser')
