@@ -14,7 +14,7 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [menuVisible, setMenuVisible] = useState(null);
-  const [gridView, setGridView] = useState(true); // 👈 NEW toggle
+  const [gridView, setGridView] = useState(true);
 
   const router = useRouter();
   const screenWidth = Dimensions.get('window').width;
@@ -104,7 +104,7 @@ export default function Gallery() {
         {/* Toggle Button */}
         <TouchableOpacity onPress={() => setGridView(!gridView)} style={styles.toggleBtn}>
           <Text style={styles.toggleText}>
-            Switch to {gridView ? "List View 📃" : "Grid View 🟦"}
+            Switch to {gridView ? "List View" : "Grid View"}
           </Text>
         </TouchableOpacity>
 
@@ -115,7 +115,7 @@ export default function Gallery() {
             data={images}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            key={gridView ? 'grid' : 'list'} // 👈 forces re-render layout
+            key={gridView ? 'grid' : 'list'} 
             numColumns={gridView ? 2 : 1}
             contentContainerStyle={{ paddingBottom: 24 }}
           />

@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns';
 import { isToday } from 'date-fns';
-import { Menu, Button, Provider as PaperProvider, TouchableRipple } from 'react-native-paper';
+import { Menu, Provider as PaperProvider, TouchableRipple } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { db, auth } from './firebaseconfig';
 import { collection, query, orderBy, onSnapshot, doc, getDoc } from 'firebase/firestore';
@@ -54,7 +54,7 @@ export default function Feed() {
         id: doc.id,
         ...doc.data(),
       }));
-    //get userid from photos
+      //get userid from photos
       const userIds = [...new Set(photolist.map(photo => photo.userId))];
       //create map of userid -> username
       const userMap = {};
@@ -71,8 +71,8 @@ export default function Feed() {
           userMap[uid] = 'Unknown';
         }
       }));
-      
-    //write username in each post
+
+      //write username in each post
       const postsWithUsernames = photolist.map(photo => ({
         ...photo,
         username: userMap[photo.userId],
@@ -174,15 +174,19 @@ export default function Feed() {
 
         {/* Streak Display */}
         <Text style={{ fontSize: 18, fontWeight: '600', textAlign: 'center', marginVertical: 5 }}>
-          🔥 Streak: {streak} day{streak === 1 ? '' : 's'}
+          Streak: {streak} day{streak === 1 ? '' : 's'}
         </Text>
 
-        <FlatList
-          data={filteredPosts}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContainer}
-        />
+        {filter === 'Today' && filteredPosts.length === 0 ? (
+          <Text style={styles.noMomentsText}>No moments today yet :(</Text>
+        ) : (
+          <FlatList
+            data={filteredPosts}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContainer}
+          />
+        )}
       </View>
     </PaperProvider>
   );
@@ -291,5 +295,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 6,
     color: '#4a4a4a',
-  }
+  },
+  noMomentsText: {
+    fontSize: 18,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginTop: 250,
+    color: '#777',
+  },
 });
