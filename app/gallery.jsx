@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, Image, Dimensions, Text, ActivityIndicator, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { Menu, Provider as PaperProvider } from 'react-native-paper';
+import { Menu, Provider as PaperProvider, Button } from 'react-native-paper';
 import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from './firebaseconfig';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert } from 'react-native';
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
@@ -45,25 +44,23 @@ export default function Gallery() {
   }, []);
 
   const deletePic = async (photoId) => {
-    setTimeout(() => {
-      Alert.alert(
-        'Delete Photo',
-        'Are you sure you want to delete this photo?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Yes', onPress: async () => {
-              try {
-                await deleteDoc(doc(db, 'photos', photoId));
-                Alert.alert('Photo Successfully Deleted');
-              } catch (error) {
-                console.error('Error deleting photo:', error);
-              }
+    Alert.alert(
+      'Delete Photo',
+      'Are you sure you want to delete this photo?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Yes', onPress: async () => {
+            try {
+              await deleteDoc(doc(db, 'photos', photoId));
+              Alert.alert('Photo Successfully Deleted');
+            } catch (error) {
+              console.error('Error deleting photo:', error);
             }
           }
-        ]
-      );
-    }, 300);
+        }
+      ]
+    );
   };
 
   const renderItem = ({ item }) => {
@@ -83,9 +80,7 @@ export default function Gallery() {
             visible={menuVisible === item.id}
             onDismiss={() => setMenuVisible(null)}
             anchor={
-              <TouchableOpacity onPress={() => setMenuVisible(item.id)}>
-                <Ionicons name="ellipsis-vertical" size={20} color="white" />
-              </TouchableOpacity>
+              <Ionicons name="ellipsis-vertical" size={20} color="white" onPress={() => setMenuVisible(item.id)} />
             }
           >
             <Menu.Item title="Delete" onPress={() => {
@@ -102,11 +97,15 @@ export default function Gallery() {
     <PaperProvider>
       <View style={styles.container}>
         {/* Toggle Button */}
-        <TouchableOpacity onPress={() => setGridView(!gridView)} style={styles.toggleBtn}>
-          <Text style={styles.toggleText}>
-            Switch to {gridView ? "List View" : "Grid View"}
-          </Text>
-        </TouchableOpacity>
+        <Button
+        mode="contained"
+        onPress={() => setGridView(!gridView)}
+        style={styles.toggleBtn}
+        labelStyle={{ color: '#FFFFFF', fontWeight: 'bold' }}
+        buttonColor="#007AFF"
+     >
+       {gridView ? 'Switch to List View' : 'Switch to Grid View'}
+      </Button>
 
         {loading ? (
           <ActivityIndicator size="large" color="#1E90FF" />
@@ -115,7 +114,7 @@ export default function Gallery() {
             data={images}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            key={gridView ? 'grid' : 'list'} 
+            key={gridView ? 'grid' : 'list'}
             numColumns={gridView ? 2 : 1}
             contentContainerStyle={{ paddingBottom: 24 }}
           />
@@ -132,13 +131,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toggleBtn: {
-    alignItems: 'center',
-    marginBottom: 10,
+    marginVertical: 9,
+    alignSelf: 'center',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
+    elevation: 2,
   },
+  
   toggleText: {
-    fontSize: 16,
+    color: 'white',
     fontWeight: 'bold',
-    color: '#1E90FF',
   },
   imageWrapper: {
     margin: 8,
