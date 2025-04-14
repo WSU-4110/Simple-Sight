@@ -97,6 +97,12 @@ export default function Feed() {
           await AsyncStorage.setItem("streak", newStreak.toString());
           await AsyncStorage.setItem("lastPostDate", today);
         }
+
+        // reset streak if skipped a day
+        if (!hasPostedToday && lastPostDate && lastPostDate !== today && lastPostDate !== yesterday) {
+          setStreak(0);
+          await AsyncStorage.setItem("streak", "0");
+        }
       }
     });
 
