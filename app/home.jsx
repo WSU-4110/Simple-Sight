@@ -4,13 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feed from './feed';
 import Gallery from './gallery';
 import { useNavigation, useRouter } from 'expo-router';
 import Settings from './settings';
 import Camera from './camera';
 import { requestPermissions } from './notifications';
 import * as Notifications from 'expo-notifications';
+import Feed from './feed';
+import GalleryStack from './gallery';
 
 const prompts = [
   "Take a picture of a flower blooming. 🌸",
@@ -131,7 +132,7 @@ function Tabs({ dailyPrompt }) {
       >
         <Tab.Screen name="Feed" component={Feed} />
         <Tab.Screen name="Camera" component={Camera} options={{ headerShown: false }} />
-        <Tab.Screen name="Gallery" component={Gallery} />
+        <Tab.Screen name="Gallery" component={GalleryStack} />
       </Tab.Navigator>
 
     </View>
