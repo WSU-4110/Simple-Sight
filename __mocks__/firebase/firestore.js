@@ -1,3 +1,4 @@
+//firestore.js
 export const getFirestore = jest.fn(() => ({
     collection: jest.fn(() => ({
       doc: jest.fn(() => ({

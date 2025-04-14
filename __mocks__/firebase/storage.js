@@ -1,3 +1,4 @@
+//storage.js
 export const getStorage = jest.fn(() => ({
     ref: jest.fn(() => ({
       getDownloadURL: jest.fn(() => Promise.resolve('https://mocked-url.com/image.jpg')),

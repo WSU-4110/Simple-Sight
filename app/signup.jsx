@@ -7,7 +7,7 @@ import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fireb
 import {doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getDoc} from 'firebase/firestore';
-
+import { handleSignup,handleLogin } from './authFunctions';
 
 //reworked to work with expo go dependencies instead of react-native firebase dependencies
 export default function Signup() {
@@ -26,6 +26,20 @@ export default function Signup() {
             }
         });
     }, []);
+
+    const onSignup = async()=>{
+        setLoading(true);
+        const signupmessage = await handleSignup(email,password,username);
+        setMessage(signupmessage);
+        setLoading(false);
+    };
+    const onLogin = async()=>{
+        setLoading(true);
+        const loginmessage = await handleLogin(email,password,stayLoggedIn,navigation);
+        setMessage(loginmessage);
+        setLoading(false);
+    }
+    /*
 
     const handleSignup = async () => {
         setLoading(true);
@@ -75,6 +89,7 @@ export default function Signup() {
             setLoading(false);
         }
     };
+    */
     /*
     const handleLogin = async () => {
         setLoading(true);
@@ -103,10 +118,10 @@ export default function Signup() {
                 <Switch value={stayLoggedIn} onValueChange={setStayLoggedIn} />
             </View>
             {message ? <Text style={styles.message}>{message}</Text> : null}
-            <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={loading}>
+            <TouchableOpacity style={styles.button} onPress={onSignup} disabled={loading}>
                 <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+            <TouchableOpacity style={styles.button} onPress={onLogin} disabled={loading}>
                 <Text style={styles.buttonText}>Log In</Text>
             </TouchableOpacity>
             </LinearGradient>
