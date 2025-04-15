@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Image, Dimensions, Text, ActivityIndicator, Alert, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {format} from 'date-fns';
 import { useNavigation, useRouter} from 'expo-router';
-import {Menu,Provider as PaperProvider} from 'react-native-paper';
+import {Menu,Provider as PaperProvider, Button} from 'react-native-paper';
 import {collection,query,where,orderBy,onSnapshot,deleteDoc, doc} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth';
 import {db} from './firebaseconfig';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert } from 'react-native';
 import FullscreenImage from './fullscreenImage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -74,8 +73,10 @@ function Gallery() {
     //format the date
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
     return(
-      <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]} onTouchEndCapture={() => navigation.navigate('FullscreenImage', {url: item.uri})}>
-        <Image source = {{uri: item.uri}} style = {styles.image}/>
+      <Pressable onPress={() => navigation.navigate('FullscreenImage', {url: item.uri})}>
+        <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]} >
+        
+          <Image source = {{uri: item.uri}} style = {styles.image} />
 
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.5)']}
@@ -99,6 +100,7 @@ function Gallery() {
           </Menu>
         </View>
       </View>
+      </Pressable>
     );
   };
 
