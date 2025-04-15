@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, Image, Dimensions, Text, ActivityIndicator, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {format} from 'date-fns';
 import { useNavigation, useRouter} from 'expo-router';
@@ -19,62 +19,55 @@ function Gallery() {
 
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [menuVisible, setMenuVisible] = useState(null);
+  const [gridView, setGridView] = useState(true);
+
   const router = useRouter();
-  const [menuVisible,setMenuVisible] = useState(null);
+  const screenWidth = Dimensions.get('window').width;
+  const itemWidth = gridView ? screenWidth / 2 - 24 : screenWidth - 24;
 
-  const numColumns = 2;
-  const itemWidth = Dimensions.get('window').width / numColumns - 24;
-
-  useEffect(()=>{
+  useEffect(() => {
     const auth = getAuth();
     const user = auth.currentUser;
+    if (!user) return;
 
-    if(!user) return;
-    //query to only pull photos with the current users uid
     const q = query(
       collection(db, 'photos'),
-      where('userId','==', user.uid),
-      //order by newest first
-      orderBy('createdAt','desc') 
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc')
     );
-    
+
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const userImages = snapshot.docs.map((doc)=>({
-        id:doc.id,
+      const userImages = snapshot.docs.map((doc) => ({
+        id: doc.id,
         uri: doc.data().imageUrl,
         createdAt: doc.data().createdAt,
-        //name: 'Photo',
-
       }));
-      console.log('Fetched photos:', userImages);
       setImages(userImages);
       setLoading(false);
     });
-    return() => unsubscribe();
-  },[]);
-  
-  //delete function
-  const deletePic = async(photoId)=>{
-    console.log('Trying to delete photo:', photoId);
-    setTimeout(()=>{
-      Alert.alert(
-        'Delete Photo',
-        'Are you sure you want to delete this photo?',
-        [
-          {text: 'Cancel', style: 'cancel'},
-          {text: 'Yes', onPress: async()=>{
-            try{
-              await deleteDoc(doc(db,'photos',photoId));
+
+    return () => unsubscribe();
+  }, []);
+
+  const deletePic = async (photoId) => {
+    Alert.alert(
+      'Delete Photo',
+      'Are you sure you want to delete this photo?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Yes', onPress: async () => {
+            try {
+              await deleteDoc(doc(db, 'photos', photoId));
               Alert.alert('Photo Successfully Deleted');
-              console.log('Photo Successfully Deleted: ', photoId);
-            }catch(error){
+            } catch (error) {
               console.error('Error deleting photo:', error);
             }
           }
         }
-        ]
-      );
-    },300);
+      ]
+    );
   };
 
   const renderItem = ({item})=> {
@@ -83,28 +76,27 @@ function Gallery() {
     return(
       <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]} onTouchEndCapture={() => navigation.navigate('FullscreenImage', {url: item.uri})}>
         <Image source = {{uri: item.uri}} style = {styles.image}/>
+
         <LinearGradient
-          colors = {['transparent','rgba(0,0,0,0.5)']}
-          style = {styles.overlay}>
-            <Text style={styles.imageLabel}>{item.name}</Text>
-            <Text style={styles.dateLabel}>{formattedDate}</Text>
+          colors={['transparent', 'rgba(0,0,0,0.5)']}
+          style={styles.overlay}
+        >
+          <Text style={styles.dateLabel}>{formattedDate}</Text>
         </LinearGradient>
 
         <View style={styles.menuContainer}>
           <Menu
-            visible={menuVisible===item.id}
-            onDismiss={()=> setMenuVisible(null)}
+            visible={menuVisible === item.id}
+            onDismiss={() => setMenuVisible(null)}
             anchor={
-              <TouchableOpacity onPress={()=>setMenuVisible(item.id)}>
-                <Ionicons name="ellipsis-vertical" size={20} color="white"/>
-              </TouchableOpacity>
+              <Ionicons name="ellipsis-vertical" size={20} color="white" onPress={() => setMenuVisible(item.id)} />
             }
-            >
-              <Menu.Item title="Delete" onPress={()=>{
-                setMenuVisible(null);
-                setTimeout(()=>deletePic(item.id),100);
-              }}/>
-            </Menu>
+          >
+            <Menu.Item title="Delete" onPress={() => {
+              setMenuVisible(null);
+              setTimeout(() => deletePic(item.id), 100);
+            }} />
+          </Menu>
         </View>
       </View>
     );
@@ -112,19 +104,31 @@ function Gallery() {
 
   return (
     <PaperProvider>
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size = "large" color="#1E90FF"/>
-      ):(
-        <FlatList
-          data={images}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          numColumns={numColumns}
-          contentContainerStyle={{paddingBottom: 24}}
-        />
-      )}
-    </View>
+      <View style={styles.container}>
+        {/* Toggle Button */}
+        <Button
+        mode="contained"
+        onPress={() => setGridView(!gridView)}
+        style={styles.toggleBtn}
+        labelStyle={{ color: '#FFFFFF', fontWeight: 'bold' }}
+        buttonColor="#007AFF"
+     >
+       {gridView ? 'Switch to List View' : 'Switch to Grid View'}
+      </Button>
+
+        {loading ? (
+          <ActivityIndicator size="large" color="#1E90FF" />
+        ) : (
+          <FlatList
+            data={images}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            key={gridView ? 'grid' : 'list'}
+            numColumns={gridView ? 2 : 1}
+            contentContainerStyle={{ paddingBottom: 24 }}
+          />
+        )}
+      </View>
     </PaperProvider>
   );
 }
@@ -152,6 +156,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     flex: 1,
   },
+  toggleBtn: {
+    marginVertical: 9,
+    alignSelf: 'center',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
+    elevation: 2,
+  },
+  
+  toggleText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   imageWrapper: {
     margin: 8,
     borderRadius: 12,
@@ -167,19 +184,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 8,
   },
-  imageLabel: {
+  dateLabel: {
     color: '#fff',
-    fontWeight: 'bold',
-  },
-  dateLabel:{
-    color:'#fff',
-    fontSize:12,
+    fontSize: 12,
     fontWeight: '400',
     marginTop: 4,
   },
-  menuContainer:{
+  menuContainer: {
     position: 'absolute',
-    top:8,
+    top: 8,
     right: 8,
     backgroundColor: 'rgba(0,0,0,0.4)',
     padding: 6,
