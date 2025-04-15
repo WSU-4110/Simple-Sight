@@ -29,18 +29,6 @@ To get the full experience of Simple Sight, make sure to enable notifications on
 
 **Android:** Go to Settings → Apps & notifications → Simple Sight and turn on notifications.
 
-## Installation ##
-Clone the repository and install dependencies:
-
-```bash 
-git clone https://github.com/WSU-4110/Simple-Sight
-cd SimpleSight
-npm install
-npm install -g expo-cli
-```
-**For iOS (requires Mac):** ```bash npx expo run:ios ```
-**For Android:** ```Bash npx expo run:android ```
-
 ## Technologies Used ##
 React Native – Cross-platform development (iOS, Android)
 
