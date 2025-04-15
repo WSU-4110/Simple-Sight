@@ -38,11 +38,12 @@ yarn install
 npx expo start
 ```
 
-This will launch the Expo Developer Tools, where you can run the app on an emulator or a physical device.
+This will launch the Expo Developer Tools.
 
 ## Running on a Physical Device
 
 - Install the [Expo Go](https://expo.dev/client) app on your Android or iOS device.
+- Ensure the app is running in Expo Go mode in the terminal or Expo Developer Tools. 
 - Scan the QR code shown in the terminal or Expo Developer Tools.
 
 ## Running on an Emulator/Simulator
@@ -72,6 +73,8 @@ npx expo prebuild
 npx expo run:android  # For Android
 npx expo run:ios  # For iOS (Mac only)
 ```
+
+Ensure the app is running in development mode in the terminal or Expo Developer Tools. 
 
 ## Troubleshooting
 
