@@ -154,7 +154,7 @@ export default function GalleryStack() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    alignItems: 'center',
     backgroundColor: '#f5f5f5',
     flex: 1,
   },
