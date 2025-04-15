@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image, Dimensions, Text, ActivityIndicator, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { format } from 'date-fns';
-import { useRouter } from 'expo-router';
-import { Menu, Provider as PaperProvider, Button } from 'react-native-paper';
-import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { db } from './firebaseconfig';
+import {format} from 'date-fns';
+import { useNavigation, useRouter} from 'expo-router';
+import {Menu,Provider as PaperProvider} from 'react-native-paper';
+import {collection,query,where,orderBy,onSnapshot,deleteDoc, doc} from 'firebase/firestore'
+import {getAuth} from 'firebase/auth';
+import {db} from './firebaseconfig';
 import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
+import FullscreenImage from './fullscreenImage';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function Gallery() {
+const Stack = createNativeStackNavigator();
+
+function Gallery() {
+  const navigation = useNavigation();
+
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [menuVisible, setMenuVisible] = useState(null);
@@ -63,11 +70,13 @@ export default function Gallery() {
     );
   };
 
-  const renderItem = ({ item }) => {
-    const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy') : 'Unknown Date';
-    return (
-      <View style={[styles.imageWrapper, { width: itemWidth, height: itemWidth }]}>
-        <Image source={{ uri: item.uri }} style={styles.image} />
+  const renderItem = ({item})=> {
+    //format the date
+    const formattedDate = item.createdAt ? format(item.createdAt.toDate(),'MMMM dd, yyyy'):'Unknown Date';
+    return(
+      <View style={[styles.imageWrapper,{width: itemWidth,height: itemWidth}]} onTouchEndCapture={() => navigation.navigate('FullscreenImage', {url: item.uri})}>
+        <Image source = {{uri: item.uri}} style = {styles.image}/>
+
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.5)']}
           style={styles.overlay}
@@ -121,6 +130,23 @@ export default function Gallery() {
         )}
       </View>
     </PaperProvider>
+  );
+}
+
+export default function GalleryStack() {
+  return(
+    <Stack.Navigator initialRouteName='Gallery'>
+      <Stack.Screen
+      name='Gallery'
+      component={Gallery}
+      options={{ headerShown: false }}
+      />
+    <Stack.Screen
+      name='FullscreenImage'
+      component={FullscreenImage}
+      options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 }
 
