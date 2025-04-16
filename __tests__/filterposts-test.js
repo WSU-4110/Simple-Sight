@@ -30,11 +30,4 @@ describe('filterPosts', () => {
     expect(filtered).toHaveLength(1);
     expect(filtered[0].id).toBe('1');
   });
-  /*
-  it('returns all posts if filter is not "Today"', () => {
-    const filtered = filterPosts(mockPosts, 'All');
-    expect(filtered).toHaveLength(2);
-    expect(isToday).not.toHaveBeenCalled();
-  });
-  */
 });
