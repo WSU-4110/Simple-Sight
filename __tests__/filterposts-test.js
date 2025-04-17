@@ -1,10 +1,6 @@
 import { filterPosts } from '../app/filterposts-function';
 import { isToday } from 'date-fns';
 
-jest.mock('date-fns', () => ({
-  isToday: jest.fn(),
-}));
-
 describe('filterPosts', () => {
   const mockPosts = [
     {
