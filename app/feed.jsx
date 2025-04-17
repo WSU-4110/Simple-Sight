@@ -9,6 +9,7 @@ import {Ionicons} from '@expo/vector-icons';
 import { TouchableRipple } from 'react-native-paper';
 import {db} from './firebaseconfig';
 import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
+import { filterPosts } from './filterposts-function';
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
