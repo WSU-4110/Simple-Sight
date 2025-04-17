@@ -4,11 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns';
 import { isToday } from 'date-fns';
-import { Menu, Provider as PaperProvider, TouchableRipple } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
-import { db, auth } from './firebaseconfig';
-import { collection, query, orderBy, onSnapshot, doc, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import {Menu,Button,Provider as PaperProvider} from 'react-native-paper';
+import {Ionicons} from '@expo/vector-icons';
+import { TouchableRipple } from 'react-native-paper';
+import {db} from './firebaseconfig';
+import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
+import { filterPosts } from './filterposts-function';
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
@@ -109,13 +110,16 @@ export default function Feed() {
     return unsubscribe;
   }, [currentUserId]);
 
-  //filter function that filters posts with selection
-  const filteredPosts = posts.filter((post) => {
-    if (filter == 'Today') {
+  //filter function that will filter posts with selection
+  const filteredPosts = filterPosts(posts,filter);
+  /*
+  const filteredPosts = posts.filter((post)=>{
+    if(filter == 'Today'){
       return post.createdAt && isToday(post.createdAt.toDate());
     }
     return true;
   });
+  */
 
   const renderItem = ({ item }) => {
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy') : 'Unknown Date';

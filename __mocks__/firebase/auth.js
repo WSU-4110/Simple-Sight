@@ -1,3 +1,4 @@
+//auth.js
 export const getAuth = jest.fn(() => ({
     currentUser: { uid: 'mock-user-id', email: 'test@example.com' },
   }));

@@ -49,3 +49,35 @@ jest.mock('expo-background-fetch', () => ({
   unregisterTaskAsync: jest.fn().mockResolvedValue(undefined),
   getStatusAsync: jest.fn().mockResolvedValue('available'),
 }));
+
+// Mock expo-linear-gradient
+jest.mock('expo-linear-gradient', () => ({
+  LinearGradient: 'LinearGradient',
+}));
+jest.mock('@expo/vector-icons',()=>({
+  Ionicons:'',
+}));
+//Mocks
+const mockNavigation = {
+  replace: jest.fn(),
+};
+
+jest.mock('@react-native-async-storage/async-storage',()=>
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
+);
+
+jest.mock('firebase/auth',()=>({
+  getAuth: jest.fn(),
+  createUserWithEmailAndPassword: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
+}));
+
+jest.mock('firebase/firestore',()=>({
+  getFirestore: jest.fn(),
+  setDoc: jest.fn(),
+  getDoc : jest.fn(),
+  doc: jest.fn()
+}));
+jest.mock('date-fns', () => ({
+  isToday: jest.fn(),
+}));
