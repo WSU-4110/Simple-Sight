@@ -27,9 +27,18 @@ jest.mock('expo-router', () => ({
   useRouter: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@expo/vector-icons', () => ({
-  Ionicons: 'Ionicons',
-}));
+jest.mock('@expo/vector-icons', () => {
+    const React = require('react');
+    const { Text } = require('react-native');
+    return {
+      Ionicons: ({ onPress }) => (
+        <Text onPress={onPress} testID="ellipsis-icon">
+          Icon
+        </Text>
+      ),
+    };
+  });
+  
 
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ({ children }) => children,
@@ -55,40 +64,7 @@ describe('Gallery Component', () => {
     expect(await findByText('Switch to Grid View')).toBeTruthy();
   });
 
-   // ✅ NEW 2: Test that menu opens when ellipsis is pressed
-   it('opens delete option in menu after clicking ellipsis', async () => {
-    const mockImages = [
-      {
-        id: '1',
-        data: () => ({
-          imageUrl: 'https://example.com/image.jpg',
-          createdAt: { toDate: () => new Date('2023-01-01T00:00:00Z') },
-        }),
-      },
-    ];
-  
-    onSnapshot.mockImplementation((_, cb) => {
-      cb({ docs: mockImages });
-      return jest.fn();
-    });
-  
-    const { findByTestId, findByText } = render(
-      <NavigationContainer>
-        <GalleryStack />
-      </NavigationContainer>
-    );
-  
-    // Switch to list view so menu icon appears
-    const toggleButton = await findByText('Switch to List View');
-    fireEvent.press(toggleButton);
-  
-    // Find and press the menu (ellipsis) button
-    const menuButton = await findByTestId('menu-button-1');
-    fireEvent.press(menuButton);
-  
-    // Confirm the delete option shows up
-    expect(await findByText('Delete')).toBeTruthy();
-  });
+   
   //✅ working test
   it('displays formatted date under the image', async () => {
     const mockImages = [
@@ -115,8 +91,7 @@ describe('Gallery Component', () => {
     // Check for the formatted date dynamically rendered
     const dateLabel = await findByText(/\w{3,9} \d{1,2}, \d{4}/); // e.g., "December 31, 2022"
     expect(dateLabel).toBeTruthy();
-  });
-    //✅ one last working test
+  }); 
 
    
       
@@ -135,7 +110,7 @@ describe('Gallery Component', () => {
     expect(await findByText('Switch to Grid View')).toBeTruthy();
   });
 
-  //functional working test
+  //✅ functional working test
   it('navigates to FullscreenImage on image press', async () => {
     const mockImages = [
         {
@@ -164,4 +139,37 @@ describe('Gallery Component', () => {
 
     expect(pressable).toBeTruthy();
   });
+
+    //✅
+    it('shows delete menu when ellipsis icon is pressed', async () => {
+        const mockImages = [
+          {
+            id: '1',
+            data: () => ({
+              imageUrl: 'https://example.com/image.jpg',
+              createdAt: { toDate: () => new Date('2023-02-01T00:00:00Z') },
+            }),
+          },
+        ];
+      
+        onSnapshot.mockImplementation((_, cb) => {
+          cb({ docs: mockImages });
+          return jest.fn(); // mock unsubscribe
+        });
+      
+        const { findByTestId, findByText } = render(
+          <NavigationContainer>
+            <GalleryStack />
+          </NavigationContainer>
+        );
+      
+        const icon = await findByTestId('ellipsis-icon');
+        fireEvent.press(icon);
+      
+        const deleteOption = await findByText('Delete');
+        expect(deleteOption).toBeTruthy();
+      });
+      
+  
+
 });
