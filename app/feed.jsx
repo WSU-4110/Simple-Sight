@@ -65,12 +65,15 @@ export default function Feed() {
   }, []);
 
   //filter function that will filter posts with selection
+  const filteredPosts = filterPosts(posts,filter);
+  /*
   const filteredPosts = posts.filter((post)=>{
     if(filter == 'Today'){
       return post.createdAt && isToday(post.createdAt.toDate());
     }
     return true;
   });
+  */
 
   const renderItem = ({item}) =>{
     const formattedDate = item.createdAt ? format(item.createdAt.toDate(), 'MMMM dd, yyyy'): 'Unknown Date';
