@@ -7,7 +7,7 @@ import { isToday } from 'date-fns';
 import {Menu,Button,Provider as PaperProvider} from 'react-native-paper';
 import {Ionicons} from '@expo/vector-icons';
 import { TouchableRipple } from 'react-native-paper';
-import {db} from './firebaseconfig';
+import {db} from '../firebaseconfig';
 import {collection, query, orderBy, onSnapshot,doc,getDoc} from 'firebase/firestore';
 import { filterPosts } from './filterposts-function';
 

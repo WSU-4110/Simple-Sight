@@ -6,7 +6,7 @@ import { useNavigation, useRouter} from 'expo-router';
 import {Menu,Provider as PaperProvider, Button} from 'react-native-paper';
 import {collection,query,where,orderBy,onSnapshot,deleteDoc, doc} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth';
-import {db} from './firebaseconfig';
+import {db} from '../firebaseconfig';
 import { Ionicons } from '@expo/vector-icons';
 import FullscreenImage from './fullscreenImage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

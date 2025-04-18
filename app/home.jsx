@@ -8,7 +8,7 @@ import Gallery from './gallery';
 import { useNavigation, useRouter } from 'expo-router';
 import Settings from './settings';
 import Camera from './camera';
-import { requestPermissions } from './notifications';
+import { requestPermissions } from '../utils/notifications';
 import * as Notifications from 'expo-notifications';
 import Feed from './feed';
 import GalleryStack from './gallery';
