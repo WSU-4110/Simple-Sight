@@ -1,6 +1,6 @@
 const { scheduleNotificationAsync, getAllScheduledNotificationsAsync, requestPermissionsAsync, getPermissionsAsync } = require('expo-notifications');
 const { getRandomInt } = require('../utils/randomInt.jsx');
-const { scheduleNotificationNow, getRandomTime } = require('../app/notifications.jsx');
+const { scheduleNotificationNow, getRandomTime } = require('../utils/notifications.jsx');
 
 afterEach(() => {
     jest.clearAllTimers();

@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { Alert, Button } from 'react-native';
-import { fetchStartTime, fetchEndTime } from './settings';
-import { registerBackgroundNotificationScheduler } from '../utils/backgroundTask';
+import { fetchStartTime, fetchEndTime } from '../app/settings';
+import { registerBackgroundNotificationScheduler } from './backgroundTask';
 
 //define settings for notification handler
 Notifications.setNotificationHandler({
@@ -13,19 +13,18 @@ Notifications.setNotificationHandler({
 });
 
 export async function requestPermissions() {
-    const { status } = await Notifications.getPermissionsAsync(); //retunrs current status of notification permissions
+    let { status } = await Notifications.getPermissionsAsync(); //retunrs current status of notification permissions
     const scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(status);
-    console.log(scheduledNotifications.length);
+    if (status === Notifications.PermissionStatus.UNDETERMINED) {
+        status = await Notifications.requestPermissionsAsync();
+    }
 
     if (status != Notifications.PermissionStatus.GRANTED) {
-        console.log("Entered")
         Alert.alert('Permission Required', 'Please enable notifications in settings.', <Button title='Enable notifications' onPress={requestPermissions}/>);
         return;
     } 
-    console.log("hello")
+
     if (status == Notifications.PermissionStatus.GRANTED && scheduledNotifications.length == 0) {    
-        console.log("scheduling notification");
         await scheduleDailyNotification();
     }
 }
