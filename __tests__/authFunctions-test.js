@@ -3,28 +3,10 @@ import { createUserWithEmailAndPassword,signInWithEmailAndPassword,getAuth } fro
 import {setDoc, getDoc,doc,getFirestore} from 'firebase/firestore';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import exp from "constants";
-
-//Mocks
 const mockNavigation = {
     replace: jest.fn(),
 };
 
-jest.mock('@react-native-async-storage/async-storage',()=>
-    require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
-
-jest.mock('firebase/auth',()=>({
-    getAuth: jest.fn(),
-    createUserWithEmailAndPassword: jest.fn(),
-    signInWithEmailAndPassword: jest.fn(),
-}));
-
-jest.mock('firebase/firestore',()=>({
-    getFirestore: jest.fn(),
-    setDoc: jest.fn(),
-    getDoc : jest.fn(),
-    doc: jest.fn()
-}));
 describe('Authentication Functions', ()=>{
     beforeEach(()=>{
         jest.clearAllMocks();
