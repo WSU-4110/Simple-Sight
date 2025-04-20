@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
-import{auth,db} from './firebaseconfig'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient';

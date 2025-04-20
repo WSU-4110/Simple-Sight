@@ -1,6 +1,6 @@
 import { handleSignup,handleLogin } from "../app/authFunctions";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword,getAuth } from "firebase/auth";
-import {setDoc, getDoc,doc,getFirestore} from 'firebase/firestore';
+import {setDoc, getDoc,doc,getFirestore} from 'firebase/firestore'; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import exp from "constants";
 const mockNavigation = {

@@ -1,4 +1,4 @@
-import { scheduleDailyNotification } from '../app/notifications';
+import { scheduleDailyNotification } from './notifications';
 import { fetchEndTime } from '../app/settings';
 import { defineTask, unregisterTaskAsync } from 'expo-task-manager';
 import { getStatusAsync, Status, registerTaskAsync } from 'expo-background-fetch';

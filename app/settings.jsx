@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { persistentKeys } from '../constants/persistenceKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { disableNotifications, getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from './notifications';
-import{auth,db} from './firebaseconfig'
+import { disableNotifications, getRandomTime, scheduleDailyNotification, scheduleNotificationNow } from '../utils/notifications';
+import{auth,db} from '../firebaseconfig'
 //import{doc,getDoc,updateDoc} from 'firebase/firestore'
 import{getIdToken, signOut} from 'firebase/auth'
 import { useNavigation } from 'expo-router';
